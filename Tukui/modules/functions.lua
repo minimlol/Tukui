@@ -423,13 +423,13 @@ do
 					if TukuiCF["unitframes"].showtotalhpmp == true then
 						health.value:SetFormattedText("|cff559655%s|r |cffD7BEA5|||r |cff559655%s|r", ShortValue(min), ShortValue(max))
 					else
-						health.value:SetFormattedText("|cffAF5050%d|r |cffD7BEA5-|r |cff%02x%02x%02x%d%%|r", min, r * 255, g * 255, b * 255, floor(min / max * 100))
+						health.value:SetFormattedText("|cff559655%s|r |cffD7BEA5/|r |cff559655%s|r |cffD7BEA5-|r |cff%02x%02x%02x%d%%|r", ShortValue(min), ShortValue(max), r * 255, g * 255, b * 255, floor(min / max * 100))
 					end
 				elseif unit == "target" or unit == "focus" or (unit and unit:find("boss%d")) then
 					if TukuiCF["unitframes"].showtotalhpmp == true then
 						health.value:SetFormattedText("|cff559655%s|r |cffD7BEA5|||r |cff559655%s|r", ShortValue(min), ShortValue(max))
 					else
-						health.value:SetFormattedText("|cffAF5050%s|r |cffD7BEA5-|r |cff%02x%02x%02x%d%%|r", ShortValue(min), r * 255, g * 255, b * 255, floor(min / max * 100))
+						health.value:SetFormattedText("|cff559655%s|r |cffD7BEA5/|r |cff559655%s|r |cffD7BEA5-|r |cff%02x%02x%02x%d%%|r", ShortValue(min), ShortValue(max), r * 255, g * 255, b * 255, floor(min / max * 100))
 					end
 				elseif (unit and unit:find("arena%d")) then
 					health.value:SetText("|cff559655"..ShortValue(min).."|r")
@@ -955,8 +955,8 @@ do
 				local icon = CreateFrame("Frame", nil, auras)
 				icon.spellID = spell[1]
 				icon.anyUnit = spell[4]
-				icon:SetWidth(TukuiDB.Scale(6*TukuiCF["unitframes"].gridscale))
-				icon:SetHeight(TukuiDB.Scale(6*TukuiCF["unitframes"].gridscale))
+				icon:SetWidth(TukuiDB.Scale(7*TukuiCF["unitframes"].gridscale))
+				icon:SetHeight(TukuiDB.Scale(7*TukuiCF["unitframes"].gridscale))
 				icon:SetPoint(spell[2], 0, 0)
 
 				local tex = icon:CreateTexture(nil, "OVERLAY")
@@ -969,7 +969,7 @@ do
 				end
 
 				local count = icon:CreateFontString(nil, "OVERLAY")
-				count:SetFont(TukuiCF["media"].uffont, 8*TukuiCF["unitframes"].gridscale, "THINOUTLINE")
+				count:SetFont(TukuiCF["media"].uffont, 12*TukuiCF["unitframes"].gridscale, "THINOUTLINE")
 				count:SetPoint("CENTER", unpack(TukuiDB.countOffsets[spell[2]]))
 				icon.count = count
 
