@@ -178,8 +178,8 @@ local function Shared(self, unit)
 		
 		-- Raid Debuffs (big middle icon)
 		local RaidDebuffs = CreateFrame('Frame', nil, self)
-		RaidDebuffs:SetHeight(TukuiDB.Scale(22*TukuiCF["unitframes"].gridscale))
-		RaidDebuffs:SetWidth(TukuiDB.Scale(22*TukuiCF["unitframes"].gridscale))
+		RaidDebuffs:SetHeight(TukuiDB.Scale(16*TukuiCF["unitframes"].gridscale))
+		RaidDebuffs:SetWidth(TukuiDB.Scale(16*TukuiCF["unitframes"].gridscale))
 		RaidDebuffs:SetPoint('CENTER', health, TukuiDB.Scale(1),0)
 		RaidDebuffs:SetFrameStrata(health:GetFrameStrata())
 		RaidDebuffs:SetFrameLevel(health:GetFrameLevel() + 2)
@@ -234,7 +234,7 @@ oUF:Factory(function(self)
 			"maxColumns", 8,
 			"unitsPerColumn", 5,
 			"columnSpacing", TukuiDB.Scale(3),
-			"columnAnchorPoint", "TOP"		
+			"columnAnchorPoint", "BOTTOM"		
 		)
 		raid:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 18, -250*TukuiDB.raidscale)
 	else
@@ -260,11 +260,11 @@ oUF:Factory(function(self)
 			"columnSpacing", TukuiDB.Scale(3),
 			"columnAnchorPoint", "TOP"		
 		)
-		raid:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 18, -250*TukuiDB.raidscale)
+		raid:SetPoint("BOTTOMLEFT", UIParent, "TOPLEFT", 57, -765*TukuiDB.raidscale)
 		
 		local pets = {} 
 			pets[1] = oUF:Spawn('partypet1', 'oUF_TukuiPartyPet1') 
-			pets[1]:SetPoint('TOPLEFT', raid, 'TOPLEFT', 0, -50*TukuiCF["unitframes"].gridscale*TukuiDB.raidscale + TukuiDB.Scale(-3))
+			pets[1]:SetPoint('TOPLEFT', raid, 'TOPLEFT', 0, -56*TukuiCF["unitframes"].gridscale*TukuiDB.raidscale + TukuiDB.Scale(-3))
 			pets[1]:SetSize(TukuiDB.Scale(66*TukuiCF["unitframes"].gridscale*TukuiDB.raidscale), TukuiDB.Scale(50*TukuiCF["unitframes"].gridscale*TukuiDB.raidscale))
 		for i =2, 4 do 
 			pets[i] = oUF:Spawn('partypet'..i, 'oUF_TukuiPartyPet'..i) 
