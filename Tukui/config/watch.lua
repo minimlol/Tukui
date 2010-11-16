@@ -41,8 +41,8 @@ TukuiDB.remindbuffs = {
 		974, -- earth shield
 	},
 	WARRIOR = {
-		469, -- commanding Shout
-		6673, -- battle Shout
+		--469, -- commanding Shout
+		--6673, -- battle Shout
 	},
 	DEATHKNIGHT = {
 		57330, -- horn of Winter
@@ -192,6 +192,9 @@ if TukuiCF["unitframes"].raidunitdebuffwatch == true then
 			73797, -- Soul Reaper
 			73708, -- Defile
 			74322, -- Harvested Soul
+			72856, -- Unbound Plague
+			72855, -- Unbound Plague
+
 			
 			--Ruby Sanctum
 			74502, --Enervating Brand
