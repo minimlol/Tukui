@@ -90,8 +90,8 @@ local function Shared(self, unit)
 		healthBG:SetAllPoints()
 		healthBG:SetTexture(.1, .1, .1)
 	
-		health.value = TukuiDB.SetFontString(panel, font1, 12)
-		health.value:SetPoint("RIGHT", panel, "RIGHT", TukuiDB.Scale(-4), 0)
+		health.value = TukuiDB.SetFontString(health, font1, 16, "OUTLINE")
+		health.value:SetPoint("CENTER", health, "CENTER", 0, 0)
 		health.PostUpdate = TukuiDB.PostUpdateHealth
 				
 		self.Health = health
@@ -672,9 +672,9 @@ local function Shared(self, unit)
 			if TukuiDB.lowversion then
 				CombatFeedbackText = TukuiDB.SetFontString(health, font1, 12, "OUTLINE")
 			else
-				CombatFeedbackText = TukuiDB.SetFontString(health, font1, 14, "OUTLINE")
+				CombatFeedbackText = TukuiDB.SetFontString(panel, font1, 12)
 			end
-			CombatFeedbackText:SetPoint("CENTER", 0, 1)
+			CombatFeedbackText:SetPoint("RIGHT", panel, "RIGHT", TukuiDB.Scale(-4), 0)
 			CombatFeedbackText.colors = {
 				DAMAGE = {0.69, 0.31, 0.31},
 				CRUSHING = {0.69, 0.31, 0.31},
