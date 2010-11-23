@@ -3,7 +3,7 @@ TukuiCF["media"] = {
 	["font"] = [=[Interface\Addons\Tukui\media\fonts\calibri.ttf]=], -- general font of tukui
 	["uffont"] = [[Interface\AddOns\Tukui\media\fonts\calibri.ttf]], -- general font of unitframes
 	["dmgfont"] = [[Interface\AddOns\Tukui\media\fonts\calibri_bold.ttf]], -- general font of dmg / sct
-	
+
 	-- textures
 	["normTex"] = [[Interface\AddOns\Tukui\media\textures\normTex]], -- texture used for tukui healthbar/powerbar/etc
 	["glowTex"] = [[Interface\AddOns\Tukui\media\textures\glowTex]], -- the glow text around some frame.
