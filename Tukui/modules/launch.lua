@@ -88,13 +88,12 @@ local function install()
 			-- this is the default width and height of tukui chats.
 			SetChatWindowSavedDimensions(chatFrameId, TukuiDB.Scale(TukuiCF["panels"].tinfowidth + 1), TukuiDB.Scale(111))
 			
-			-- move general bottom left or Loot (if found) on right.
+			-- move general bottom left and dock loot frame to general frame.
 			if i == 1 then
 				frame:ClearAllPoints()
-				frame:SetPoint("BOTTOM", ChatLeft, "BOTTOM", 0, TukuiDB.Scale(4))
+				frame:SetPoint("BOTTOMLEFT", TukuiInfoLeft, "TOPLEFT", 0, TukuiDB.Scale(6))
 			elseif i == 4 and chatName == LOOT then
-				frame:ClearAllPoints()
-				frame:SetPoint("BOTTOMRIGHT", TukuiInfoRight, "TOPRIGHT", 0, TukuiDB.Scale(6))
+				FCF_DockFrame(ChatFrame4, #FCFDock_GetChatFrames(GENERAL_CHAT_DOCK)+1, true);
 			end
 					
 			-- save new default position and dimension

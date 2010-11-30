@@ -96,6 +96,10 @@ TukuiDB.CreatePanel(iright, TukuiCF["panels"].tinfowidth, 23, "RIGHT", ltoabr, "
 iright:SetFrameLevel(2)
 iright:SetFrameStrata("BACKGROUND")
 
+-- CHAT BG LEFT
+local chatleftbg = CreateFrame("Frame", "TukuiChatBackgroundLeft", TukuiInfoLeft)
+TukuiDB.CreateTransparentPanel(chatleftbg, TukuiCF["panels"].tinfowidth, TukuiDB.Scale(125), "BOTTOM", TukuiInfoLeft, "TOP", 0, TukuiDB.Scale(3))
+
 if TukuiMinimap then
 	local minimapstatsleft = CreateFrame("Frame", "TukuiMinimapStatsLeft", TukuiMinimap)
 	TukuiDB.CreatePanel(minimapstatsleft, ((TukuiMinimap:GetWidth() + 4) / 2) - 1, 19, "TOPLEFT", TukuiMinimap, "BOTTOMLEFT", 0, TukuiDB.Scale(-2))
@@ -149,23 +153,3 @@ if TukuiCF["datatext"].battleground == true then
 	bgframe:SetFrameLevel(0)
 	bgframe:EnableMouse(true)
 end
-
--- CHAT LEFT
-ChatFrame1:SetFrameStrata("LOW")
-local chatleft = CreateFrame("Frame", "ChatLeft", TukuiInfoLeft)
-TukuiDB.CreatePanel(chatleft, TukuiCF["panels"].tinfowidth, TukuiDB.Scale(125), "BOTTOM", TukuiInfoLeft, "TOP", 0, TukuiDB.Scale(3))
-chatleft:SetFrameLevel(2)
-chatleft:SetFrameStrata("BACKGROUND")
-chatleft:SetBackdropColor(.075,.075,.075,.7)
-chatleft:SetBackdropBorderColor(unpack(TukuiCF["media"].bordercolor))
- 
-leftborder = CreateFrame("Frame", nil, UIParent)
-leftborder:SetPoint("TOPLEFT", ChatLeft, "TOPLEFT", -1, 1)
-leftborder:SetFrameStrata("BACKGROUND")
-leftborder:SetBackdrop {
-edgeFile = TukuiCF["media"].blank, edgeSize = 3,
-insets = {left = 0, right = 0, top = 0, bottom = 0}
-}
-leftborder:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
-leftborder:SetBackdropBorderColor(unpack(TukuiCF["media"].backdropcolor))
-leftborder:SetPoint("BOTTOMRIGHT", ChatLeft, "BOTTOMRIGHT", 1, -1)

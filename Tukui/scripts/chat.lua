@@ -200,18 +200,18 @@ local function SetupChatPosAndFont(self)
 			FCF_SetChatWindowFontSize(nil, chat, fontSize)
 		end
 		
-		-- force chat position on #1 and #4, needed if we change ui scale or resolution
+		-- force chat position on #1 and dock loot frame to general frame, needed if we change ui scale or resolution
 		-- also set original width and height of chatframes 1 and 4 if first time we run tukui.
 		-- doing resize of chat also here for users that hit "cancel" when default installation is show.
 		if i == 1 then
 			chat:ClearAllPoints()
-			chat:SetPoint("BOTTOM", ChatLeft, "BOTTOM", 0, TukuiDB.Scale(4))
+			chat:SetPoint("BOTTOMLEFT", TukuiInfoLeft, "TOPLEFT", TukuiDB.Scale(3), TukuiDB.Scale(7))
+			chat:SetWidth(TukuiDB.Scale(365))
+			chat:SetHeight(TukuiDB.Scale(120))
 			FCF_SavePositionAndDimensions(chat)
 		elseif i == 4 and name == LOOT then
 			if not chat.isDocked then
-				chat:ClearAllPoints()
-				chat:SetPoint("BOTTOMRIGHT", TukuiInfoRight, "TOPRIGHT", 0, TukuiDB.Scale(6))
-				--chat:SetJustifyH("RIGHT") 
+				FCF_DockFrame(ChatFrame4, #FCFDock_GetChatFrames(GENERAL_CHAT_DOCK)+1, true);
 				FCF_SavePositionAndDimensions(chat)
 			end
 		end
