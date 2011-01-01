@@ -112,4 +112,6 @@
 			
 	<Script file="class\priest.lua"/>
 	<Script file="class\hunter.lua"/>
+	
+	<Script file="scripts\raidUtility.lua"/>
 </Ui>
