@@ -13,6 +13,7 @@ local bags_BACKPACK = {0, 1, 2, 3, 4}
 local bags_BANK = {-1, 5, 6, 7, 8, 9, 10, 11}
 local BAGSFONT = TukuiCF["media"].font
 local ST_NORMAL = 1
+local ST_FISHBAG = 2
 local ST_SPECIAL = 3
 local bag_bars = 0
 
@@ -292,11 +293,14 @@ end
 -- from OneBag
  
 local BAGTYPE_PROFESSION = 0x0008 + 0x0010 + 0x0020 + 0x0040 + 0x0080 + 0x0200 + 0x0400
+local BAGTYPE_FISHING = 32768
 
 function Stuffing:BagType(bag)
 	local bagType = select(2, GetContainerNumFreeSlots(bag))
-
-	if bit.band(bagType, BAGTYPE_PROFESSION) > 0 then
+	
+	if bit.band(bagType, BAGTYPE_FISHING) > 0 then
+		return ST_FISHBAG
+	elseif bit.band(bagType, BAGTYPE_PROFESSION) > 0 then		
 		return ST_SPECIAL
 	end
 
@@ -717,6 +721,8 @@ function Stuffing:Layout(lb)
 				b.frame:SetBackdropColor(0, 0, 0, 0) -- we just need border with SetTemplate, not the backdrop. Hopefully this will fix invisible item that some users have.
 				TukuiDB.StyleButton(b.frame, false)
 				
+				-- color fish bag border slot to red
+				if bagType == ST_FISHBAG then b.frame:SetBackdropBorderColor(1, 0, 0) b.frame.lock = true end
 				-- color profession bag slot border ~yellow
 				if bagType == ST_SPECIAL then b.frame:SetBackdropBorderColor(255/255, 243/255,  82/255) b.frame.lock = true end
 				
@@ -1116,7 +1122,35 @@ end
 
 
 function Stuffing:SortBags()
-	if (UnitAffectingCombat("player")) then return end;
+	if (UnitAffectingCombat("player")) then return end
+	
+	local free
+	local total = 0
+	local bagtypeforfree
+	
+	if StuffingFrameBank and StuffingFrameBank:IsShown() then
+		for i = 5, 11 do
+			free, bagtypeforfree = GetContainerNumFreeSlots(i)
+			if bagtypeforfree == 0 then			
+				total = free + total
+			end
+		end
+		
+		total = select(1, GetContainerNumFreeSlots(-1)) + total
+	else
+		for i = 0, 4 do
+			free, bagtypeforfree = GetContainerNumFreeSlots(i)
+			if bagtypeforfree == 0 then			
+				total = free + total
+			end
+		end
+	end
+
+	if total == 0 then
+		print("|cffff0000"..ERROR_CAPS.." - "..ERR_INV_FULL.."|r")
+		return	
+	end
+	
 	local bs = self.sortBags
 	if #bs < 1 then
 		Print (tukuilocal.bags_nothingsort)
@@ -1349,6 +1383,24 @@ function Stuffing.Menu(self, level)
 			Stuffing:Layout(true)
 		end
 
+	end
+	UIDropDownMenu_AddButton(info, level)
+
+	wipe(info)
+	info.text = KEYRING
+	info.checked = function()
+		return key_ring == 1
+	end
+
+	info.func = function()
+		if key_ring == 1 then
+			key_ring = 0
+		else
+			key_ring = 1
+		end
+		Stuffing_Toggle()
+		ToggleKeyRing()
+		Stuffing:Layout()
 	end
 	UIDropDownMenu_AddButton(info, level)
 
