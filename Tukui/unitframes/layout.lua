@@ -183,29 +183,29 @@ local function Shared(self, unit)
 			self.Portrait = portrait
 		end
 
+		-- alt power bar
+		local AltPowerBar = CreateFrame("StatusBar", nil, self.Health)
+		AltPowerBar:SetFrameLevel(self.Health:GetFrameLevel() + 1)
+		AltPowerBar:SetHeight(5)
+		AltPowerBar:SetStatusBarTexture(TukuiCF.media.normTex)
+		AltPowerBar:GetStatusBarTexture():SetHorizTile(false)
+		AltPowerBar:SetStatusBarColor(1, 0, 0)
+
+		AltPowerBar:SetPoint("LEFT")
+		AltPowerBar:SetPoint("RIGHT")
+		AltPowerBar:SetPoint("TOP", self.Health, "TOP")
+		
+		AltPowerBar:SetBackdrop({
+		  bgFile = TukuiCF["media"].blank, 
+		  edgeFile = TukuiCF["media"].blank, 
+		  tile = false, tileSize = 0, edgeSize = 1, 
+		  insets = { left = 0, right = 0, top = 0, bottom = TukuiDB.Scale(-1)}
+		})
+		AltPowerBar:SetBackdropColor(0, 0, 0)
+
+		self.AltPowerBar = AltPowerBar
+			
 		if (unit == "player") then
-			-- alt power bar
-			local AltPowerBar = CreateFrame("StatusBar", "TukuiAltPowerBar", self.Health)
-			AltPowerBar:SetFrameLevel(self.Health:GetFrameLevel() + 1)
-			AltPowerBar:SetHeight(5)
-			AltPowerBar:SetStatusBarTexture(TukuiCF.media.normTex)
-			AltPowerBar:GetStatusBarTexture():SetHorizTile(false)
-			AltPowerBar:SetStatusBarColor(1, 0, 0)
-
-			AltPowerBar:SetPoint("LEFT")
-			AltPowerBar:SetPoint("RIGHT")
-			AltPowerBar:SetPoint("TOP", self.Health, "TOP")
-			
-			AltPowerBar:SetBackdrop({
-			  bgFile = TukuiCF["media"].blank, 
-			  edgeFile = TukuiCF["media"].blank, 
-			  tile = false, tileSize = 0, edgeSize = 1, 
-			  insets = { left = 0, right = 0, top = 0, bottom = TukuiDB.Scale(-1)}
-			})
-			AltPowerBar:SetBackdropColor(0, 0, 0)
-
-			self.AltPowerBar = AltPowerBar
-			
 			-- combat icon
 			local Combat = health:CreateTexture(nil, "OVERLAY")
 			Combat:SetHeight(TukuiDB.Scale(19))
@@ -943,7 +943,7 @@ local function Shared(self, unit)
 		end
 		
 		-- update pet name, this should fix "UNKNOWN" pet names on pet unit.
-		self:RegisterEvent("UNIT_PET", TukuiDB.UpdatePetInfo)
+		self:RegisterEvent("UNIT_PET", TukuiDB.UpdateName)
 	end
 
 
@@ -1209,8 +1209,30 @@ local function Shared(self, unit)
 		self:Tag(Name, '[Tukui:getnamecolor][Tukui:namelong]')
 		self.Name = Name
 		
-		-- create buff at left of unit if they are boss units
 		if (unit and unit:find("boss%d")) then
+			-- alt power bar
+			local AltPowerBar = CreateFrame("StatusBar", nil, self.Health)
+			AltPowerBar:SetFrameLevel(self.Health:GetFrameLevel() + 1)
+			AltPowerBar:SetHeight(4)
+			AltPowerBar:SetStatusBarTexture(TukuiCF.media.normTex)
+			AltPowerBar:GetStatusBarTexture():SetHorizTile(false)
+			AltPowerBar:SetStatusBarColor(1, 0, 0)
+
+			AltPowerBar:SetPoint("LEFT")
+			AltPowerBar:SetPoint("RIGHT")
+			AltPowerBar:SetPoint("TOP", self.Health, "TOP")
+			
+			AltPowerBar:SetBackdrop({
+			  bgFile = TukuiCF["media"].blank, 
+			  edgeFile = TukuiCF["media"].blank, 
+			  tile = false, tileSize = 0, edgeSize = 1, 
+			  insets = { left = 0, right = 0, top = 0, bottom = TukuiDB.Scale(-1)}
+			})
+			AltPowerBar:SetBackdropColor(0, 0, 0)
+
+			self.AltPowerBar = AltPowerBar
+			
+			-- create buff at left of unit if they are boss units
 			local buffs = CreateFrame("Frame", nil, self)
 			buffs:SetHeight(26)
 			buffs:SetWidth(252)
@@ -1223,23 +1245,24 @@ local function Shared(self, unit)
 			buffs.PostCreateIcon = TukuiDB.PostCreateAura
 			buffs.PostUpdateIcon = TukuiDB.PostUpdateAura
 			self.Buffs = buffs
+			
+			--Fix boss name on show
+			self:HookScript("OnShow", TukuiDB.updateAllElements)
 		end
 
 		-- create debuff for arena units
-		if (unit and unit:find("arena%d")) then
-			local debuffs = CreateFrame("Frame", nil, self)
-			debuffs:SetHeight(26)
-			debuffs:SetWidth(200)
-			debuffs:SetPoint('LEFT', self, 'RIGHT', TukuiDB.Scale(4), 0)
-			debuffs.size = 26
-			debuffs.num = 5
-			debuffs.spacing = 2
-			debuffs.initialAnchor = 'LEFT'
-			debuffs["growth-x"] = "RIGHT"
-			debuffs.PostCreateIcon = TukuiDB.PostCreateAura
-			debuffs.PostUpdateIcon = TukuiDB.PostUpdateAura
-			self.Debuffs = debuffs	
-		end
+		local debuffs = CreateFrame("Frame", nil, self)
+		debuffs:SetHeight(26)
+		debuffs:SetWidth(200)
+		debuffs:SetPoint('LEFT', self, 'RIGHT', TukuiDB.Scale(4), 0)
+		debuffs.size = 26
+		debuffs.num = 5
+		debuffs.spacing = 2
+		debuffs.initialAnchor = 'LEFT'
+		debuffs["growth-x"] = "RIGHT"
+		debuffs.PostCreateIcon = TukuiDB.PostCreateAura
+		debuffs.PostUpdateIcon = TukuiDB.PostUpdateAura
+		self.Debuffs = debuffs
 				
 		-- trinket feature via trinket plugin
 		if (TukuiCF.arena.unitframes) and (unit and unit:find('arena%d')) then
@@ -1259,6 +1282,52 @@ local function Shared(self, unit)
 			Trinket.trinketUseAnnounce = true
 			self.Trinket = Trinket
 		end
+		
+		-- boss & arena frames cast bar!
+		local castbar = CreateFrame("StatusBar", self:GetName().."_Castbar", self)
+		castbar:SetPoint("LEFT", 24, 0)
+		castbar:SetPoint("RIGHT", -2, 0)
+		castbar:SetPoint("BOTTOM", 0, -22)
+		
+		castbar:SetHeight(16)
+		castbar:SetStatusBarTexture(normTex)
+		castbar:SetFrameLevel(6)
+		
+		castbar.bg = CreateFrame("Frame", nil, castbar)
+		TukuiDB.SetTemplate(castbar.bg)
+		castbar.bg:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))
+		castbar.bg:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
+		castbar.bg:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+		castbar.bg:SetFrameLevel(5)
+		
+		castbar.time = TukuiDB.SetFontString(castbar, font1, 12)
+		castbar.time:SetPoint("RIGHT", castbar, "RIGHT", TukuiDB.Scale(-4), 0)
+		castbar.time:SetTextColor(0.84, 0.75, 0.65)
+		castbar.time:SetJustifyH("RIGHT")
+		castbar.CustomTimeText = TukuiDB.CustomCastTimeText
+
+		castbar.Text = TukuiDB.SetFontString(castbar, font1, 12)
+		castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 0)
+		castbar.Text:SetTextColor(0.84, 0.75, 0.65)
+		
+		castbar.CustomDelayText = TukuiDB.CustomCastDelayText
+		castbar.PostCastStart = TukuiDB.CheckCast
+		castbar.PostChannelStart = TukuiDB.CheckChannel
+								
+		castbar.button = CreateFrame("Frame", nil, castbar)
+		castbar.button:SetHeight(castbar:GetHeight()+TukuiDB.Scale(4))
+		castbar.button:SetWidth(castbar:GetHeight()+TukuiDB.Scale(4))
+		castbar.button:SetPoint("RIGHT", castbar, "LEFT", TukuiDB.Scale(-4), 0)
+		TukuiDB.SetTemplate(castbar.button)
+		castbar.button:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))
+		castbar.icon = castbar.button:CreateTexture(nil, "ARTWORK")
+		castbar.icon:SetPoint("TOPLEFT", castbar.button, TukuiDB.Scale(2), TukuiDB.Scale(-2))
+		castbar.icon:SetPoint("BOTTOMRIGHT", castbar.button, TukuiDB.Scale(-2), TukuiDB.Scale(2))
+		castbar.icon:SetTexCoord(0.08, 0.92, 0.08, .92)
+
+		self.Castbar = castbar
+		self.Castbar.Time = castbar.time
+		self.Castbar.Icon = castbar.icon
 	end
 
 	------------------------------------------------------------------------
@@ -1380,9 +1449,9 @@ if TukuiCF.arena.unitframes then
 	for i = 1, 5 do
 		arena[i] = oUF:Spawn("arena"..i, "oUF_Arena"..i)
 		if i == 1 then
-			arena[i]:SetPoint("BOTTOM", UIParent, "BOTTOM", 252, 260)
+			arena[i]:SetPoint("BOTTOM", UIParent, "BOTTOM", 244, 294)
 		else
-			arena[i]:SetPoint("BOTTOM", arena[i-1], "TOP", 0, 10)
+			arena[i]:SetPoint("BOTTOM", arena[i-1], "TOP", 0, 35)
 		end
 		arena[i]:SetSize(TukuiDB.Scale(200), TukuiDB.Scale(29))
 	end
@@ -1402,20 +1471,11 @@ if db.showboss then
 	for i = 1, MAX_BOSS_FRAMES do
 		boss[i] = oUF:Spawn("boss"..i, "oUF_Boss"..i)
 		if i == 1 then
-			boss[i]:SetPoint("BOTTOM", UIParent, "BOTTOM", 252, 260)
+			boss[i]:SetPoint("BOTTOM", UIParent, "BOTTOM", 244, 294)
 		else
-			boss[i]:SetPoint('BOTTOM', boss[i-1], 'TOP', 0, 10)             
+			boss[i]:SetPoint('BOTTOM', boss[i-1], 'TOP', 0, 35)             
 		end
 		boss[i]:SetSize(TukuiDB.Scale(200), TukuiDB.Scale(29))
-		
-		--Special PowerBar for Boss frames
-		local pf = _G["Boss"..i.."TargetFramePowerBarAlt"]
-		pf:ClearAllPoints()
-		pf:SetPoint("LEFT", _G["oUF_Boss"..i], "RIGHT", 10, 0)
-		pf:SetParent(_G["oUF_Boss"..i])
-		pf.ClearAllPoints = TukuiDB.dummy
-		pf.SetPoint = TukuiDB.dummy
-		pf.SetParent = TukuiDB.dummy
 	end
 end
 
@@ -1500,5 +1560,3 @@ do
 	UnitPopupMenus["FOCUS"] = { "RAID_TARGET_ICON", "CANCEL" }
 	UnitPopupMenus["BOSS"] = { "RAID_TARGET_ICON", "CANCEL" }
 end
-
-
