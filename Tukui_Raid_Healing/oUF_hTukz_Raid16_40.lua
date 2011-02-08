@@ -271,7 +271,7 @@ oUF:Factory(function(self)
 			"columnSpacing", T.Scale(3),
 			"columnAnchorPoint", "TOP"		
 		)
-		raid:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 18, -250*T.raidscale)
+		raid:SetPoint("BOTTOMLEFT", UIParent, "TOPLEFT", 48, -805*T.raidscale)
 		
 		local pets = {} 
 			pets[1] = oUF:Spawn('partypet1', 'oUF_TukuiPartyPet1') 
