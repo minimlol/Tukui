@@ -59,8 +59,8 @@ T.createAuraWatch = function(self, unit)
 			local icon = CreateFrame("Frame", nil, auras)
 			icon.spellID = spell[1]
 			icon.anyUnit = spell[4]
-			icon:SetWidth(T.Scale(6*C["unitframes"].gridscale))
-			icon:SetHeight(T.Scale(6*C["unitframes"].gridscale))
+			icon:SetWidth(T.Scale(7*C["unitframes"].gridscale))
+			icon:SetHeight(T.Scale(7*C["unitframes"].gridscale))
 			icon:SetPoint(spell[2], 0, 0)
 
 			local tex = icon:CreateTexture(nil, "OVERLAY")
@@ -73,7 +73,7 @@ T.createAuraWatch = function(self, unit)
 			end
 
 			local count = icon:CreateFontString(nil, "OVERLAY")
-			count:SetFont(C["media"].uffont, 8*C["unitframes"].gridscale, "THINOUTLINE")
+			count:SetFont(C["media"].uffont, 12*C["unitframes"].gridscale, "THINOUTLINE")
 			count:SetPoint("CENTER", unpack(T.countOffsets[spell[2]]))
 			icon.count = count
 
