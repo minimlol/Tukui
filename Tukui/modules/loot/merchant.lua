@@ -46,7 +46,7 @@ f:SetScript("OnEvent", function()
 			local cost, possible = GetRepairAllCost()
 			if cost>0 then
 				if possible then
-					RepairAllItems()
+					RepairAllItems(1)
 					local c = cost%100
 					local s = math.floor((cost%10000)/100)
 					local g = math.floor(cost/10000)
