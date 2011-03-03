@@ -171,8 +171,10 @@ if C.chat.background then
 	chatleftbg:CreatePanel("Transparent", T.InfoLeftRightWidth + 12, 149, "BOTTOM", TukuiInfoLeft, "BOTTOM", 0, -6)
 
 	-- CHAT BG RIGHT
+	--[[
 	local chatrightbg = CreateFrame("Frame", "TukuiChatBackgroundRight", TukuiInfoRight)
 	chatrightbg:CreatePanel("Transparent", T.InfoLeftRightWidth + 12, 177, "BOTTOM", TukuiInfoRight, "BOTTOM", 0, -6)
+	]]--
 	
 	-- LEFT TAB PANEL
 	--[[
