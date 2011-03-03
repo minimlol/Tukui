@@ -196,13 +196,8 @@ local function Shared(self, unit)
 		
 		-- Raid Debuffs (big middle icon)
 		local RaidDebuffs = CreateFrame('Frame', nil, self)
-<<<<<<< HEAD
-		RaidDebuffs:Height(16*C["unitframes"].gridscale)
-		RaidDebuffs:Width(16*C["unitframes"].gridscale)
-=======
-		RaidDebuffs:Height(24*C["unitframes"].gridscale)
-		RaidDebuffs:Width(24*C["unitframes"].gridscale)
->>>>>>> tukz/master
+		RaidDebuffs:Height(18*C["unitframes"].gridscale)
+		RaidDebuffs:Width(18*C["unitframes"].gridscale)
 		RaidDebuffs:Point('CENTER', health, 1,0)
 		RaidDebuffs:SetFrameStrata(health:GetFrameStrata())
 		RaidDebuffs:SetFrameLevel(health:GetFrameLevel() + 2)
