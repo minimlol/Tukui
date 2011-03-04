@@ -5,7 +5,7 @@ if not C["nameplate"].enable == true then return end
 
 local TEXTURE = C["media"].normTex
 local FONT = C["media"].font
-local FONTSIZE = 10
+local FONTSIZE = 12
 local FONTFLAG = "THINOUTLINE"
 local hpHeight = 12
 local hpWidth = 110
@@ -20,7 +20,7 @@ local noscalemult = T.mult * C["general"].uiscale
 
 --Change defaults if we are showing health text or not
 if C["nameplate"].showhealth ~= true then
-	hpHeight = 7
+	hpHeight = 8
 	iconSize = 20
 end
 
@@ -43,7 +43,13 @@ local PlateBlacklist = {
 	["Windfury Totem"] = true,
 	["Totem of Wrath"] = true,
 	["Wrath of Air Totem"] = true,
+	
+	--Enhancement Shaman wolfs
+	["Spirit Wolf"] = true,
 
+	--Balance Druid treants
+	["Treant"] = true,
+	
 	--Army of the Dead
 	["Army of the Dead Ghoul"] = true,
 
