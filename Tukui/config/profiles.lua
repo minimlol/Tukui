@@ -4,7 +4,8 @@
 ----------------------------------------------------------------------------
 local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
 
-if T.myclass == "PRIEST" then
+if T.myclass == "DEATHKNIGHT" then
+	C.unitframes.classbar = false
 	-- do some config!
 end
 
