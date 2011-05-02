@@ -123,6 +123,8 @@
 	
 	<Script file="modules\chat\blizzfixrealidlink.lua"/>
 	
+	<Include file="libs\load_libs.xml"/>
+	<Script file="modules\addonskins\sharedmedia.lua" />
 	<Script file="modules\addonskins\skada.lua" />
 	<Script file="modules\addonskins\omen.lua" />
 	<Script file="modules\addonskins\dbm.lua" />
