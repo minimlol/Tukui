@@ -179,11 +179,13 @@ if C.chat.background then
 	
 	-- [[ Create new horizontal line for chat background ]] --
 	-- HORIZONTAL LINE LEFT
+	--[[
 	local ltoabl2 = CreateFrame("Frame", "TukuiLineToABLeftAlt", TukuiBar1)
 	ltoabl2:CreatePanel("Default", 5, 2, "BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", 0, 0)
 	ltoabl2:ClearAllPoints()
 	ltoabl2:Point("RIGHT", TukuiBar1, "LEFT", 0, 16)
 	ltoabl2:Point("BOTTOMLEFT", chatleftbg, "BOTTOMRIGHT", 0, 16)
+	]]--
 
 	-- HORIZONTAL LINE RIGHT
 	local ltoabr2 = CreateFrame("Frame", "TukuiLineToABRightAlt", TukuiBar1)

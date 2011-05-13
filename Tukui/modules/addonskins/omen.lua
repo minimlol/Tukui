@@ -73,20 +73,3 @@ Omen:UpdateTitleBar()
 Omen:UpdateBackdrop()
 Omen:ReAnchorBars()
 Omen:ResizeBars()
-
---[[
-if C["skin"].embedright == "Omen" then
-	local Omen_Skin = CreateFrame("Frame")
-	Omen_Skin:RegisterEvent("PLAYER_ENTERING_WORLD")
-	Omen_Skin:SetScript("OnEvent", function(self)
-		self:UnregisterAllEvents()
-		self = nil
-		
-		Omen.UpdateTitleBar = function() end
-		OmenTitle:Kill()
-		OmenBarList:ClearAllPoints()
-		OmenBarList:SetAllPoints(ChatRBackground2)
-		Omen.db.profile.FrameStrata = "4-HIGH"
-	end)
-end
-]]--

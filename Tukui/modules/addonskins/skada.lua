@@ -86,7 +86,6 @@ barmod.ApplySettings = function(self, win)
 	win.bargroup.button:SetNormalFontObject(titlefont)
 
 	local color = win.db.title.color
-	--win.bargroup.button:SetBackdropColor(unpack(C["media"].bordercolor))
 	win.bargroup.button:SetBackdropColor(color.r, color.g, color.b, color.a or 1)
 	if win.bargroup.bgframe then
 		win.bargroup.bgframe:SetTemplate("Transparent")
@@ -96,91 +95,16 @@ barmod.ApplySettings = function(self, win)
 			win.bargroup.bgframe:SetPoint("TOP", win.bargroup.button, "TOP", 0,1 * (win.db.enabletitle and 2 or 1))
 		end
 	end
-	
-	--[[
-	if C["skin"].embedright == "Skada" then
-		win.bargroup.button:SetFrameStrata("HIGH")
-		win.bargroup.button:SetFrameLevel(5)	
-		win.bargroup.bgframe:SetFrameStrata("HIGH")
-		win.bargroup:SetFrameStrata("HIGH")
-	end
-	]]--
-	
+
 	self:AdjustBackgroundHeight(win)
 	win.bargroup:SetMaxBars(win.db.barmax)
 	win.bargroup:SortBars()
 end
 
---[[
-local function EmbedWindow(window, width, height, max, point, relativeFrame, relativePoint, ofsx, ofsy)
-	window.db.barwidth = width
-	window.db.barheight = height
-	window.db.barmax = (floor(max / window.db.barheight) - (window.db.enabletitle and 1 or 0))
-	window.db.background.height = 1
-	window.db.spark = false
-	window.db.barslocked = true
-	window.bargroup:ClearAllPoints()
-	window.bargroup:SetPoint(point, relativeFrame, relativePoint, ofsx, ofsy)
-	
-	barmod.ApplySettings(barmod, window)
-end
-]]--
-
 local windows = {}
---[[
-function EmbedSkada()
-	if #windows == 1 then
-		EmbedWindow(windows[1], C["chat"].chatwidth - 4, (C["chat"].chatheight - (barSpacing * 5)) / 8, C["chat"].chatheight, "TOPRIGHT", ChatRBackground2, "TOPRIGHT", -2, -2)
-	elseif #windows == 2 then
-		EmbedWindow(windows[1], ((C["chat"].chatwidth - 4) / 2) - (borderWidth + E.mult), (C["chat"].chatheight - (barSpacing * 5)) / 8, C["chat"].chatheight,  "TOPRIGHT", ChatRBackground2, "TOPRIGHT", -2, -2)
-		EmbedWindow(windows[2], ((C["chat"].chatwidth - 4) / 2) - (borderWidth + E.mult), (C["chat"].chatheight - (barSpacing * 5)) / 8, C["chat"].chatheight,  "TOPLEFT", ChatRBackground2, "TOPLEFT", 2, -2)
-	elseif #windows > 2 then
-		EmbedWindow(windows[1], ((C["chat"].chatwidth - 4) / 2) - (borderWidth + E.mult), (C["chat"].chatheight - (barSpacing * 5)) / 8, C["chat"].chatheight,  "TOPRIGHT", ChatRBackground2, "TOPRIGHT", -2, -2)
-		EmbedWindow(windows[2], ((C["chat"].chatwidth - 4) / 2) - (borderWidth + E.mult), (C["chat"].chatheight - (barSpacing * 8)) / 8, C["chat"].chatheight / 2,  "TOPLEFT", ChatRBackground2, "TOPLEFT", 2, -2)
-		EmbedWindow(windows[3], windows[2].db.barwidth, (C["chat"].chatheight - (barSpacing * 8)) / 8, C["chat"].chatheight / 2,  "TOPLEFT", windows[2].bargroup.bgframe, "BOTTOMLEFT", 2, -2)
-	end
-end
-]]--
 
 -- Update pre-existing displays
 for _, window in ipairs(Skada:GetWindows()) do
 	window:UpdateDisplay()
 	tinsert(windows, window)
 end
-
---[[
-if C["skin"].embedright == "Skada" then
-	Skada.CreateWindow_ = Skada.CreateWindow
-	function Skada:CreateWindow(name, db)
-		Skada:CreateWindow_(name, db)
-		
-		windows = {}
-		for _, window in ipairs(Skada:GetWindows()) do
-			tinsert(windows, window)
-		end	
-		
-		EmbedSkada()
-	end
-
-	Skada.DeleteWindow_ = Skada.DeleteWindow
-	function Skada:DeleteWindow(name)
-		Skada:DeleteWindow_(name)
-		
-		windows = {}
-		for _, window in ipairs(Skada:GetWindows()) do
-			tinsert(windows, window)
-		end	
-		
-		EmbedSkada()
-	end
-
-	local Skada_Skin = CreateFrame("Frame")
-	Skada_Skin:RegisterEvent("PLAYER_ENTERING_WORLD")
-	Skada_Skin:SetScript("OnEvent", function(self)
-		self:UnregisterAllEvents()
-		self = nil
-		
-		EmbedSkada()
-	end)	
-end
-]]--
