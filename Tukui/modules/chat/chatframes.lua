@@ -234,7 +234,7 @@ local function SetupChatPosAndFont(self)
 	BNToastFrame:HookScript("OnShow", function(self)
 		self:ClearAllPoints()
 		if C.chat.background and TukuiChatBackgroundLeft then
-			self:Point("TOPLEFT", TukuiChatBackgroundLeft, "TOPLEFT", -18, 801)
+			self:Point("TOPLEFT", TukuiChatBackgroundLeft, "TOPLEFT", -18, T.Scale(830))
 		else
 			self:Point("BOTTOMLEFT", ChatFrame1, "TOPLEFT", 0, 6)
 		end
