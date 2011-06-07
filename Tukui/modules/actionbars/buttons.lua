@@ -65,23 +65,20 @@ local function DrPepper(self, bar) -- guess what! :P
 	MoveButtonBar(button, bar)
 end
 
-local TukuiBar2Button = CreateFrame("Button", "TukuiBar2Button", UIParent)
-TukuiBar2Button:Width(17)
-TukuiBar2Button:SetHeight(TukuiBar2:GetHeight())
-if T.lowversion then
-	TukuiBar2Button:Point("BOTTOMRIGHT", TukuiBar1, "BOTTOMLEFT", -2, 0)
-else
-	TukuiBar2Button:Point("BOTTOMRIGHT", TukuiBar2, "BOTTOMLEFT", -2, 0)
-end
-TukuiBar2Button:SetTemplate("Default")
-TukuiBar2Button:RegisterForClicks("AnyUp")
-TukuiBar2Button:SetAlpha(0)
-TukuiBar2Button:SetScript("OnClick", function(self) DrPepper(self, TukuiBar2) end)
-TukuiBar2Button:SetScript("OnEnter", function(self) self:SetAlpha(1) end)
-TukuiBar2Button:SetScript("OnLeave", function(self) self:SetAlpha(0) end)
-TukuiBar2Button.text = T.SetFontString(TukuiBar2Button, C.media.uffont, 20)
-TukuiBar2Button.text:Point("CENTER", 1, 1)
-TukuiBar2Button.text:SetText("|cff4BAF4C>|r")
+local TukuiBarBRButton = CreateFrame("Button", "TukuiBarBRButton", UIParent)
+TukuiBarBRButton:SetWidth(17)
+TukuiBarBRButton:Height(TukuiBar1:GetHeight())
+TukuiBarBRButton:Point("BOTTOMLEFT", TukuiBarLower, "BOTTOMRIGHT", T.buttonspacing, 0)
+TukuiBarBRButton:SetTemplate("Default")
+TukuiBarBRButton:RegisterForClicks("AnyUp")
+TukuiBarBRButton:SetAlpha(0)
+TukuiBarBRButton:SetScript("OnClick", function(self) DrPepper(self, TukuiBar2) end)
+TukuiBarBRButton:SetScript("OnEnter", function(self) self:SetAlpha(1) end)
+TukuiBarBRButton:SetScript("OnLeave", function(self) self:SetAlpha(0) end)
+TukuiBarBRButton.text = T.SetFontString(TukuiBarBRButton, C.media.uffont, 30)
+TukuiBarBRButton.text:SetPoint("CENTER", 0, 0)
+TukuiBarBRButton.text:SetText("|cff4BAF4C-|r")
+
 
 local TukuiBarBLButton = CreateFrame("Button", "TukuiBarBLButton", UIParent)
 TukuiBarBLButton:SetWidth(17)
