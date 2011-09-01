@@ -23,14 +23,17 @@ if not C["datatext"].hit == nil or C["datatext"].hit > 0 then
 		Rattackpwr = Reffective
 		spellpwr = GetSpellBonusDamage(7)
 		attackpwr = effective
+		
+		local cac = GetHitModifier()
+		local cast = GetSpellHitModifier()
 
 		if int < 0 then
 			if attackpwr > spellpwr and select(2, UnitClass("Player")) ~= "HUNTER" then
-				Text:SetText(format("%.2f", GetCombatRatingBonus(6)).."% Hit")
+				Text:SetText(format("%.2f", GetCombatRatingBonus(6)+cac).."% Hit")
 			elseif select(2, UnitClass("Player")) == "HUNTER" then
-				Text:SetText(format("%.2f", GetCombatRatingBonus(7)).."% Hit")
+				Text:SetText(format("%.2f", GetCombatRatingBonus(7)+cac).."% Hit")
 			else
-				Text:SetText(format("%.2f", GetCombatRatingBonus(8)).."% Hit")
+				Text:SetText(format("%.2f", GetCombatRatingBonus(8)+cast).."% Hit")
 			end
 			int = 1
 		end
