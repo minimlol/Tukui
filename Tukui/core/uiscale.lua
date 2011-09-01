@@ -59,13 +59,13 @@ end
 
 -- always enable uiscale for Tukui (needed)
 local useUiScale = GetCVar("useUiScale")
-if useUiScale ~= 1 then
+if useUiScale ~= "1" then
 	SetCVar("useUiScale", 1)
 end
 
 -- Multisample need to be at 1 for pixel perfectness
 local gxMultisample = GetCVar("gxMultisample")
-if C["general"].multisampleprotect == true and gxMultisample ~= 1 then
+if C["general"].multisampleprotect == true and gxMultisample ~= "1" then
 	SetMultisampleFormat(1)
 end
 
