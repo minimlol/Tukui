@@ -9,9 +9,9 @@
 	TukuiL.option_general_override = "使用高解析度設定於低解析度"
 	TukuiL.option_general_multisample = "多重採樣保護"
 	TukuiL.option_general_customuiscale = "使用者介面比例(需要關閉自動調整)"
-	TukuiL.option_general_backdropcolor = "設定成預設的面板背景顏色"
-	TukuiL.option_general_bordercolor = "設定成預設的面板邊框顏色"
-	TukuiL.option_general_blizzardreskin = "Reskin Blizzard frames to match Tukui"
+	TukuiL.option_general_backdropcolor = "設定面板背景顏色"
+	TukuiL.option_general_bordercolor = "設定面板邊框顏色"
+	TukuiL.option_general_blizzardreskin = "使用TUKUI風格代替暴雪默認界面"
  
 	-- nameplate
 	TukuiL.option_nameplates = "名條"
@@ -104,7 +104,7 @@
 	TukuiL.option_unitframes_weakenedsoulbar = "啟用虛弱靈魂指示 (牧師)"
 	TukuiL.option_unitframes_onlyselfdebuffs = "只在目標頭像上顯示自己釋放的減益效果"
 	TukuiL.option_unitframes_focus = "開啟專注目標的目標"
-	TukuiL.option_unitframes_bordercolor = "設定成預設的單位框架邊框顏色"
+	TukuiL.option_unitframes_bordercolor = "設定單位框架的邊框顏色"
  
 	-- loot
 	TukuiL.option_loot = "戰利品"
@@ -180,8 +180,8 @@
 	TukuiL.option_chat_background = "啟用對話框背景"
 		
 	-- buff
-	TukuiL.option_auras = "Auras"
-	TukuiL.option_auras_player = "Enable Tukui Buff/Debuff Frames"
+	TukuiL.option_auras = "顯示光環"
+	TukuiL.option_auras_player = "啟用 Tukui Buff/Debuff 框體"
  
 	-- buttons
 	TukuiL.option_button_reset = "重置"

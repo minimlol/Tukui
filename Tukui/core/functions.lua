@@ -775,31 +775,40 @@ T.EclipseDirection = function(self)
 	end
 end
 
-T.EclipseDisplay = function(self, login)
+T.DruidBarDisplay = function(self, login)
 	local eb = self.EclipseBar
+	local dm = self.DruidMana
 	local txt = self.EclipseBar.Text
+	local shadow = self.shadow
+	local bg = self.DruidManaBackground
+	local buffs = self.Buffs
+	local flash = self.FlashInfo
 
 	if login then
-		eb:SetScript("OnUpdate", nil)
+		dm:SetScript("OnUpdate", nil)
 	end
 	
-	if eb:IsShown() then
-		txt:Show()
-		self.FlashInfo:Hide()
-		self.shadow:Point("TOPLEFT", -4, 12)
+	if eb:IsShown() or dm:IsShown() then
+		if eb:IsShown() then
+			txt:Show()
+			flash:Hide()
+		end
+		shadow:Point("TOPLEFT", -4, 12)
+		bg:SetAlpha(1)
 		if T.lowversion then
-			if self.Buffs then self.Buffs:SetPoint("TOPLEFT", self, "TOPLEFT", 0, 34) end
+			if buffs then buffs:SetPoint("TOPLEFT", self, "TOPLEFT", 0, 34) end
 		else
-			if self.Buffs then self.Buffs:SetPoint("TOPLEFT", self, "TOPLEFT", 0, 38) end
+			if buffs then buffs:SetPoint("TOPLEFT", self, "TOPLEFT", 0, 38) end
 		end				
 	else
 		txt:Hide()
-		self.FlashInfo:Show()
-		self.shadow:Point("TOPLEFT", -4, 4)
+		flash:Show()
+		shadow:Point("TOPLEFT", -4, 4)
+		bg:SetAlpha(0)
 		if T.lowversion then
-			if self.Buffs then self.Buffs:SetPoint("TOPLEFT", self, "TOPLEFT", 0, 26) end
+			if buffs then buffs:SetPoint("TOPLEFT", self, "TOPLEFT", 0, 26) end
 		else
-			if self.Buffs then self.Buffs:SetPoint("TOPLEFT", self, "TOPLEFT", 0, 30) end
+			if buffs then buffs:SetPoint("TOPLEFT", self, "TOPLEFT", 0, 30) end
 		end
 	end
 end
@@ -857,19 +866,19 @@ T.UpdateDruidMana = function(self)
 
 		if min ~= max then
 			if self.Power.value:GetText() then
-				self.DruidMana:SetPoint("LEFT", self.Power.value, "RIGHT", 1, 0)
-				self.DruidMana:SetFormattedText("|cffD7BEA5-|r  |cff4693FF%d%%|r|r", floor(min / max * 100))
+				self.DruidManaText:SetPoint("LEFT", self.Power.value, "RIGHT", 1, 0)
+				self.DruidManaText:SetFormattedText("|cffD7BEA5-|r  |cff4693FF%d%%|r|r", floor(min / max * 100))
 			else
-				self.DruidMana:SetPoint("LEFT", self.panel, "LEFT", 4, 1)
-				self.DruidMana:SetFormattedText("%d%%", floor(min / max * 100))
+				self.DruidManaText:SetPoint("LEFT", self.panel, "LEFT", 4, 1)
+				self.DruidManaText:SetFormattedText("%d%%", floor(min / max * 100))
 			end
 		else
-			self.DruidMana:SetText()
+			self.DruidManaText:SetText()
 		end
 
-		self.DruidMana:SetAlpha(1)
+		self.DruidManaText:SetAlpha(1)
 	else
-		self.DruidMana:SetAlpha(0)
+		self.DruidManaText:SetAlpha(0)
 	end
 end
 
@@ -1095,6 +1104,34 @@ if C["unitframes"].raidunitdebuffwatch == true then
 			--Al'Akir
 			SpellName(93260), -- Ice Storm
 			SpellName(93295), -- Lightning Rod
+
+		-- Firelands, thanks Kaelhan :)
+			-- Beth'tilac
+				SpellName(99506),	-- Widows Kiss
+				SpellName(97202),	-- Fiery Web Spin
+				SpellName(49026),	-- Fixate
+				SpellName(97079),	-- Seeping Venom
+			-- Lord Rhyolith
+				-- none, hehe, fake boss
+			-- Alysrazor
+				SpellName(101296),	-- Fieroblast
+				SpellName(100723),	-- Gushing Wound
+				SpellName(99389),	-- Imprinted
+				SpellName(101729),	-- Blazing Claw
+			-- Shannox
+				SpellName(99837),	-- Crystal Prison
+				SpellName(99937),	-- Jagged Tear
+			-- Baleroc
+				SpellName(99256),	-- Torment
+				SpellName(99252),	-- Blaze of Glory
+				SpellName(99516),	-- Countdown
+			-- Majordomo Staghelm
+				SpellName(98450),	-- Searing Seeds
+			-- Ragnaros
+				SpellName(99399),	-- Burning Wound
+				SpellName(100293),	-- Lava Wave
+				SpellName(98313),	-- Magma Blast
+				SpellName(100675),	-- Dreadflame
 		}
 
 		T.ReverseTimer = {

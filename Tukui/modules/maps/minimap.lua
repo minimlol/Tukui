@@ -60,6 +60,30 @@ MiniMapBattlefieldFrame:ClearAllPoints()
 MiniMapBattlefieldFrame:Point("BOTTOMRIGHT", Minimap, 3, 0)
 MiniMapBattlefieldBorder:Hide()
 
+-- Ticket Frame
+local TukuiTicket = CreateFrame("Frame", "TukuiTicket", TukuiMinimap)
+TukuiTicket:CreatePanel("Default", 1, 1, "CENTER", TukuiMinimap, "CENTER", 0, 0)
+TukuiTicket:Size(TukuiMinimap:GetWidth() - 4, 24)
+TukuiTicket:SetFrameStrata("MEDIUM")
+TukuiTicket:SetFrameLevel(20)
+TukuiTicket:Point("TOP", 0, -2)
+TukuiTicket:FontString("Text", C.media.font, 12)
+TukuiTicket.Text:SetPoint("CENTER")
+TukuiTicket.Text:SetText(HELP_TICKET_EDIT)
+TukuiTicket:SetBackdropBorderColor(255/255, 243/255,  82/255)
+TukuiTicket.Text:SetTextColor(255/255, 243/255,  82/255)
+TukuiTicket:SetAlpha(0)
+
+HelpOpenTicketButton:SetParent(TukuiTicket)
+HelpOpenTicketButton:SetFrameLevel(TukuiTicket:GetFrameLevel() + 1)
+HelpOpenTicketButton:SetFrameStrata(TukuiTicket:GetFrameStrata())
+HelpOpenTicketButton:ClearAllPoints()
+HelpOpenTicketButton:SetAllPoints()
+HelpOpenTicketButton:SetHighlightTexture(nil)
+HelpOpenTicketButton:SetAlpha(0)
+HelpOpenTicketButton:HookScript("OnShow", function(self) TukuiTicket:SetAlpha(1) end)
+HelpOpenTicketButton:HookScript("OnHide", function(self) TukuiTicket:SetAlpha(0) end)
+
 -- Hide world map button
 MiniMapWorldMapButton:Hide()
 
@@ -98,6 +122,7 @@ local function UpdateLFGTooltip()
 		LFDSearchStatus:SetPoint("TOPRIGHT", MiniMapLFGFrame, "TOPLEFT", 0, 0)	
 	end
 end
+LFDSearchStatus:HookScript("OnShow", UpdateLFGTooltip)
 
 -- Enable mouse scrolling
 Minimap:EnableMouseWheel(true)
@@ -117,9 +142,7 @@ function GetMinimapShape() return "SQUARE" end
 
 -- do some stuff on addon loaded or player login event
 TukuiMinimap:SetScript("OnEvent", function(self, event, addon)
-	if event == "PLAYER_LOGIN" then
-		UpdateLFGTooltip()
-	elseif addon == "Blizzard_TimeManager" then
+	if addon == "Blizzard_TimeManager" then
 		-- Hide Game Time
 		TimeManagerClockButton:Kill()
 	else
@@ -162,72 +185,20 @@ TukuiMinimap:SetScript("OnEvent", function(self, event, addon)
 end)
 
 ----------------------------------------------------------------------------------------
--- Right click menu, used to show micro menu
+-- Map menus, right/middle click
 ----------------------------------------------------------------------------------------
 
-local menuFrame = CreateFrame("Frame", "TukuiMinimapMiddleClickMenu", TukuiMinimap, "UIDropDownMenuTemplate")
-local menuList = {
-	{text = CHARACTER_BUTTON,
-	func = function() ToggleCharacter("PaperDollFrame") end},
-	{text = SPELLBOOK_ABILITIES_BUTTON,
-	func = function() ToggleFrame(SpellBookFrame) end},
-	{text = TALENTS_BUTTON,
-	func = function() 
-		if not PlayerTalentFrame then 
-			LoadAddOn("Blizzard_TalentUI") 
-		end 
-
-		if not GlyphFrame then 
-			LoadAddOn("Blizzard_GlyphUI") 
-		end 
-		PlayerTalentFrame_Toggle() 
-	end},
-	{text = ACHIEVEMENT_BUTTON,
-	func = function() ToggleAchievementFrame() end},
-	{text = QUESTLOG_BUTTON,
-	func = function() ToggleFrame(QuestLogFrame) end},
-	{text = SOCIAL_BUTTON,
-	func = function() ToggleFriendsFrame(1) end},
-	{text = PLAYER_V_PLAYER,
-	func = function() ToggleFrame(PVPFrame) end},
-	{text = ACHIEVEMENTS_GUILD_TAB,
-	func = function() 
-		if IsInGuild() then 
-			if not GuildFrame then LoadAddOn("Blizzard_GuildUI") end 
-			GuildFrame_Toggle() 
-		else 
-			if not LookingForGuildFrame then LoadAddOn("Blizzard_LookingForGuildUI") end 
-			LookingForGuildFrame_Toggle() 
-		end
-	end},
-	{text = LFG_TITLE,
-	func = function() ToggleFrame(LFDParentFrame) end},
-	{text = LOOKING_FOR_RAID,
-	func = function() ToggleFrame(LFRParentFrame) end},
-	{text = HELP_BUTTON,
-	func = function() ToggleHelpFrame() end},
-	{text = CALENDAR_VIEW_EVENT,
-	func = function()
-	if(not CalendarFrame) then LoadAddOn("Blizzard_Calendar") end
-		Calendar_Toggle()
-	end},
-	{text = ENCOUNTER_JOURNAL,
-	func = function() if T.toc >= 40200 then ToggleFrame(EncounterJournal) end end}, 
-}
-
 Minimap:SetScript("OnMouseUp", function(self, btn)
+	local xoff = 0
 	local position = TukuiMinimap:GetPoint()
-	if btn == "RightButton" then
-		local xoff = 0
-		
+	
+	if btn == "RightButton" then	
 		if position:match("RIGHT") then xoff = T.Scale(-16) end
 		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, TukuiMinimap, xoff, T.Scale(-2))
 	elseif btn == "MiddleButton" then
-		if position:match("LEFT") then
-			EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
-		else
-			EasyMenu(menuList, menuFrame, "cursor", -160, 0, "MENU", 2)
-		end
+		if not TukuiMicroMenu then return end
+		if position:match("RIGHT") then xoff = T.Scale(-14) end
+		ToggleDropDownMenu(1, nil, TukuiMicroMenu, TukuiMinimap, xoff, T.Scale(-2))
 	else
 		Minimap_OnClick(self)
 	end
@@ -237,11 +208,11 @@ end)
 -- Mouseover map, displaying zone and coords
 ----------------------------------------------------------------------------------------
 
-local m_zone = CreateFrame("Frame",nil,UIParent)
-m_zone:CreatePanel("Default", 0, 20, "TOPLEFT", Minimap, "TOPLEFT", 2,-2)
+local m_zone = CreateFrame("Frame",nil,TukuiMinimap)
+m_zone:CreatePanel("Default", 0, 20, "TOPLEFT", TukuiMinimap, "TOPLEFT", 2,-2)
 m_zone:SetFrameLevel(5)
 m_zone:SetFrameStrata("LOW")
-m_zone:Point("TOPRIGHT",Minimap,-2,-2)
+m_zone:Point("TOPRIGHT",TukuiMinimap,-2,-2)
 m_zone:SetAlpha(0)
 
 local m_zone_text = m_zone:CreateFontString(nil,"Overlay")
@@ -252,8 +223,8 @@ m_zone_text:Height(12)
 m_zone_text:Width(m_zone:GetWidth()-6)
 m_zone_text:SetAlpha(0)
 
-local m_coord = CreateFrame("Frame",nil,UIParent)
-m_coord:CreatePanel("Default", 40, 20, "BOTTOMLEFT", Minimap, "BOTTOMLEFT", 2,2)
+local m_coord = CreateFrame("Frame",nil,TukuiMinimap)
+m_coord:CreatePanel("Default", 40, 20, "BOTTOMLEFT", TukuiMinimap, "BOTTOMLEFT", 2,2)
 m_coord:SetFrameStrata("LOW")
 m_coord:SetAlpha(0)
 
