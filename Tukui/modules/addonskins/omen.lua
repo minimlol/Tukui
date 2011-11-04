@@ -27,7 +27,7 @@ end
 -- Skin Title Bar
 Omen.UpdateTitleBar_ = Omen.UpdateTitleBar
 Omen.UpdateTitleBar = function(self)
-	Omen.db.profile.Scale = 0.99
+	Omen.db.profile.Scale = 1.00
 	Omen.db.profile.Background.EdgeSize = 1
 	Omen.db.profile.Background.BarInset = borderWidth
 	Omen.db.profile.TitleBar.UseSameBG = true
@@ -39,7 +39,7 @@ end
 --Skin Title/Bars backgrounds
 Omen.UpdateBackdrop_ = Omen.UpdateBackdrop
 Omen.UpdateBackdrop = function(self)
-	Omen.db.profile.Scale = 0.99
+	Omen.db.profile.Scale = 1.00
 	Omen.db.profile.Background.EdgeSize = 1
 	Omen.db.profile.Background.BarInset = borderWidth
 	self:UpdateBackdrop_()
