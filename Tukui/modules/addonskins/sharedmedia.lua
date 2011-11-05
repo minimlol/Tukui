@@ -7,3 +7,4 @@ LSM:Register("border", "Tukui Border", [[Interface\AddOns\Tukui\medias\textures\
 LSM:Register("font","Calibri", [[Interface\Addons\Tukui\medias\fonts\calibri.ttf]])
 LSM:Register("sound","Tukui Warning", [[nterface\AddOns\Tukui\medias\sounds\warning.mp3]])
 LSM:Register("sound","Tukui Whisper", [[Interface\AddOns\Tukui\medias\sounds\whisper.mp3]])
+LSM:Register("background","Tukui Blank", [[Interface\AddOns\Tukui\medias\textures\blank]])

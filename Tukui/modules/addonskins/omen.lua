@@ -3,7 +3,7 @@
 if not IsAddOnLoaded("Omen") then return end
 
 local Omen = LibStub("AceAddon-3.0"):GetAddon("Omen")
-local borderWidth = T.Scale(2)
+local borderWidth = T.Scale(2, 2)
 
 -- Skin Bar Texture
 Omen.UpdateBarTextureSettings_ = Omen.UpdateBarTextureSettings
@@ -60,11 +60,11 @@ end
 
 -- Option Overrides
 Omen.db.profile.Bar.Spacing = 0
-Omen.db.profile.Bar.Texture = "Elvui Norm"
-Omen.db.profile.Bar.Font = "Elvui Font"
+Omen.db.profile.Bar.Texture = "Tukui Bar"
+Omen.db.profile.Bar.Font = "Calibri"
 Omen.db.profile.Bar.Height = 12
-Omen.db.profile.TitleBar.Font = "Elvui Font"
-Omen.db.profile.Background.Texture = "Elvui Blank"
+Omen.db.profile.TitleBar.Font = "Calibri"
+Omen.db.profile.Background.Texture = "Tukui Blank"
 
 -- Force updates
 Omen:UpdateBarTextureSettings()

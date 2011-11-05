@@ -36,7 +36,7 @@ for k, options in pairs(Skada.options.args.windows.args) do
 end
 
 local titleBG = {
-	bgFile = C["media"].normTex,
+	bgFile = C["media"].blank,
 	tile = false,
 	tileSize = 0
 }
@@ -59,13 +59,13 @@ barmod.ApplySettings = function(self, win)
 	local titlefont = CreateFont("TitleFont"..win.db.name)
 	titlefont:SetFont(C["media"].font, fontSize)
 	win.bargroup.button:SetNormalFontObject(titlefont)
-
+	
 	local color = win.db.title.color
 	win.bargroup.button:SetBackdropColor(unpack(C["media"].backdropcolor))
 
 	skada:SetBackdrop(nil)
 	if not skada.backdrop then
-		skada:CreateBackdrop('Default')
+		skada:CreateBackdrop('Transparent')
 	end
 	skada.backdrop:ClearAllPoints()
 	if win.db.enabletitle then
