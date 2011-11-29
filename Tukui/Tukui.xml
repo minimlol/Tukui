@@ -181,7 +181,6 @@
 	<Script file="modules\skins\blizzard\trainer.lua"/>
 	<Script file="modules\skins\blizzard\tutorial.lua"/>
 	<Script file="modules\skins\blizzard\voidstorage.lua"/>
-	<Script file="modules\skins\blizzard\watchframe.lua"/>
 	<Script file="modules\skins\blizzard\worldmap.lua"/>
 	
 	<Script file="modules\skins\addons\bigwigs.lua"/>
