@@ -91,7 +91,7 @@ local function UpdateSlot(self, slot)
 		if totem[slot].Name then
 			totem[slot].Name:SetText(Abbrev(name))
 		end					
-		if(duration >= 0) then	
+		if(duration > 0) then	
 			totem[slot]:SetValue(1 - ((GetTime() - startTime) / duration))	
 			-- Status bar update
 			totem[slot]:SetScript("OnUpdate",function(self,elapsed)
@@ -138,7 +138,7 @@ local function Enable(self, unit)
 	local totem = self.TotemBar
 	
 	if(totem) then
-		self:RegisterEvent("PLAYER_TOTEM_UPDATE" ,Event)
+		self:RegisterEvent("PLAYER_TOTEM_UPDATE" , Event, true)
 		totem.colors = setmetatable(totem.colors or {}, {__index = colors})
 		delay = totem.delay or delay
 		if totem.Destroy then

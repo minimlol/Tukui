@@ -1,5 +1,12 @@
-local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
+local T, C, L = unpack(select(2, ...))
 
+-- Define action bar default buttons size
+T.buttonsize = T.Scale(C.actionbar.buttonsize)
+T.buttonspacing = T.Scale(C.actionbar.buttonspacing)
+T.petbuttonsize = T.Scale(C.actionbar.petbuttonsize)
+T.petbuttonspacing = T.Scale(C.actionbar.buttonspacing)
+
+-- return if we are currently playing on PTR.
 T.IsPTRVersion = function()
 	if T.toc > 40200 then
 		return true
@@ -76,6 +83,7 @@ T.PP = function(p, obj)
 	end
 end
 
+-- set the position of the datatext tooltip
 T.DataTextTooltipAnchor = function(self)
 	local panel = self:GetParent()
 	local anchor = "ANCHOR_TOP"
@@ -105,6 +113,7 @@ T.DataTextTooltipAnchor = function(self)
 	return anchor, panel, xoff, yoff
 end
 
+-- used to update shift action bar buttons
 T.TukuiShiftBarUpdate = function()
 	local numForms = GetNumShapeshiftForms()
 	local texture, name, isActive, isCastable
@@ -143,6 +152,7 @@ T.TukuiShiftBarUpdate = function()
 	end
 end
 
+-- used to update pet bar buttons
 T.TukuiPetBarUpdate = function(self, event)
 	local petActionButton, petActionIcon, petAutoCastableTexture, petAutoCastShine
 	for i=1, NUM_PET_ACTION_SLOTS, 1 do
@@ -221,17 +231,13 @@ T.TukuiPetBarUpdate = function(self, event)
 	end
 end
 
--- Define action bar buttons size
-T.buttonsize = T.Scale(C.actionbar.buttonsize)
-T.buttonspacing = T.Scale(C.actionbar.buttonspacing)
-T.petbuttonsize = T.Scale(C.actionbar.petbuttonsize)
-T.petbuttonspacing = T.Scale(C.actionbar.buttonspacing)
-
+-- remove decimal from a number
 T.Round = function(number, decimals)
 	if not decimals then decimals = 0 end
     return (("%%.%df"):format(decimals)):format(number)
 end
 
+-- want hex color instead of RGB?
 T.RGBToHex = function(r, g, b)
 	r = r <= 1 and r >= 0 and r or 0
 	g = g <= 1 and g >= 0 and g or 0
@@ -239,47 +245,8 @@ T.RGBToHex = function(r, g, b)
 	return string.format("|cff%02x%02x%02x", r*255, g*255, b*255)
 end
 
---Check Player's Role
-local RoleUpdater = CreateFrame("Frame")
-local function CheckRole(self, event, unit)
-	local tree = GetPrimaryTalentTree()
-	local resilience
-	local resilperc = GetCombatRatingBonus(COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN)
-	if resilperc > GetDodgeChance() and resilperc > GetParryChance() then
-		resilience = true
-	else
-		resilience = false
-	end
-	if ((T.myclass == "PALADIN" and tree == 2) or
-	(T.myclass == "WARRIOR" and tree == 3) or
-	(T.myclass == "DEATHKNIGHT" and tree == 1)) and
-	resilience == false or
-	(T.myclass == "DRUID" and tree == 2 and GetBonusBarOffset() == 3) then
-		T.Role = "Tank"
-	else
-		local playerint = select(2, UnitStat("player", 4))
-		local playeragi	= select(2, UnitStat("player", 2))
-		local base, posBuff, negBuff = UnitAttackPower("player");
-		local playerap = base + posBuff + negBuff;
-
-		if (((playerap > playerint) or (playeragi > playerint)) and not (T.myclass == "SHAMAN" and tree ~= 1 and tree ~= 3) and not (UnitBuff("player", GetSpellInfo(24858)) or UnitBuff("player", GetSpellInfo(65139)))) or T.myclass == "ROGUE" or T.myclass == "HUNTER" or (T.myclass == "SHAMAN" and tree == 2) then
-			T.Role = "Melee"
-		else
-			T.Role = "Caster"
-		end
-	end
-end
-RoleUpdater:RegisterEvent("PLAYER_ENTERING_WORLD")
-RoleUpdater:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
-RoleUpdater:RegisterEvent("PLAYER_TALENT_UPDATE")
-RoleUpdater:RegisterEvent("CHARACTER_POINTS_CHANGED")
-RoleUpdater:RegisterEvent("UNIT_INVENTORY_CHANGED")
-RoleUpdater:RegisterEvent("UPDATE_BONUS_ACTIONBAR")
-RoleUpdater:SetScript("OnEvent", CheckRole)
-CheckRole()
-
 --Return short value of a number
-function T.ShortValue(v)
+T.ShortValue = function(v)
 	if v >= 1e6 then
 		return ("%.1fm"):format(v / 1e6):gsub("%.?0+([km])$", "%1")
 	elseif v >= 1e3 or v <= -1e3 then
@@ -289,11 +256,33 @@ function T.ShortValue(v)
 	end
 end
 
+-- used to return role
+T.CheckRole = function()
+	local role
+	local tree = GetPrimaryTalentTree()
+	if ((T.myclass == "PALADIN" and tree == 2) or (T.myclass == "WARRIOR" and tree == 3) or (T.myclass == "DEATHKNIGHT" and tree == 1)) or (T.myclass == "DRUID" and tree == 2 and GetBonusBarOffset() == 3) then
+		role = "Tank"
+	else
+		local playerint = select(2, UnitStat("player", 4))
+		local playeragi	= select(2, UnitStat("player", 2))
+		local base, posBuff, negBuff = UnitAttackPower("player");
+		local playerap = base + posBuff + negBuff;
+
+		if (((playerap > playerint) or (playeragi > playerint)) and not (T.myclass == "SHAMAN" and tree ~= 1 and tree ~= 3) and not (UnitBuff("player", GetSpellInfo(24858)) or UnitBuff("player", GetSpellInfo(65139)))) or T.myclass == "ROGUE" or T.myclass == "HUNTER" or (T.myclass == "SHAMAN" and tree == 2) then
+			role = "Melee"
+		else
+			role = "Caster"
+		end
+	end
+
+	return role
+end
+
 --Add time before calling a function
 --Usage T.Delay(seconds, functionToCall, ...)
 local waitTable = {}
 local waitFrame
-function T.Delay(delay, func, ...)
+T.Delay = function(delay, func, ...)
 	if(type(delay)~="number" or type(func)~="function") then
 		return false
 	end
@@ -322,19 +311,305 @@ function T.Delay(delay, func, ...)
 end
 
 ------------------------------------------------------------------------
+-- Skinning
+------------------------------------------------------------------------
+
+T.SkinFuncs = {}
+T.SkinFuncs["Tukui"] = {}
+
+function T.SetModifiedBackdrop(self)
+	local color = RAID_CLASS_COLORS[T.myclass]
+	self:SetBackdropColor(color.r*.15, color.g*.15, color.b*.15)
+	self:SetBackdropBorderColor(color.r, color.g, color.b)
+end
+
+function T.SetOriginalBackdrop(self)
+	local color = RAID_CLASS_COLORS[T.myclass]
+	if C["general"].classcolortheme == true then
+		self:SetBackdropBorderColor(color.r, color.g, color.b)
+	else
+		self:SetTemplate("Default")
+	end
+end
+
+function T.SkinButton(f, strip)
+	if f:GetName() then
+		local l = _G[f:GetName().."Left"]
+		local m = _G[f:GetName().."Middle"]
+		local r = _G[f:GetName().."Right"]
+		
+		
+		if l then l:SetAlpha(0) end
+		if m then m:SetAlpha(0) end
+		if r then r:SetAlpha(0) end
+	end
+
+	if f.SetNormalTexture then f:SetNormalTexture("") end
+	
+	if f.SetHighlightTexture then f:SetHighlightTexture("") end
+	
+	if f.SetPushedTexture then f:SetPushedTexture("") end
+	
+	if f.SetDisabledTexture then f:SetDisabledTexture("") end
+	
+	if strip then f:StripTextures() end
+	
+	f:SetTemplate("Default")
+	f:HookScript("OnEnter", T.SetModifiedBackdrop)
+	f:HookScript("OnLeave", T.SetOriginalBackdrop)
+end
+
+function T.SkinScrollBar(frame)
+	if _G[frame:GetName().."BG"] then _G[frame:GetName().."BG"]:SetTexture(nil) end
+	if _G[frame:GetName().."Track"] then _G[frame:GetName().."Track"]:SetTexture(nil) end
+	
+	if _G[frame:GetName().."Top"] then
+		_G[frame:GetName().."Top"]:SetTexture(nil)
+	end
+	
+	if _G[frame:GetName().."Bottom"] then
+		_G[frame:GetName().."Bottom"]:SetTexture(nil)
+	end
+	
+	if _G[frame:GetName().."Middle"] then
+		_G[frame:GetName().."Middle"]:SetTexture(nil)
+	end
+
+	if _G[frame:GetName().."ScrollUpButton"] and _G[frame:GetName().."ScrollDownButton"] then
+		_G[frame:GetName().."ScrollUpButton"]:StripTextures()
+		_G[frame:GetName().."ScrollUpButton"]:SetTemplate("Default", true)
+		if not _G[frame:GetName().."ScrollUpButton"].texture then
+			_G[frame:GetName().."ScrollUpButton"].texture = _G[frame:GetName().."ScrollUpButton"]:CreateTexture(nil, 'OVERLAY')
+			_G[frame:GetName().."ScrollUpButton"].texture:Point("TOPLEFT", 2, -2)
+			_G[frame:GetName().."ScrollUpButton"].texture:Point("BOTTOMRIGHT", -2, 2)
+			_G[frame:GetName().."ScrollUpButton"].texture:SetTexture([[Interface\AddOns\Tukui\medias\textures\arrowup.tga]])
+			_G[frame:GetName().."ScrollUpButton"].texture:SetVertexColor(unpack(C["media"].bordercolor))
+		end	
+		
+		_G[frame:GetName().."ScrollDownButton"]:StripTextures()
+		_G[frame:GetName().."ScrollDownButton"]:SetTemplate("Default", true)
+	
+		if not _G[frame:GetName().."ScrollDownButton"].texture then
+			_G[frame:GetName().."ScrollDownButton"].texture = _G[frame:GetName().."ScrollDownButton"]:CreateTexture(nil, 'OVERLAY')
+			_G[frame:GetName().."ScrollDownButton"].texture:Point("TOPLEFT", 2, -2)
+			_G[frame:GetName().."ScrollDownButton"].texture:Point("BOTTOMRIGHT", -2, 2)
+			_G[frame:GetName().."ScrollDownButton"].texture:SetTexture([[Interface\AddOns\Tukui\medias\textures\arrowdown.tga]])
+			_G[frame:GetName().."ScrollDownButton"].texture:SetVertexColor(unpack(C["media"].bordercolor))
+		end				
+		
+		if not frame.trackbg then
+			frame.trackbg = CreateFrame("Frame", nil, frame)
+			frame.trackbg:Point("TOPLEFT", _G[frame:GetName().."ScrollUpButton"], "BOTTOMLEFT", 0, -1)
+			frame.trackbg:Point("BOTTOMRIGHT", _G[frame:GetName().."ScrollDownButton"], "TOPRIGHT", 0, 1)
+			frame.trackbg:SetTemplate("Transparent")
+		end
+		
+		if frame:GetThumbTexture() then
+			if not thumbTrim then thumbTrim = 3 end
+			frame:GetThumbTexture():SetTexture(nil)
+			if not frame.thumbbg then
+				frame.thumbbg = CreateFrame("Frame", nil, frame)
+				frame.thumbbg:Point("TOPLEFT", frame:GetThumbTexture(), "TOPLEFT", 2, -thumbTrim)
+				frame.thumbbg:Point("BOTTOMRIGHT", frame:GetThumbTexture(), "BOTTOMRIGHT", -2, thumbTrim)
+				frame.thumbbg:SetTemplate("Default", true)
+				if frame.trackbg then
+					frame.thumbbg:SetFrameLevel(frame.trackbg:GetFrameLevel())
+				end
+			end
+		end	
+	end	
+end
+
+--Tab Regions
+local tabs = {
+	"LeftDisabled",
+	"MiddleDisabled",
+	"RightDisabled",
+	"Left",
+	"Middle",
+	"Right",
+}
+
+function T.SkinTab(tab)
+	if not tab then return end
+	for _, object in pairs(tabs) do
+		local tex = _G[tab:GetName()..object]
+		if tex then
+			tex:SetTexture(nil)
+		end
+	end
+	
+	if tab.GetHighlightTexture and tab:GetHighlightTexture() then
+		tab:GetHighlightTexture():SetTexture(nil)
+	else
+		tab:StripTextures()
+	end
+	
+	tab.backdrop = CreateFrame("Frame", nil, tab)
+	tab.backdrop:SetTemplate("Default")
+	tab.backdrop:SetFrameLevel(tab:GetFrameLevel() - 1)
+	tab.backdrop:Point("TOPLEFT", 10, -3)
+	tab.backdrop:Point("BOTTOMRIGHT", -10, 3)				
+end
+
+function T.SkinNextPrevButton(btn, horizonal)
+	btn:SetTemplate("Default")
+	btn:Size(btn:GetWidth() - 7, btn:GetHeight() - 7)	
+	
+	if horizonal then
+		btn:GetNormalTexture():SetTexCoord(0.3, 0.29, 0.3, 0.72, 0.65, 0.29, 0.65, 0.72)
+		btn:GetPushedTexture():SetTexCoord(0.3, 0.35, 0.3, 0.8, 0.65, 0.35, 0.65, 0.8)
+		btn:GetDisabledTexture():SetTexCoord(0.3, 0.29, 0.3, 0.75, 0.65, 0.29, 0.65, 0.75)	
+	else
+		btn:GetNormalTexture():SetTexCoord(0.3, 0.29, 0.3, 0.81, 0.65, 0.29, 0.65, 0.81)
+		if btn:GetPushedTexture() then
+			btn:GetPushedTexture():SetTexCoord(0.3, 0.35, 0.3, 0.81, 0.65, 0.35, 0.65, 0.81)
+		end
+		if btn:GetDisabledTexture() then
+			btn:GetDisabledTexture():SetTexCoord(0.3, 0.29, 0.3, 0.75, 0.65, 0.29, 0.65, 0.75)
+		end
+	end
+	
+	btn:GetNormalTexture():ClearAllPoints()
+	btn:GetNormalTexture():Point("TOPLEFT", 2, -2)
+	btn:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
+	if btn:GetDisabledTexture() then
+		btn:GetDisabledTexture():SetAllPoints(btn:GetNormalTexture())
+	end
+	if btn:GetPushedTexture() then
+		btn:GetPushedTexture():SetAllPoints(btn:GetNormalTexture())
+	end
+	btn:GetHighlightTexture():SetTexture(1, 1, 1, 0.3)
+	btn:GetHighlightTexture():SetAllPoints(btn:GetNormalTexture())
+end
+
+function T.SkinRotateButton(btn)
+	btn:SetTemplate("Default")
+	btn:Size(btn:GetWidth() - 14, btn:GetHeight() - 14)	
+	
+	btn:GetNormalTexture():SetTexCoord(0.3, 0.29, 0.3, 0.65, 0.69, 0.29, 0.69, 0.65)
+	btn:GetPushedTexture():SetTexCoord(0.3, 0.29, 0.3, 0.65, 0.69, 0.29, 0.69, 0.65)	
+	
+	btn:GetHighlightTexture():SetTexture(1, 1, 1, 0.3)
+	
+	btn:GetNormalTexture():ClearAllPoints()
+	btn:GetNormalTexture():Point("TOPLEFT", 2, -2)
+	btn:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
+	btn:GetPushedTexture():SetAllPoints(btn:GetNormalTexture())	
+	btn:GetHighlightTexture():SetAllPoints(btn:GetNormalTexture())
+end
+
+function T.SkinEditBox(frame)
+	if _G[frame:GetName().."Left"] then _G[frame:GetName().."Left"]:Kill() end
+	if _G[frame:GetName().."Middle"] then _G[frame:GetName().."Middle"]:Kill() end
+	if _G[frame:GetName().."Right"] then _G[frame:GetName().."Right"]:Kill() end
+	if _G[frame:GetName().."Mid"] then _G[frame:GetName().."Mid"]:Kill() end
+	frame:CreateBackdrop("Default")
+	
+	if frame:GetName() and frame:GetName():find("Silver") or frame:GetName():find("Copper") then
+		frame.backdrop:Point("BOTTOMRIGHT", -12, -2)
+	end
+end
+
+function T.SkinDropDownBox(frame, width)
+	local button = _G[frame:GetName().."Button"]
+	if not width then width = 155 end
+	
+	frame:StripTextures()
+	frame:Width(width)
+	
+	_G[frame:GetName().."Text"]:ClearAllPoints()
+	_G[frame:GetName().."Text"]:Point("RIGHT", button, "LEFT", -2, 0)
+
+	
+	button:ClearAllPoints()
+	button:Point("RIGHT", frame, "RIGHT", -10, 3)
+	button.SetPoint = T.dummy
+	
+	T.SkinNextPrevButton(button, true)
+	
+	frame:CreateBackdrop("Default")
+	frame.backdrop:Point("TOPLEFT", 20, -2)
+	frame.backdrop:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
+end
+
+function T.SkinCheckBox(frame)
+	frame:StripTextures()
+	frame:CreateBackdrop("Default")
+	frame.backdrop:Point("TOPLEFT", 4, -4)
+	frame.backdrop:Point("BOTTOMRIGHT", -4, 4)
+	
+	if frame.SetCheckedTexture then
+		frame:SetCheckedTexture("Interface\\Buttons\\UI-CheckBox-Check")
+	end
+	
+	if frame.SetDisabledTexture then
+		frame:SetDisabledTexture("Interface\\Buttons\\UI-CheckBox-Check-Disabled")
+	end
+	
+	frame.SetNormalTexture = T.dummy
+	frame.SetPushedTexture = T.dummy
+	frame.SetHighlightTexture = T.dummy
+end
+
+function T.SkinCloseButton(f, point)	
+	if point then
+		f:Point("TOPRIGHT", point, "TOPRIGHT", 2, 2)
+	end
+	
+	f:SetNormalTexture("")
+	f:SetPushedTexture("")
+	f:SetHighlightTexture("")
+	f.t = f:CreateFontString(nil, "OVERLAY")
+	f.t:SetFont(C.media.pixelfont, 12, "MONOCHROME")
+	f.t:SetPoint("CENTER", 0, 1)
+	f.t:SetText("X")
+end
+
+local LoadBlizzardSkin = CreateFrame("Frame")
+LoadBlizzardSkin:RegisterEvent("ADDON_LOADED")
+LoadBlizzardSkin:SetScript("OnEvent", function(self, event, addon)
+	if IsAddOnLoaded("Skinner") or IsAddOnLoaded("Aurora") or not C.general.blizzardreskin then
+		self:UnregisterEvent("ADDON_LOADED")
+		return 
+	end
+	
+	for _addon, skinfunc in pairs(T.SkinFuncs) do
+		if type(skinfunc) == "function" then
+			if _addon == addon then
+				if skinfunc then
+					skinfunc()
+				end
+			end
+		elseif type(skinfunc) == "table" then
+			if _addon == addon then
+				for _, skinfunc in pairs(T.SkinFuncs[_addon]) do
+					if skinfunc then
+						skinfunc()
+					end
+				end
+			end
+		end
+	end
+end)
+
+------------------------------------------------------------------------
 --	unitframes Functions
 ------------------------------------------------------------------------
 
+-- tell oUF Framework that we use our own oUF version (ns.oUF, also know as X-oUF in /Tukui/Tukui.toc)
 local ADDON_NAME, ns = ...
-local oUF = ns.oUF or oUF
+local oUF = ns.oUF
 assert(oUF, "Tukui was unable to locate oUF install.")
 
+-- a function to update all unit frames
 T.updateAllElements = function(frame)
 	for _, v in ipairs(frame.__elements) do
 		v(frame, "UpdateElement", frame.unit)
 	end
 end
 
+-- Create an animation (like seen on text unitframe when low mana)
 local SetUpAnimGroup = function(self)
 	self.anim = self:CreateAnimationGroup("Flash")
 	self.anim.fadein = self.anim:CreateAnimation("ALPHA", "FadeIn")
@@ -346,6 +621,7 @@ local SetUpAnimGroup = function(self)
 	self.anim.fadeout:SetOrder(1)
 end
 
+-- Start the flash anim
 local Flash = function(self, duration)
 	if not self.anim then
 		SetUpAnimGroup(self)
@@ -356,12 +632,14 @@ local Flash = function(self, duration)
 	self.anim:Play()
 end
 
+-- Stop the flash anim
 local StopFlash = function(self)
 	if self.anim then
 		self.anim:Finish()
 	end
 end
 
+-- Spawn the right-click dropdown on unitframe
 T.SpawnMenu = function(self)
 	local unit = self.unit:gsub("(.)", string.upper, 1)
 	if unit == "Targettarget" or unit == "focustarget" or unit == "pettarget" then return end
@@ -378,21 +656,8 @@ T.SpawnMenu = function(self)
 	end
 end
 
-T.PostUpdatePower = function(element, unit, min, max)
-	element:GetParent().Health:SetHeight(max ~= 0 and 20 or 22)
-end
-
-local ShortValue = function(value)
-	if value >= 1e6 then
-		return ("%.1fm"):format(value / 1e6):gsub("%.?0+([km])$", "%1")
-	elseif value >= 1e3 or value <= -1e3 then
-		return ("%.1fk"):format(value / 1e3):gsub("%.?0+([km])$", "%1")
-	else
-		return value
-	end
-end
-
-local ShortValueNegative = function(v)
+-- called in some function to return a short value. (example: 120 000 return 120k)
+local ShortValue = function(v)
 	if v <= 999 then return v end
 	if v >= 1000000 then
 		local value = string.format("%.1fm", v/1000000)
@@ -403,6 +668,7 @@ local ShortValueNegative = function(v)
 	end
 end
 
+-- function to update health text
 T.PostUpdateHealth = function(health, unit, min, max)
 	if not UnitIsConnected(unit) or UnitIsDead(unit) or UnitIsGhost(unit) then
 		if not UnitIsConnected(unit) then
@@ -418,7 +684,7 @@ T.PostUpdateHealth = function(health, unit, min, max)
 		-- overwrite healthbar color for enemy player (a tukui option if enabled), target vehicle/pet too far away returning unitreaction nil and friend unit not a player. (mostly for overwrite tapped for friendly)
 		-- I don't know if we really need to call C["unitframes"].unicolor but anyway, it's safe this way.
 		if (C["unitframes"].unicolor ~= true and C["unitframes"].enemyhcolor and unit == "target" and UnitIsEnemy(unit, "player") and UnitIsPlayer(unit)) or (C["unitframes"].unicolor ~= true and unit == "target" and not UnitIsPlayer(unit) and UnitIsFriend(unit, "player")) then
-			local c = T.oUF_colors.reaction[UnitReaction(unit, "player")]
+			local c = T.UnitColor.reaction[UnitReaction(unit, "player")]
 			if c then 
 				r, g, b = c[1], c[2], c[3]
 				health:SetStatusBarColor(r, g, b)
@@ -448,7 +714,7 @@ T.PostUpdateHealth = function(health, unit, min, max)
 			elseif (unit and unit:find("arena%d")) or unit == "focus" or unit == "focustarget" then
 				health.value:SetText("|cff559655"..ShortValue(min).."|r")
 			else
-				health.value:SetText("|cff559655-"..ShortValueNegative(max-min).."|r")
+				health.value:SetText("|cff559655-"..ShortValue(max-min).."|r")
 			end
 		else
 			if unit == "player" and health:GetAttribute("normalUnit") ~= "pet" then
@@ -462,6 +728,7 @@ T.PostUpdateHealth = function(health, unit, min, max)
 	end
 end
 
+-- function to update health text for party/raid
 T.PostUpdateHealthRaid = function(health, unit, min, max)
 	if not UnitIsConnected(unit) or UnitIsDead(unit) or UnitIsGhost(unit) then
 		if not UnitIsConnected(unit) then
@@ -475,25 +742,26 @@ T.PostUpdateHealthRaid = function(health, unit, min, max)
 		-- doing this here to force friendly unit (vehicle or pet) very far away from you to update color correcly
 		-- because if vehicle or pet is too far away, unitreaction return nil and color of health bar is white.
 		if not UnitIsPlayer(unit) and UnitIsFriend(unit, "player") and C["unitframes"].unicolor ~= true then
-			local c = T.oUF_colors.reaction[5]
+			local c = T.UnitColor.reaction[5]
 			local r, g, b = c[1], c[2], c[3]
 			health:SetStatusBarColor(r, g, b)
 			health.bg:SetTexture(.1, .1, .1)
 		end
 		
 		if min ~= max then
-			health.value:SetText("|cff559655-"..ShortValueNegative(max-min).."|r")
+			health.value:SetText("|cff559655-"..ShortValue(max-min).."|r")
 		else
 			health.value:SetText(" ")
 		end
 	end
 end
 
+-- function to make sure pet unit health is always colored.
 T.PostUpdatePetColor = function(health, unit, min, max)
 	-- doing this here to force friendly unit (vehicle or pet) very far away from you to update color correcly
 	-- because if vehicle or pet is too far away, unitreaction return nil and color of health bar is white.
 	if not UnitIsPlayer(unit) and UnitIsFriend(unit, "player") and C["unitframes"].unicolor ~= true then
-		local c = T.oUF_colors.reaction[5]
+		local c = T.UnitColor.reaction[5]
 		local r, g, b = c[1], c[2], c[3]
 
 		if health then health:SetStatusBarColor(r, g, b) end
@@ -501,6 +769,7 @@ T.PostUpdatePetColor = function(health, unit, min, max)
 	end
 end
 
+-- a function to move name of current target unit if enemy or friendly
 T.PostNamePosition = function(self)
 	self.Name:ClearAllPoints()
 	if (self.Power.value:GetText() and UnitIsEnemy("player", "target") and C["unitframes"].targetpowerpvponly == true) or (self.Power.value:GetText() and C["unitframes"].targetpowerpvponly == false) then
@@ -511,19 +780,21 @@ T.PostNamePosition = function(self)
 	end
 end
 
+-- color the power bar according to class / vehicle / etc.
 T.PreUpdatePower = function(power, unit)
-	local _, pType = UnitPowerType(unit)
+	local pType = select(2, UnitPowerType(unit))
 	
-	local color = T.oUF_colors.power[pType]
+	local color = T.UnitColor.power[pType]
 	if color then
 		power:SetStatusBarColor(color[1], color[2], color[3])
 	end
 end
 
+-- function to update power text on unit frames
 T.PostUpdatePower = function(power, unit, min, max)
 	local self = power:GetParent()
 	local pType, pToken = UnitPowerType(unit)
-	local color = T.oUF_colors.power[pToken]
+	local color = T.UnitColor.power[pToken]
 
 	if color then
 		power.value:SetTextColor(color[1], color[2], color[3])
@@ -573,15 +844,18 @@ T.PostUpdatePower = function(power, unit, min, max)
 	end
 end
 
+-- display casting time
 T.CustomCastTimeText = function(self, duration)
 	self.Time:SetText(("%.1f / %.1f"):format(self.channeling and duration or self.max - duration, self.max))
 end
 
+-- display delay in casting time
 T.CustomCastDelayText = function(self, duration)
 	self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(self.channeling and duration or self.max - duration, self.channeling and "- " or "+", self.delay))
 end
 
-local FormatTime = function(s)
+-- display seconds to min/hour/day
+T.FormatTime = function(s)
 	local day, hour, minute = 86400, 3600, 60
 	if s >= day then
 		return format("%dd", ceil(s / day))
@@ -595,6 +869,7 @@ local FormatTime = function(s)
 	return format("%.1f", s)
 end
 
+-- create a timer on a buff or debuff
 local CreateAuraTimer = function(self, elapsed)
 	if self.timeLeft then
 		self.elapsed = (self.elapsed or 0) + elapsed
@@ -606,7 +881,7 @@ local CreateAuraTimer = function(self, elapsed)
 				self.first = false
 			end
 			if self.timeLeft > 0 then
-				local time = FormatTime(self.timeLeft)
+				local time = T.FormatTime(self.timeLeft)
 				self.remaining:SetText(time)
 				if self.timeLeft <= 5 then
 					self.remaining:SetTextColor(0.99, 0.31, 0.31)
@@ -622,14 +897,15 @@ local CreateAuraTimer = function(self, elapsed)
 	end
 end
 
+-- create a skin for all unitframes buffs/debuffs
 T.PostCreateAura = function(element, button)
 	button:SetTemplate("Default")
 	
 	button.remaining = T.SetFontString(button, C["media"].font, C["unitframes"].auratextscale, "THINOUTLINE")
 	button.remaining:Point("CENTER", 1, 0)
 	
-	button.cd.noOCC = true		 	-- hide OmniCC CDs
-	button.cd.noCooldownCount = true	-- hide CDC CDs
+	button.cd.noOCC = true -- hide OmniCC CDs, because we  create our own cd with CreateAuraTimer()
+	button.cd.noCooldownCount = true -- hide CDC CDs, because we create our own cd with CreateAuraTimer()
 	
 	button.cd:SetReverse()
 	button.icon:Point("TOPLEFT", 2, -2)
@@ -661,6 +937,7 @@ T.PostCreateAura = function(element, button)
 	button.Glow:SetBackdropBorderColor(0, 0, 0)
 end
 
+-- update cd, border color, etc on buffs / debuffs
 T.PostUpdateAura = function(icons, unit, icon, index, offset, filter, isDebuff, duration, timeLeft)
 	local _, _, _, _, dtype, duration, expirationTime, unitCaster, _ = UnitAura(unit, index, icon.filter)
 
@@ -697,6 +974,7 @@ T.PostUpdateAura = function(icons, unit, icon, index, offset, filter, isDebuff, 
 	icon:SetScript("OnUpdate", CreateAuraTimer)
 end
 
+-- hide the portrait if out of range, not connected, etc
 T.HidePortrait = function(self, unit)
 	if self.unit == "target" then
 		if not UnitExists(self.unit) or not UnitIsConnected(self.unit) or not UnitIsVisible(self.unit) then
@@ -707,6 +985,7 @@ T.HidePortrait = function(self, unit)
 	end
 end
 
+-- This is mostly just a fix for worgen male portrait because of a bug found in default Blizzard UI.
 T.PortraitUpdate = function(self, unit)
 	--Fucking Furries
 	if self:GetModel() and self:GetModel().find and self:GetModel():find("worgenmale") then
@@ -714,6 +993,7 @@ T.PortraitUpdate = function(self, unit)
 	end
 end
 
+-- used to check if a spell is interruptable
 local CheckInterrupt = function(self, unit)
 	if unit == "vehicle" then unit = "player" end
 
@@ -724,14 +1004,17 @@ local CheckInterrupt = function(self, unit)
 	end
 end
 
+-- check if we can interrupt on cast
 T.CheckCast = function(self, unit, name, rank, castid)
 	CheckInterrupt(self, unit)
 end
 
+-- check if we can interrupt on channel cast
 T.CheckChannel = function(self, unit, name, rank)
 	CheckInterrupt(self, unit)
 end
 
+-- update the warlock shard
 T.UpdateShards = function(self, event, unit, powerType)
 	if(self.unit ~= unit or (powerType and powerType ~= 'SOUL_SHARDS')) then return end
 	local num = UnitPower(unit, SPELL_POWER_SOUL_SHARDS)
@@ -744,6 +1027,7 @@ T.UpdateShards = function(self, event, unit, powerType)
 	end
 end
 
+-- phasing detection on party/raid
 T.Phasing = function(self, event)
 	local inPhase = UnitInPhase(self.unit)
 	local picon = self.PhaseIcon
@@ -753,6 +1037,7 @@ T.Phasing = function(self, event)
 	-- TO BE COMPLETED
 end
 
+-- update holy charge display on paladin
 T.UpdateHoly = function(self, event, unit, powerType)
 	if(self.unit ~= unit or (powerType and powerType ~= 'HOLY_POWER')) then return end
 	local num = UnitPower(unit, SPELL_POWER_HOLY_POWER)
@@ -765,6 +1050,7 @@ T.UpdateHoly = function(self, event, unit, powerType)
 	end
 end
 
+-- druid eclipse bar direction :P
 T.EclipseDirection = function(self)
 	if ( GetEclipseDirection() == "sun" ) then
 			self.Text:SetText("|cffE5994C"..L.unitframes_ouf_starfirespell.."|r")
@@ -775,13 +1061,13 @@ T.EclipseDirection = function(self)
 	end
 end
 
+-- show the druid bar mana or eclipse if form is moonkin/cat/bear.
 T.DruidBarDisplay = function(self, login)
 	local eb = self.EclipseBar
 	local dm = self.DruidMana
 	local txt = self.EclipseBar.Text
 	local shadow = self.shadow
 	local bg = self.DruidManaBackground
-	local buffs = self.Buffs
 	local flash = self.FlashInfo
 
 	if login then
@@ -795,24 +1081,15 @@ T.DruidBarDisplay = function(self, login)
 		end
 		shadow:Point("TOPLEFT", -4, 12)
 		bg:SetAlpha(1)
-		if T.lowversion then
-			if buffs then buffs:SetPoint("TOPLEFT", self, "TOPLEFT", 0, 34) end
-		else
-			if buffs then buffs:SetPoint("TOPLEFT", self, "TOPLEFT", 0, 38) end
-		end				
 	else
 		txt:Hide()
 		flash:Show()
 		shadow:Point("TOPLEFT", -4, 4)
 		bg:SetAlpha(0)
-		if T.lowversion then
-			if buffs then buffs:SetPoint("TOPLEFT", self, "TOPLEFT", 0, 26) end
-		else
-			if buffs then buffs:SetPoint("TOPLEFT", self, "TOPLEFT", 0, 30) end
-		end
 	end
 end
 
+-- master looter icon
 T.MLAnchorUpdate = function (self)
 	if self.Leader:IsShown() then
 		self.MasterLooter:SetPoint("TOPLEFT", 14, 8)
@@ -821,15 +1098,18 @@ T.MLAnchorUpdate = function (self)
 	end
 end
 
+-- update repuration bar color
 T.UpdateReputationColor = function(self, event, unit, bar)
 	local name, id = GetWatchedFactionInfo()
 	bar:SetStatusBarColor(FACTION_BAR_COLORS[id].r, FACTION_BAR_COLORS[id].g, FACTION_BAR_COLORS[id].b)
 end
 
+-- when called, it update the name of unit
 T.UpdateName = function(self,event)
 	if self.Name then self.Name:UpdateTag(self.unit) end
 end
 
+-- display warning when low mana
 local UpdateManaLevelDelay = 0
 T.UpdateManaLevel = function(self, elapsed)
 	UpdateManaLevelDelay = UpdateManaLevelDelay + elapsed
@@ -847,7 +1127,8 @@ T.UpdateManaLevel = function(self, elapsed)
 	end
 end
 
-T.UpdateDruidMana = function(self)
+-- show or hide druid mana text if cat/bear form or not.
+T.UpdateDruidManaText = function(self)
 	if self.unit ~= "player" then return end
 
 	local num, str = UnitPowerType("player")
@@ -882,6 +1163,7 @@ T.UpdateDruidMana = function(self)
 	end
 end
 
+-- red color the border of text panel or name on unitframes if unit have aggro
 T.UpdateThreat = function(self, event, unit)
 	if (self.unit ~= unit) or (unit == "target" or unit == "pet" or unit == "focus" or unit == "focustarget" or unit == "targettarget") then return end
 	local threat = UnitThreatSituation(self.unit)
@@ -893,7 +1175,8 @@ T.UpdateThreat = function(self, event, unit)
 		end
 	else
 		if self.panel then
-			self.panel:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
+			local r, g, b = unpack(C["media"].bordercolor)
+			self.panel:SetBackdropBorderColor(r * 0.7, g * 0.7, b * 0.7)
 		else
 			self.Name:SetTextColor(1,1,1)
 		end
@@ -901,9 +1184,10 @@ T.UpdateThreat = function(self, event, unit)
 end
 
 --------------------------------------------------------------------------------------------
--- THE AURAWATCH FUNCTION ITSELF. HERE BE DRAGONS!
+-- Grid theme indicator section
 --------------------------------------------------------------------------------------------
 
+-- position of indicators
 T.countOffsets = {
 	TOPLEFT = {6*C["unitframes"].gridscale, 1},
 	TOPRIGHT = {-6*C["unitframes"].gridscale, 1},
@@ -915,6 +1199,7 @@ T.countOffsets = {
 	BOTTOM = {0, 0},
 }
 
+-- skin the icon
 T.CreateAuraWatchIcon = function(self, icon)
 	icon:SetTemplate("Default")
 	icon.icon:Point("TOPLEFT", 1, -1)
@@ -927,6 +1212,7 @@ T.CreateAuraWatchIcon = function(self, icon)
 	icon.overlay:SetTexture()
 end
 
+-- create the icon
 T.createAuraWatch = function(self, unit)
 	local auras = CreateFrame("Frame", nil, self)
 	auras:SetPoint("TOPLEFT", self.Health, 2, -2)
@@ -985,9 +1271,13 @@ T.createAuraWatch = function(self, unit)
 	self.AuraWatch = auras
 end
 
+--------------------------------------------------------------------------------------------
+-- This is the "Grid" theme debuff display section, like what GridStatusDebuffs does
+--------------------------------------------------------------------------------------------
+
 if C["unitframes"].raidunitdebuffwatch == true then
-	-- Classbuffs { spell ID, position [, {r,g,b,a}][, anyUnit] }
-	-- For oUF_AuraWatch
+	-- Class buffs { spell ID, position [, {r,g,b,a}][, anyUnit] }
+	-- It use oUF_AuraWatch lib, for grid indicator
 	do
 		T.buffids = {
 			PRIEST = {
@@ -1017,9 +1307,11 @@ if C["unitframes"].raidunitdebuffwatch == true then
 			},
 		}
 	end
-		local _, ns = ...
-	-- Raid debuffs (now using it with oUF_RaidDebuff instead of oUF_Aurawatch)
+	
+	-- Dispellable & Important Raid Debuffs we want to show on Grid!
+	-- It use oUF_RaidDebuffs lib for tracking dispellable / important
 	do
+		local _, ns = ...
 		local ORD = ns.oUF_RaidDebuffs or oUF_RaidDebuffs
 
 		if not ORD then return end
@@ -1029,7 +1321,7 @@ if C["unitframes"].raidunitdebuffwatch == true then
 		ORD.MatchBySpellName = true
 		
 		local function SpellName(id)
-			local name, _, _, _, _, _, _, _, _ = GetSpellInfo(id) 	
+			local name = select(1, GetSpellInfo(id))
 			return name	
 		end
 
@@ -1132,6 +1424,38 @@ if C["unitframes"].raidunitdebuffwatch == true then
 				SpellName(100293),	-- Lava Wave
 				SpellName(98313),	-- Magma Blast
 				SpellName(100675),	-- Dreadflame
+				
+		-- Dragon Soul
+			-- Morchok
+				SpellName(103541),	-- Safe
+				SpellName(103536),	-- Warning
+				SpellName(103534),	-- Danger
+				SpellName(108570),	-- Black Blood of the Earth
+
+			-- Warlord Zon'ozz
+				SpellName(103434),	-- Disrupting Shadows
+
+			-- Yor'sahj the Unsleeping
+				SpellName(105171),	-- Deep Corruption
+
+			-- Hagara the Stormbinder
+				SpellName(105465),	-- Lighting Storm
+				SpellName(104451),	-- Ice Tomb
+				SpellName(109325),	-- Frostflake
+				SpellName(105289),	-- Shattered Ice
+				SpellName(105285),	-- Target
+
+			-- Ultraxion
+				SpellName(110079),	-- Fading Light
+				SpellName(109075),	-- Fading Light
+
+			-- Warmaster Blackhorn
+
+			-- Spine of Deathwing
+				SpellName(105479),	-- Searing Plasma
+				SpellName(105490),	-- Fiery Grip
+
+			-- Madness of Deathwing	
 		}
 
 		T.ReverseTimer = {

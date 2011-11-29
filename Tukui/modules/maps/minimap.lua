@@ -6,9 +6,6 @@ local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, vari
 local TukuiMinimap = CreateFrame("Frame", "TukuiMinimap", UIParent)
 TukuiMinimap:CreatePanel("Default", 1, 1, "CENTER", UIParent, "CENTER", 0, 0)
 TukuiMinimap:RegisterEvent("ADDON_LOADED")
-TukuiMinimap:RegisterEvent("CALENDAR_UPDATE_PENDING_INVITES")
-TukuiMinimap:RegisterEvent("UPDATE_PENDING_MAIL")
-TukuiMinimap:RegisterEvent("PLAYER_ENTERING_WORLD")
 TukuiMinimap:Point("TOPRIGHT", UIParent, "TOPRIGHT", -24, -22)
 TukuiMinimap:Size(144)
 TukuiMinimap:SetClampedToScreen(true)
@@ -103,26 +100,32 @@ local function UpdateLFG()
 	MiniMapLFGFrame:Point("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", 2, 1)
 	MiniMapLFGFrameBorder:Hide()
 end
-hooksecurefunc("MiniMapLFG_UpdateIsShown", UpdateLFG)
+if T.toc < 40300 then
+	hooksecurefunc("MiniMapLFG_UpdateIsShown", UpdateLFG)
+else
+	hooksecurefunc("MiniMapLFG_Update", UpdateLFG)
+end
 
 -- reskin LFG dropdown
-LFDSearchStatus:SetTemplate("Default")
+local status
+if T.toc >= 40300 then status = LFGSearchStatus else status = LFDSearchStatus end
+status:SetTemplate("Default")
 
--- for t13+, if we move map we need to point LFDSearchStatus according to our Minimap position.
+-- for t13+, if we move map we need to point status according to our Minimap position.
 local function UpdateLFGTooltip()
 	local position = TukuiMinimap:GetPoint()
-	LFDSearchStatus:ClearAllPoints()
+	status:ClearAllPoints()
 	if position:match("BOTTOMRIGHT") then
-		LFDSearchStatus:SetPoint("BOTTOMRIGHT", MiniMapLFGFrame, "BOTTOMLEFT", 0, 0)
+		status:SetPoint("BOTTOMRIGHT", MiniMapLFGFrame, "BOTTOMLEFT", 0, 0)
 	elseif position:match("BOTTOM") then
-		LFDSearchStatus:SetPoint("BOTTOMLEFT", MiniMapLFGFrame, "BOTTOMRIGHT", 4, 0)
+		status:SetPoint("BOTTOMLEFT", MiniMapLFGFrame, "BOTTOMRIGHT", 4, 0)
 	elseif position:match("LEFT") then		
-		LFDSearchStatus:SetPoint("TOPLEFT", MiniMapLFGFrame, "TOPRIGHT", 4, 0)
+		status:SetPoint("TOPLEFT", MiniMapLFGFrame, "TOPRIGHT", 4, 0)
 	else
-		LFDSearchStatus:SetPoint("TOPRIGHT", MiniMapLFGFrame, "TOPLEFT", 0, 0)	
+		status:SetPoint("TOPRIGHT", MiniMapLFGFrame, "TOPLEFT", 0, 0)	
 	end
 end
-LFDSearchStatus:HookScript("OnShow", UpdateLFGTooltip)
+status:HookScript("OnShow", UpdateLFGTooltip)
 
 -- Enable mouse scrolling
 Minimap:EnableMouseWheel(true)
@@ -145,42 +148,6 @@ TukuiMinimap:SetScript("OnEvent", function(self, event, addon)
 	if addon == "Blizzard_TimeManager" then
 		-- Hide Game Time
 		TimeManagerClockButton:Kill()
-	else
-		local inv = CalendarGetNumPendingInvites()
-		local mail = HasNewMail()
-		if inv > 0 and mail then -- New invites and mail
-			TukuiMinimap:SetBackdropBorderColor(1, .5, 0)
-			if TukuiMinimapStatsLeft then
-				TukuiMinimapStatsLeft:SetBackdropBorderColor(1, .5, 0)
-			end
-			if TukuiMinimapStatsRight then
-				TukuiMinimapStatsRight:SetBackdropBorderColor(1, .5, 0)
-			end
-		elseif inv > 0 and not mail then -- New invites and no mail
-			TukuiMinimap:SetBackdropBorderColor(1, 30/255, 60/255)
-			if TukuiMinimapStatsLeft then
-				TukuiMinimapStatsLeft:SetBackdropBorderColor(1, 30/255, 60/255)
-			end
-			if TukuiMinimapStatsRight then
-				TukuiMinimapStatsRight:SetBackdropBorderColor(1, 30/255, 60/255)
-			end
-		elseif inv==0 and mail then -- No invites and new mail
-			TukuiMinimap:SetBackdropBorderColor(0, 1, 0)
-			if TukuiMinimapStatsLeft then
-				TukuiMinimapStatsLeft:SetBackdropBorderColor(0, 1, 0)
-			end
-			if TukuiMinimapStatsRight then
-				TukuiMinimapStatsRight:SetBackdropBorderColor(0, 1, 0)
-			end
-		else -- None of the above
-			TukuiMinimap:SetBackdropBorderColor(unpack(C.media.bordercolor))
-			if TukuiMinimapStatsLeft then
-				TukuiMinimapStatsLeft:SetBackdropBorderColor(unpack(C.media.bordercolor))
-			end
-			if TukuiMinimapStatsRight then
-				TukuiMinimapStatsRight:SetBackdropBorderColor(unpack(C.media.bordercolor))
-			end
-		end
 	end
 end)
 
@@ -193,7 +160,7 @@ Minimap:SetScript("OnMouseUp", function(self, btn)
 	local position = TukuiMinimap:GetPoint()
 	
 	if btn == "RightButton" then	
-		if position:match("RIGHT") then xoff = T.Scale(-16) end
+		if position:match("RIGHT") then xoff = T.Scale(-8) end
 		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, TukuiMinimap, xoff, T.Scale(-2))
 	elseif btn == "MiddleButton" then
 		if not TukuiMicroMenu then return end
@@ -208,14 +175,14 @@ end)
 -- Mouseover map, displaying zone and coords
 ----------------------------------------------------------------------------------------
 
-local m_zone = CreateFrame("Frame",nil,TukuiMinimap)
+local m_zone = CreateFrame("Frame","TukuiMinimapZone",TukuiMinimap)
 m_zone:CreatePanel("Default", 0, 20, "TOPLEFT", TukuiMinimap, "TOPLEFT", 2,-2)
 m_zone:SetFrameLevel(5)
 m_zone:SetFrameStrata("LOW")
 m_zone:Point("TOPRIGHT",TukuiMinimap,-2,-2)
 m_zone:SetAlpha(0)
 
-local m_zone_text = m_zone:CreateFontString(nil,"Overlay")
+local m_zone_text = m_zone:CreateFontString("TukuiMinimapZoneText","Overlay")
 m_zone_text:SetFont(C["media"].font,12)
 m_zone_text:Point("TOP", 0, -1)
 m_zone_text:SetPoint("BOTTOM")
@@ -223,12 +190,12 @@ m_zone_text:Height(12)
 m_zone_text:Width(m_zone:GetWidth()-6)
 m_zone_text:SetAlpha(0)
 
-local m_coord = CreateFrame("Frame",nil,TukuiMinimap)
+local m_coord = CreateFrame("Frame","TukuiMinimapCoord",TukuiMinimap)
 m_coord:CreatePanel("Default", 40, 20, "BOTTOMLEFT", TukuiMinimap, "BOTTOMLEFT", 2,2)
 m_coord:SetFrameStrata("LOW")
 m_coord:SetAlpha(0)
 
-local m_coord_text = m_coord:CreateFontString(nil,"Overlay")
+local m_coord_text = m_coord:CreateFontString("TukuiMinimapCoordText","Overlay")
 m_coord_text:SetFont(C["media"].font,12)
 m_coord_text:Point("Center",-1,0)
 m_coord_text:SetAlpha(0)
@@ -295,4 +262,4 @@ m_zone:RegisterEvent("PLAYER_ENTERING_WORLD")
 m_zone:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 m_zone:RegisterEvent("ZONE_CHANGED")
 m_zone:RegisterEvent("ZONE_CHANGED_INDOORS")
-m_zone:SetScript("OnEvent",zone_Update) 
+m_zone:SetScript("OnEvent",zone_Update)

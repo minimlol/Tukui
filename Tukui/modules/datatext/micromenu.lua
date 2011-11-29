@@ -13,17 +13,20 @@ local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, vari
 -----------------------------------------
 
 if C["datatext"].micromenu and C["datatext"].micromenu > 0 then
-	local Stat = CreateFrame("Frame")
+	local Stat = CreateFrame("Frame", "TukuiStatMicroMenu")
 	Stat:EnableMouse(true)
 	Stat:SetFrameStrata("BACKGROUND")
 	Stat:SetFrameLevel(3)
+	Stat.Option = C.datatext.micromenu
+	Stat.Color1 = T.RGBToHex(unpack(C.media.datatextcolor1))
+	Stat.Color2 = T.RGBToHex(unpack(C.media.datatextcolor2))
 
-	local Text  = TukuiInfoLeft:CreateFontString(nil, "OVERLAY")
+	local Text  = Stat:CreateFontString("TukuiStatMicroMenuText", "OVERLAY")
 	Text:SetFont(C.media.font, C["datatext"].fontsize)
 	T.PP(C["datatext"].micromenu, Text)
 
 	local function OnEvent(self, event, ...)
-		Text:SetText(MAINMENU_BUTTON)
+		Text:SetText(Stat.Color2..MAINMENU_BUTTON.."|r")
 		self:SetAllPoints(Text)
 	end
 

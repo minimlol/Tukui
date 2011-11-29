@@ -1,10 +1,13 @@
-﻿local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
+﻿local T, C, L = unpack(select(2, ...))
+
+-----------------------------------------
+-- This is the default configuration file
+-----------------------------------------
 
 C["general"] = {
 	["autoscale"] = true,                               -- mainly enabled for users that don't want to mess with the config file
 	["uiscale"] = 0.71,                                 -- set your value (between 0.64 and 1) of your uiscale if autoscale is off
 	["overridelowtohigh"] = false,                      -- EXPERIMENTAL ONLY! override lower version to higher version on a lower reso.
-	["multisampleprotect"] = true,                      -- i don't recommend this because of shitty border but, voila!
 	["backdropcolor"] = { .1,.1,.1 },                   -- default backdrop color of panels
 	["bordercolor"] = { .6,.6,.6 },                     -- default border color of panels
 	["blizzardreskin"] = true                           -- reskin all Blizzard frames
@@ -17,9 +20,10 @@ C["unitframes"] = {
 	["unitcastbar"] = true,                             -- enable tukui castbar
 	["cblatency"] = false,                              -- enable castbar latency
 	["cbicons"] = true,                                 -- enable icons on castbar
+	["classiccombo"] = false,                           -- display classic combo points (from Tukui 13 or less)
+	["movecombobar"] = true,                            -- display the new combo bar (t14+) from target to player (ROGUE ONLY)
 	["auratimer"] = true,                               -- enable timers on buffs/debuffs
 	["auratextscale"] = 11,                             -- the font size of buffs/debuffs timers on unitframes
-	["playerauras"] = false,                            -- enable auras
 	["targetauras"] = true,                             -- enable auras on target unit frame
 	["lowThreshold"] = 20,                              -- global low threshold, for low mana warning.
 	["targetpowerpvponly"] = true,                      -- enable power text on pvp target only
@@ -47,6 +51,7 @@ C["unitframes"] = {
 	["gridhealthvertical"] = true,                      -- enable vertical grow on health bar for grid mode.
 	["showplayerinparty"] = false,                      -- show my player frame in party
 	["gridscale"] = 1,                                  -- set the healing grid scaling
+	["gridvertical"] = false,                           -- grid group displayed vertically
 	
 	-- boss frames
 	["showboss"] = true,                                -- enable boss unit frames for PVELOL encounters.
@@ -64,16 +69,19 @@ C["arena"] = {
 
 C["auras"] = {
 	["player"] = true,                                  -- enable tukui buffs/debuffs
+	["consolidate"] = true,                             -- enable downpdown menu with consolidate buff
+	["flash"] = false,                                   -- flash warning for buff with time < 30 sec
 }
 
 C["actionbar"] = {
 	["enable"] = true,                                  -- enable tukui action bars
-	["hotkey"] = true,                                 -- enable hotkey display because it was a lot requested
+	["hotkey"] = true,                                  -- enable hotkey display because it was a lot requested
 	["hideshapeshift"] = false,                         -- hide shapeshift or totembar because it was a lot requested.
 	["showgrid"] = true,                                -- show grid on empty button
 	["buttonsize"] = 27,                                -- normal buttons size
 	["petbuttonsize"] = 29,                             -- pet & stance buttons size
 	["buttonspacing"] = 4,                              -- buttons spacing
+	["ownshdbar"] = false,                              -- use a complete new stance bar for shadow dance (rogue only)
 }
 
 C["bags"] = {
@@ -112,6 +120,8 @@ C["datatext"] = {
 	["mastery"] = 0,                                    -- show mastery rating
 	["micromenu"] = 0,                                  -- add a micro menu thought datatext
 	["regen"] = 0,                                      -- show mana regeneration
+	["talent"] = 0,                                     -- show talent
+	["calltoarms"] = 0,                                 -- show dungeon and call to arms
 
 	["battleground"] = true,                            -- enable 3 stats in battleground only that replace stat1,stat2,stat3.
 	["time24"] = true,                                  -- set time to 24h format.
@@ -158,9 +168,4 @@ C["error"] = {
 
 C["invite"] = { 
 	["autoaccept"] = true,                              -- auto-accept invite from guildmate and friends.
-}
-
-C["buffreminder"] = {
-	["enable"] = true,                                  -- this is now the new innerfire warning script for all armor/aspect class.
-	["sound"] = true,                                   -- enable warning sound notification for reminder.
 }

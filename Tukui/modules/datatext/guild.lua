@@ -5,9 +5,18 @@ local T, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Lo
 
 if not C["datatext"].guild or C["datatext"].guild == 0 then return end
 
+local Stat = CreateFrame("Frame", "TukuiStatGuild")
+Stat:EnableMouse(true)
+Stat:SetFrameStrata("BACKGROUND")
+Stat:SetFrameLevel(3)
+Stat.Option = C.datatext.guild
+Stat.update = false
+Stat.Color1 = T.RGBToHex(unpack(C.media.datatextcolor1))
+Stat.Color2 = T.RGBToHex(unpack(C.media.datatextcolor2))
+
 local tthead, ttsubh, ttoff = {r=0.4, g=0.78, b=1}, {r=0.75, g=0.9, b=1}, {r=.3,g=1,b=.3}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
-local displayString = string.join("", "%s: ", "|cffFFFFFF", "%d|r")
+local displayString = string.join("", Stat.Color1.."%s: |r", Stat.Color2, "%d|r")
 local guildInfoString = "%s [%d]"
 local guildInfoString2 = "%s: %d/%d"
 local guildMotDString = "  %s |cffaaaaaa- |cffffffff%s"
@@ -20,13 +29,7 @@ local officerNoteString = "  o: '%s'"
 local guildTable, guildXP, guildMotD = {}, {}, ""
 local totalOnline = 0
 
-local Stat = CreateFrame("Frame")
-Stat:EnableMouse(true)
-Stat:SetFrameStrata("BACKGROUND")
-Stat:SetFrameLevel(3)
-Stat.update = false
-
-local Text  = TukuiInfoLeft:CreateFontString(nil, "OVERLAY")
+local Text = Stat:CreateFontString("TukuiStatGuildText", "OVERLAY")
 Text:SetFont(C.media.font, C["datatext"].fontsize)
 T.PP(C["datatext"].guild, Text)
 
@@ -49,6 +52,10 @@ end
 local function UpdateGuildXP()
 	local currentXP, remainingXP, dailyXP, maxDailyXP = UnitGetGuildXP("player")
 	local nextLevelXP = currentXP + remainingXP
+	
+	-- prevent 4.3 division / 0
+	if nextLevelXP == 0 or maxDailyXP == 0 then return end
+	
 	local percentTotal = tostring(math.ceil((currentXP / nextLevelXP) * 100))
 	local percentDaily = tostring(math.ceil((dailyXP / maxDailyXP) * 100))
 	

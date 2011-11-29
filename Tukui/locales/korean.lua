@@ -1,7 +1,6 @@
-local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
+local T, C, L = unpack(select(2, ...))
 
 if T.client == "koKR" then
- 
 	L.chat_BATTLEGROUND_GET = "[B]"
 	L.chat_BATTLEGROUND_LEADER_GET = "[B]"
 	L.chat_BN_WHISPER_GET = "[FR]"
@@ -26,8 +25,9 @@ if T.client == "koKR" then
 	L.chat_recrutment = "길드모집"
 	L.chat_lfg = "파티찾기"
  
-	L.disband = "공격대를 해체합니다 ?"
- 
+	L.disband = "공격대를 해체합니까?"
+
+	L.datatext_notalents ="특성 없음"
 	L.datatext_download = "다운로드: "
 	L.datatext_bandwidth = "대역폭: "
 	L.datatext_guild = "길드"
@@ -122,6 +122,7 @@ if T.client == "koKR" then
 	L.popup_install_no = "아니오"
 	L.popup_reset_yes = "예"
 	L.popup_reset_no = "아니오"
+	L.popup_fix_ab = "귀하의 행동단축바에 문제가 있습니다. reloadui를 하여 문제를 해결하시겠습니까?"
  
 	L.merchant_repairnomoney = "수리에 필요한 돈이 충분하지 않습니다!"
 	L.merchant_repaircost = "모든 아이템이 수리되었습니다: "
@@ -150,7 +151,7 @@ if T.client == "koKR" then
  
 	L.tooltip_count = "개수"
  
-	L.bags_noslots = "소지품이 가득 찼습니다."
+	L.bags_noslots = "더이상 가방보관함을 구입할 수 없습니다."
 	L.bags_costs = "가격: %.2f 골"
 	L.bags_buyslots = "가방 보관함을 추가로 구입하시려면 /bags를 입력해주세요."
 	L.bags_openbank = "먼저 은행을 열어야 합니다."
@@ -169,8 +170,8 @@ if T.client == "koKR" then
 	L.bags_stackend = "재정리 완료."
 	L.bags_rightclick_search = "검색하려면 오른쪽 클릭"
 	
-	L.loot_fish = "Fishy loot"
-	L.loot_empty = "Empty slot"
+	L.loot_fish = "전리품"
+	L.loot_empty = "빈 슬롯"
  
 	L.chat_invalidtarget = "잘못된 대상"
  
@@ -228,6 +229,7 @@ if T.client == "koKR" then
 	L.move_achievements = "업적창 이동"
 	L.move_roll = "주사위 창 이동"
 	L.move_vehicle = "탈것 창 이동"
+	L.move_extrabutton = "추가 버튼"
 	
 	-- tuto/install
 	L.install_header_1 = "환영합니다"

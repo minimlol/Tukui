@@ -1,7 +1,6 @@
-local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
+local T, C, L = unpack(select(2, ...))
 
 if T.client == "frFR" then
-
 	L.chat_BATTLEGROUND_GET = "[BG]"
 	L.chat_BATTLEGROUND_LEADER_GET = "[BG]"
 	L.chat_BN_WHISPER_GET = "De"
@@ -28,6 +27,7 @@ if T.client == "frFR" then
 
 	L.disband = "Dissoudre le groupe ?"
 
+	L.datatext_notalents ="Aucun talents"
 	L.datatext_download = "Téléchargement : "
 	L.datatext_bandwidth = "Bande passante : "
 	L.datatext_guild = "Guilde"
@@ -111,10 +111,11 @@ if T.client == "frFR" then
 	L.popup_install = "Première fois sur Tukui V13 avec ce personnage. Vous devez recharger l'interface utilisateur afin de configurer les barres d'action, les variables et les cadres de Chat."
 	L.popup_2raidactive = "2 modèles de raid sont activés, merci d'en choisir un."
 	L.popup_reset = "Attention ! Vous allez charger les paramètres par défaut de Tukui. Voulez-vous poursuivre ?"
-	L.popup_install_yes = "Yeah! (recommended!)"
-	L.popup_install_no = "No, it sux so hard"
-	L.popup_reset_yes = "Yeah baby!"
-	L.popup_reset_no = "No, else I'll QQ forums!"
+	L.popup_install_yes = "Ouais! (recommandé!)"
+	L.popup_install_no = "Non, ça craint trop!"
+	L.popup_reset_yes = "Ouais bébé!"
+	L.popup_reset_no = "Non, ou j'irai pleurer sur les forums!"
+	L.popup_fix_ab = "Quelque chose ne va pas avec vos barres d'action. Voulez-vous recharger l'interface pour les réparer?"
 
 	L.merchant_repairnomoney = "Vous n'avez pas assez d'argent pour réparer !"
 	L.merchant_repaircost = "Tous les objets ont été réparés pour"
@@ -222,6 +223,7 @@ if T.client == "frFR" then
 	L.move_achievements = "Bouger la fenêtre des Hauts-Faits"
 	L.move_roll = "Bouger la fenêtre d'attribution du butin"
 	L.move_vehicle = "Bouger le schéma du véhicule"
+	L.move_extrabutton = "Extra Button"
 	
 	-- tuto/install
 	L.install_header_1 = "Bienvenue"
