@@ -250,12 +250,6 @@ T.SetDefaultChatPosition = function(frame)
 		local id = frame:GetID()
 		local name = FCF_GetChatWindowInfo(id)
 		
-		-- set the size of chat frames
-		frame:Size(T.InfoLeftRightWidth + 1, 111)
-		
-		-- tell wow that we are using new size
-		SetChatWindowSavedDimensions(id, T.Scale(T.InfoLeftRightWidth + 1), T.Scale(111))
-		
 		if id == 1 then
 			frame:ClearAllPoints()
 			frame:Point("BOTTOMLEFT", TukuiInfoLeft, "TOPLEFT", 0, 6)
@@ -266,9 +260,6 @@ T.SetDefaultChatPosition = function(frame)
 				frame:SetJustifyH("RIGHT")
 			end
 		end
-		
-		-- save new default position and dimension
-		FCF_SavePositionAndDimensions(frame)
 		
 		-- lock them if unlocked
 		if not frame.isLocked then FCF_SetLocked(frame, 1) end
