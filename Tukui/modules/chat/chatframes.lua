@@ -5,7 +5,7 @@ if C["chat"].enable ~= true then return end
 -- SETUP TUKUI CHATS
 -----------------------------------------------------------------------
 
-local TukuiChat = CreateFrame("Frame")
+local TukuiChat = CreateFrame("Frame", "TukuiChat")
 local tabalpha = 1
 local tabnoalpha = 0
 local _G = _G
@@ -172,12 +172,23 @@ local function SetChatStyle(frame)
 		end
 	end)
 	
-	if _G[chat] ~= _G["ChatFrame2"] then
+	if _G[chat] ~= _G["ChatFrame2"] then	
 		origs[_G[chat]] = _G[chat].AddMessage
 		_G[chat].AddMessage = AddMessage
+	else
+		CombatLogQuickButtonFrame_Custom:StripTextures()
+		CombatLogQuickButtonFrame_Custom:SetTemplate("Default")
+		T.SkinCloseButton(CombatLogQuickButtonFrame_CustomAdditionalFilterButton)
+		CombatLogQuickButtonFrame_CustomAdditionalFilterButton.t:SetText("V")
+		CombatLogQuickButtonFrame_CustomAdditionalFilterButton.t:ClearAllPoints()
+		CombatLogQuickButtonFrame_CustomAdditionalFilterButton.t:Point("RIGHT", -8, 4)
+		CombatLogQuickButtonFrame_CustomProgressBar:ClearAllPoints()
+		CombatLogQuickButtonFrame_CustomProgressBar:SetPoint("TOPLEFT", CombatLogQuickButtonFrame_Custom, 2, -2)
+		CombatLogQuickButtonFrame_CustomProgressBar:SetPoint("BOTTOMRIGHT", CombatLogQuickButtonFrame_Custom, -2, 2)
+		CombatLogQuickButtonFrame_CustomProgressBar:SetStatusBarTexture(C.media.normTex)
 	end
-	
-	frame.skinned = true
+
+	frame.isSkinned = true
 end
 
 -- Setup chatframes 1 to 10 on login.
@@ -196,63 +207,11 @@ local function SetupChat(self)
 	ChatTypeInfo.CHANNEL.sticky = 1
 end
 
-local function SetupChatPosAndFont(self)	
-	for i = 1, NUM_CHAT_WINDOWS do
-		local chat = _G[format("ChatFrame%s", i)]
-		local tab = _G[format("ChatFrame%sTab", i)]
-		local id = chat:GetID()
-		local name = FCF_GetChatWindowInfo(id)
-		local point = GetChatWindowSavedPosition(id)
-		local _, fontSize = FCF_GetChatWindowInfo(id)
-		
-		-- well... tukui font under fontsize 12 is unreadable.
-		if fontSize < 12 then		
-			FCF_SetChatWindowFontSize(nil, chat, 12)
-		else
-			FCF_SetChatWindowFontSize(nil, chat, fontSize)
-		end
-		
-		-- force chat position on #1 and #4, needed if we change ui scale or resolution
-		-- also set original width and height of chatframes 1 and 4 if first time we run tukui.
-		-- doing resize of chat also here for users that hit "cancel" when default installation is show.
-		if i == 1 then
-			chat:Point("BOTTOMLEFT", TukuiInfoLeft, "TOPLEFT", 0, 6)
-			chat:Point("BOTTOMRIGHT", TukuiInfoLeft, "TOPRIGHT", 0, 6)
-			FCF_SavePositionAndDimensions(chat)
-		elseif i == 4 and name == LOOT then
-			if not chat.isDocked then
-				chat:ClearAllPoints()
-				chat:Point("BOTTOMRIGHT", TukuiInfoRight, "TOPRIGHT", 0, 6)
-				chat:Point("BOTTOMLEFT", TukuiInfoRight, "TOPLEFT", 0, 6)
-				chat:SetJustifyH("RIGHT") 
-				FCF_SavePositionAndDimensions(chat)
-			end
-		end
-	end
-			
-	-- reposition battle.net popup over chat #1
-	BNToastFrame:HookScript("OnShow", function(self)
-		self:ClearAllPoints()
-		if C.chat.background and TukuiChatBackgroundLeft then
-			self:Point("TOPLEFT", TukuiChatBackgroundLeft, "TOPLEFT", -18, T.Scale(830))
-		else
-			self:Point("BOTTOMLEFT", ChatFrame1, "TOPLEFT", 0, 6)
-		end
-	end)
-end
-
 TukuiChat:RegisterEvent("ADDON_LOADED")
-TukuiChat:RegisterEvent("PLAYER_ENTERING_WORLD")
-TukuiChat:SetScript("OnEvent", function(self, event, ...)
-	local addon = ...
-	if event == "ADDON_LOADED" then
-		if addon == "Blizzard_CombatLog" then
-			self:UnregisterEvent("ADDON_LOADED")
-			SetupChat(self)
-		end
-	elseif event == "PLAYER_ENTERING_WORLD" then
-		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
-		SetupChatPosAndFont(self)
+TukuiChat:SetScript("OnEvent", function(self, event, addon)
+	if addon == "Blizzard_CombatLog" then
+		self:UnregisterEvent("ADDON_LOADED")
+		SetupChat(self)
 	end
 end)
 
@@ -261,10 +220,46 @@ local function SetupTempChat()
 	local frame = FCF_GetCurrentChatFrame()
 
 	-- do a check if we already did a skinning earlier for this temp chat frame
-	if frame.skinned then return end
+	if frame.isSkinned then return end
 	
 	-- style it
 	frame.temp = true
 	SetChatStyle(frame)
 end
 hooksecurefunc("FCF_OpenTemporaryWindow", SetupTempChat)
+
+-- reposition battle.net popup over chat #1
+BNToastFrame:HookScript("OnShow", function(self)
+	self:ClearAllPoints()
+	self:Point("TOPLEFT", TukuiGMFrameAnchor, "BOTTOMLEFT", -3, 13)
+
+end)
+
+-- reskin Toast Frame Close Button
+T.SkinCloseButton(BNToastFrameCloseButton)
+
+-- kill the default reset button
+ChatConfigFrameDefaultButton:Kill()
+
+-- default position of chat #1 (left) and chat #4 (right)
+T.SetDefaultChatPosition = function(frame)
+	if frame then
+		local id = frame:GetID()
+		local name = FCF_GetChatWindowInfo(id)
+		
+		if id == 1 then
+			frame:ClearAllPoints()
+			frame:Point("BOTTOMLEFT", TukuiInfoLeft, "TOPLEFT", 0, 6)
+		elseif id == 4 and name == LOOT then
+			if not frame.isDocked then
+				frame:ClearAllPoints()
+				frame:Point("BOTTOMRIGHT", TukuiInfoRight, "TOPRIGHT", 0, 6)
+				frame:SetJustifyH("RIGHT")
+			end
+		end
+		
+		-- lock them if unlocked
+		if not frame.isLocked then FCF_SetLocked(frame, 1) end
+	end
+end
+hooksecurefunc("FCF_RestorePositionAndDimensions", T.SetDefaultChatPosition)

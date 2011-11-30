@@ -60,20 +60,23 @@ bgframe:SetScript("OnEnter", function(self)
 end) 
 bgframe:SetScript("OnLeave", function(self) GameTooltip:Hide() end)
 
-local Stat = CreateFrame("Frame")
+local Stat = CreateFrame("Frame", "TukuiStatBattleGround", UIParent)
 Stat:EnableMouse(true)
+Stat.Option = C.datatext.battleground
+Stat.Color1 = T.RGBToHex(unpack(C.media.datatextcolor1))
+Stat.Color2 = T.RGBToHex(unpack(C.media.datatextcolor2))
 
-local Text1  = TukuiInfoLeftBattleGround:CreateFontString(nil, "OVERLAY")
+local Text1  = Stat:CreateFontString("TukuiStatBattleGroundText1", "OVERLAY")
 Text1:SetFont(C.media.font, C["datatext"].fontsize)
 Text1:SetPoint("LEFT", TukuiInfoLeftBattleGround, 30, 0.5)
 Text1:SetHeight(TukuiInfoLeft:GetHeight())
 
-local Text2  = TukuiInfoLeftBattleGround:CreateFontString(nil, "OVERLAY")
+local Text2  = Stat:CreateFontString("TukuiStatBattleGroundText2", "OVERLAY")
 Text2:SetFont(C.media.font, C["datatext"].fontsize)
 Text2:SetPoint("CENTER", TukuiInfoLeftBattleGround, 0, 0.5)
 Text2:SetHeight(TukuiInfoLeft:GetHeight())
 
-local Text3  = TukuiInfoLeftBattleGround:CreateFontString(nil, "OVERLAY")
+local Text3  = Stat:CreateFontString("TukuiStatBattleGroundText3", "OVERLAY")
 Text3:SetFont(C.media.font, C["datatext"].fontsize)
 Text3:SetPoint("RIGHT", TukuiInfoLeftBattleGround, -30, 0.5)
 Text3:SetHeight(TukuiInfoLeft:GetHeight())
@@ -88,15 +91,15 @@ local function Update(self, t)
 		for i=1, numScores do
 			local name, killingBlows, honorableKills, deaths, honorGained, faction, race, class, classToken, damageDone, healingDone, bgRating, ratingChange = GetBattlefieldScore(i)
 			if healingDone > damageDone then
-				dmgtxt = (L.datatext_healing..healingDone)
+				dmgtxt = (Stat.Color1..L.datatext_healing.."|r"..Stat.Color2..healingDone.."|r")
 			else
-				dmgtxt = (L.datatext_damage..damageDone)
+				dmgtxt = (Stat.Color1..L.datatext_damage.."|r"..Stat.Color2..damageDone.."|r")
 			end
 			if ( name ) then
 				if ( name == T.myname ) then
-					Text2:SetText(L.datatext_honor..format('%d', honorGained))
+					Text2:SetText(Stat.Color1..L.datatext_honor.."|r"..Stat.Color2..format('%d', honorGained).."|r")
 					Text1:SetText(dmgtxt)
-					Text3:SetText(L.datatext_killingblows..killingBlows)
+					Text3:SetText(Stat.Color1..L.datatext_killingblows.."|r"..Stat.Color2..killingBlows.."|r")
 				end   
 			end
 		end 

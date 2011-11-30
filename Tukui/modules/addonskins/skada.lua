@@ -1,4 +1,5 @@
-﻿local T, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+﻿--[[
+local T, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if not Skada then return end
 
@@ -82,3 +83,4 @@ local windows = {}
 for _, window in ipairs(Skada:GetWindows()) do
 	window:UpdateDisplay()
 end
+]]--

@@ -3,6 +3,7 @@ Author: Affli@RU-Howling Fjord,
 Modified: Elv
 All rights reserved.
 ]]--
+--[[
 local T, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if not IsAddOnLoaded("DBM-Core") then return end
@@ -247,3 +248,4 @@ end
 local loadOptions = CreateFrame("Frame")
 loadOptions:RegisterEvent("PLAYER_LOGIN")
 loadOptions:SetScript("OnEvent", ForceOptions)
+]]--

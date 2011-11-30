@@ -1,5 +1,8 @@
 local T, C, L = unpack(select(2, ...))
 
+local finder
+if RAID_FINDER then finder = RAID_FINDER.." - "..RAID_GROUPS else finder = RAID_GROUPS end
+
 -- dropdown micromenu
 local function CreateMicroMenuDropDown()
 	local microList = {
@@ -37,9 +40,9 @@ local function CreateMicroMenuDropDown()
 			end
 		end},
 		{text = LFG_TITLE,
-		func = function() ToggleFrame(LFDParentFrame) end},
-		{text = LOOKING_FOR_RAID,
-		func = function() ToggleFrame(LFRParentFrame) end},
+		func = function() ToggleFrame(LFDParentFrame) end},		
+		{text = RAID,
+		func = function() if T.toc >= 40300 then ToggleFrame(RaidParentFrame) else ToggleFriendsFrame(4) end end},
 		{text = HELP_BUTTON,
 		func = function() ToggleHelpFrame() end},
 		{text = CALENDAR_VIEW_EVENT,
@@ -48,7 +51,7 @@ local function CreateMicroMenuDropDown()
 			Calendar_Toggle()
 		end},
 		{text = ENCOUNTER_JOURNAL,
-		func = function() if T.toc >= 40200 then ToggleFrame(EncounterJournal) end end}, 
+		func = function() if T.toc >= 40200 then if T.toc >= 40300 then ToggleEncounterJournal() else ToggleFrame(EncounterJournal) end end end},
 	}
 	
 	for i=1, 13 do

@@ -5,14 +5,17 @@ local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, vari
 
 if C["datatext"].dps_text and C["datatext"].dps_text > 0 then
 	local events = {SWING_DAMAGE = true, RANGE_DAMAGE = true, SPELL_DAMAGE = true, SPELL_PERIODIC_DAMAGE = true, DAMAGE_SHIELD = true, DAMAGE_SPLIT = true, SPELL_EXTRA_ATTACKS = true}
-	local DPS_FEED = CreateFrame("Frame")
+	local DPS_FEED = CreateFrame("Frame", "TukuiStatDamage")
+	DPS_FEED.Option = C.datatext.dps_text
 	local player_id = UnitGUID("player")
 	local dmg_total, last_dmg_amount = 0, 0
 	local cmbt_time = 0
+	DPS_FEED.Color1 = T.RGBToHex(unpack(C.media.datatextcolor1))
+	DPS_FEED.Color2 = T.RGBToHex(unpack(C.media.datatextcolor2))
 
 	local pet_id = UnitGUID("pet")
      
-	local dText = TukuiInfoLeft:CreateFontString(nil, "OVERLAY")
+	local dText = DPS_FEED:CreateFontString("TukuiStatDamageText", "OVERLAY")
 	dText:SetFont(C.media.font, C["datatext"].fontsize)
 	dText:SetText("0.0 ",L.datatext_dps)
 
@@ -28,12 +31,17 @@ if C["datatext"].dps_text and C["datatext"].dps_text > 0 then
 	DPS_FEED:SetScript("OnEvent", function(self, event, ...) self[event](self, ...) end)
 	DPS_FEED:RegisterEvent("PLAYER_LOGIN")
 
+	local elapsed = 1
 	DPS_FEED:SetScript("OnUpdate", function(self, elap)
 		if UnitAffectingCombat("player") then
 			cmbt_time = cmbt_time + elap
 		end
-       
-		dText:SetText(getDPS())
+
+		elapsed = elapsed + elap
+		if elapsed >= 1 then
+			elapsed = 0
+			dText:SetText(getDPS())
+		end
 	end)
      
 	function DPS_FEED:PLAYER_LOGIN()
@@ -79,9 +87,9 @@ if C["datatext"].dps_text and C["datatext"].dps_text > 0 then
      
 	function getDPS()
 		if (dmg_total == 0) then
-			return ("0.0 " .. L.datatext_dps)
+			return (DPS_FEED.Color2.."0.0 |r" .. DPS_FEED.Color1..L.datatext_dps.."|r")
 		else
-			return string.format("%.1f " .. L.datatext_dps, (dmg_total or 0) / (cmbt_time or 1))
+			return string.format(DPS_FEED.Color2.."%.1fk |r" .. DPS_FEED.Color1 .. L.datatext_dps .. "|r", ((dmg_total or 0) / (cmbt_time or 1)) / 1000)
 		end
 	end
 

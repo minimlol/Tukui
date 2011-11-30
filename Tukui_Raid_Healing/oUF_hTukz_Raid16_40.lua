@@ -11,10 +11,13 @@ if not C["unitframes"].enable == true then return end
 local font2 = C["media"].uffont
 local font1 = C["media"].font
 local normTex = C["media"].normTex
+local bdcr, bdcg, bdcb = unpack(C["media"].bordercolor)
 local backdrop = {
 	bgFile = C["media"].blank,
 	insets = {top = -T.mult, left = -T.mult, bottom = -T.mult, right = -T.mult},
 }
+local point = "LEFT"
+local columnAnchorPoint = "TOP"
 
 local function Shared(self, unit)
 	self.colors = T.oUF_colors
@@ -101,7 +104,7 @@ local function Shared(self, unit)
         insets = { left = 0, right = 0, top = 0, bottom = 0 }
     })
     panel:SetBackdropColor(unpack(C["media"].backdropcolor))
-    panel:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
+    panel:SetBackdropBorderColor(bdcr * 0.7, bdcg * 0.7, bdcb * 0.7)
 	self.panel = panel
 	
 	local name = panel:CreateFontString(nil, "OVERLAY")
@@ -252,9 +255,15 @@ end
 
 oUF:RegisterStyle('TukuiHealR25R40', Shared)
 oUF:Factory(function(self)
-	oUF:SetActiveStyle("TukuiHealR25R40")	
+	oUF:SetActiveStyle("TukuiHealR25R40")
+
+	if C.unitframes.gridvertical then
+		point = "TOP"
+		columnAnchorPoint = "LEFT"
+	end
+		
 	if C["unitframes"].gridonly ~= true then
-		local raid = self:SpawnHeader("TukuiGrid", nil, "custom [@raid16,exists] show;hide",
+		local raid = self:SpawnHeader("TukuiRaidHealerGrid", nil, "custom [@raid16,exists] show;hide",
 			'oUF-initialConfigFunction', [[
 				local header = self:GetParent()
 				self:SetWidth(header:GetAttribute('initial-width'))
@@ -265,18 +274,18 @@ oUF:Factory(function(self)
 			"showRaid", true,
 			"xoffset", T.Scale(3),
 			"yOffset", T.Scale(-3),
-			"point", "LEFT",
+			"point", point,
 			"groupFilter", "1,2,3,4,5,6,7,8",
 			"groupingOrder", "1,2,3,4,5,6,7,8",
 			"groupBy", "GROUP",
 			"maxColumns", 8,
 			"unitsPerColumn", 5,
 			"columnSpacing", T.Scale(3),
-			"columnAnchorPoint", "TOP"		
+			"columnAnchorPoint", columnAnchorPoint	
 		)
 		raid:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 18, -250*T.raidscale)
 	else
-		local raid = self:SpawnHeader("TukuiGrid", nil, "raid,party",
+		local raid = self:SpawnHeader("TukuiRaidHealerGrid", nil, "raid,party",
 			'oUF-initialConfigFunction', [[
 				local header = self:GetParent()
 				self:SetWidth(header:GetAttribute('initial-width'))
@@ -289,14 +298,14 @@ oUF:Factory(function(self)
 			"showRaid", true, 
 			"xoffset", T.Scale(3),
 			"yOffset", T.Scale(-3),
-			"point", "LEFT",
+			"point", point,
 			"groupFilter", "1,2,3,4,5,6,7,8",
 			"groupingOrder", "1,2,3,4,5,6,7,8",
 			"groupBy", "GROUP",
 			"maxColumns", 8,
 			"unitsPerColumn", 5,
 			"columnSpacing", T.Scale(3),
-			"columnAnchorPoint", "TOP"		
+			"columnAnchorPoint", columnAnchorPoint	
 		)
 		raid:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 48, 190*T.raidscale)
 		
@@ -340,8 +349,8 @@ MaxGroup:SetScript("OnEvent", function(self)
 	local inInstance, instanceType = IsInInstance()
 	local _, _, _, _, maxPlayers, _, _ = GetInstanceInfo()
 	if inInstance and instanceType == "raid" and maxPlayers ~= 40 then
-		TukuiGrid:SetAttribute("groupFilter", "1,2,3,4,5")
+		TukuiRaidHealerGrid:SetAttribute("groupFilter", "1,2,3,4,5")
 	else
-		TukuiGrid:SetAttribute("groupFilter", "1,2,3,4,5,6,7,8")
+		TukuiRaidHealerGrid:SetAttribute("groupFilter", "1,2,3,4,5,6,7,8")
 	end
 end)

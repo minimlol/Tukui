@@ -10,7 +10,11 @@ local function style(self)
 	local name = self:GetName()
 	
 	--> fixing a taint issue while changing totem flyout button in combat.
-	if name:match("MultiCast") then return end 
+	if name:match("MultiCast") then return end
+	
+	--> don't skin the boss encounter extra button to match texture (4.3 patch)
+	--> http://www.tukui.org/storage/viewer.php?id=913811extrabar.jpg
+	if name:match("ExtraActionButton") then return end
 	
 	local action = self.action
 	local Button = self
@@ -21,19 +25,24 @@ local function style(self)
 	local Border  = _G[name.."Border"]
 	local Btname = _G[name.."Name"]
 	local normal  = _G[name.."NormalTexture"]
+	local BtnBG = _G[name..'FloatingBG']
  
 	Flash:SetTexture("")
 	Button:SetNormalTexture("")
  
-	Border:Hide()
-	Border = T.dummy
+	if Border then
+		Border:Hide()
+		Border = T.dummy
+	end
  
 	Count:ClearAllPoints()
 	Count:Point("BOTTOMRIGHT", 0, 2)
 	Count:SetFont(C["media"].font, 12, "OUTLINE")
- 
-	Btname:SetText("")
-	Btname:Kill()
+
+	if Btname then
+		Btname:SetText("")
+		Btname:Kill()
+	end
  
 	if not _G[name.."Panel"] then
 		-- resize all button not matching T.buttonsize
@@ -69,16 +78,20 @@ local function style(self)
 		normal:SetPoint("TOPLEFT")
 		normal:SetPoint("BOTTOMRIGHT")
 	end
+	
+	if BtnBG then
+		BtnBG:Kill()
+	end 
 end
 
 local function stylesmallbutton(normal, button, icon, name, pet)
-	local Flash	 = _G[name.."Flash"]
 	button:SetNormalTexture("")
 	
-	-- another bug fix reported by Affli in t12 beta
+	-- bug fix when moving spell from bar
 	button.SetNormalTexture = T.dummy
 	
-	Flash:SetTexture(media.buttonhover)
+	local Flash	 = _G[name.."Flash"]
+	Flash:SetTexture("")
 	
 	if not _G[name.."Panel"] then
 		button:SetWidth(T.petbuttonsize)
@@ -198,6 +211,8 @@ SpellFlyout:HookScript("OnShow", SetupFlyoutButton)
  
 --Hide the Mouseover texture and attempt to find the ammount of buttons to be skinned
 local function styleflyout(self)
+	if not self.FlyoutArrow then return end
+	
 	self.FlyoutBorder:SetAlpha(0)
 	self.FlyoutBorderShadow:SetAlpha(0)
 	

@@ -1,4 +1,7 @@
-local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
+local T, C, L = unpack(select(2, ...))
+
+-- NOTE for myself, this will need a total rewrite for MoP.
+-- This bag script has become out of control
 
 --[[
 	A featureless, 'pure' version of Stuffing. 
@@ -118,7 +121,6 @@ local StuffingTT = nil
 local QUEST_ITEM_STRING = nil
 
 function Stuffing:SlotUpdate(b)
-	if not TukuiBags:IsShown() then return end -- don't do any slot update if bags are not show
 	local texture, count, locked = GetContainerItemInfo (b.bag, b.slot)
 	local clink = GetContainerItemLink(b.bag, b.slot)
 	
@@ -217,7 +219,16 @@ function Stuffing:BagFrameSlotNew (slot, p)
 		ret.slot = slot
 		slot = slot - 4
 		tpl = "BankItemButtonBagTemplate"
-		ret.frame = CreateFrame("CheckButton", "StuffingBBag" .. slot, p, tpl)
+		ret.frame = CreateFrame("CheckButton", "TukuiBankBag" .. slot, p, tpl)
+		ret.frame:StyleButton()
+		ret.frame:SetTemplate("Default")
+		local icon = _G["TukuiBankBag" .. slot .. "IconTexture"]
+		local border = _G["TukuiBankBag" .. slot .. "NormalTexture"]
+		icon:SetTexCoord(.08, .92, .08, .92)
+		icon:ClearAllPoints()
+		icon:Point("TOPLEFT", 2, -2)
+		icon:Point("BOTTOMRIGHT", -2, 2)
+		border:SetTexture("")
 		ret.frame:SetID(slot + 4)
 		table.insert(self.bagframe_buttons, ret)
 
@@ -229,7 +240,16 @@ function Stuffing:BagFrameSlotNew (slot, p)
 		end
 	else
 		tpl = "BagSlotButtonTemplate"
-		ret.frame = CreateFrame("CheckButton", "StuffingFBag" .. slot .. "Slot", p, tpl)
+		ret.frame = CreateFrame("CheckButton", "TukuiBackBag" .. slot .. "Slot", p, tpl)
+		ret.frame:StyleButton()
+		ret.frame:SetTemplate("Default")
+		local icon = _G["TukuiBackBag" .. slot .. "SlotIconTexture"]
+		local border = _G["TukuiBackBag" .. slot .. "SlotNormalTexture"]
+		icon:SetTexCoord(.08, .92, .08, .92)
+		icon:ClearAllPoints()
+		icon:Point("TOPLEFT", 2, -2)
+		icon:Point("BOTTOMRIGHT", -2, 2)
+		border:SetTexture("")
 		ret.slot = slot
 		table.insert(self.bagframe_buttons, ret)
 	end
@@ -276,7 +296,13 @@ function Stuffing:SlotNew (bag, slot)
 	end
 
 	if not ret.frame then
-		ret.frame = CreateFrame("Button", "StuffingBag" .. bag .. "_" .. slot, self.bags[bag], tpl)
+		ret.frame = CreateFrame("Button", "TukuiBag_" .. bag .. "_" .. slot, self.bags[bag], tpl)
+		ret.frame:SetTemplate()
+		ret.frame:Height(31)
+		ret.frame:Width(31)
+		ret.frame:SetPushedTexture("")
+		ret.frame:SetNormalTexture("")
+		ret.frame:StyleButton()
 	end
 
 	ret.bag = bag
@@ -404,7 +430,7 @@ function Stuffing:CreateBagFrame(w)
 	f.b_close = CreateFrame("Button", "Stuffing_CloseButton" .. w, f, "UIPanelCloseButton")
 	f.b_close:Width(32)
 	f.b_close:Height(32)
-	f.b_close:Point("TOPRIGHT", -3, -3)
+	f.b_close:Point("TOPRIGHT", -1, -3)
 	f.b_close:SetScript("OnClick", function(self, btn)
 		if self:GetParent():GetName() == "TukuiBags" and btn == "RightButton" then
 			if Stuffing_DDMenu.initialize ~= Stuffing.Menu then
@@ -417,7 +443,13 @@ function Stuffing:CreateBagFrame(w)
 		self:GetParent():Hide()
 	end)
 	f.b_close:RegisterForClicks("AnyUp")
-	f.b_close:GetNormalTexture():SetDesaturated(1)
+	f.b_close:SetNormalTexture("")
+	f.b_close:SetPushedTexture("")
+	f.b_close:SetHighlightTexture("")
+	f.b_close.t = f.b_close:CreateFontString(nil, "OVERLAY")
+	f.b_close.t:SetFont(C.media.pixelfont, 12, "MONOCHROME")
+	f.b_close.t:SetPoint("CENTER", 0, 1)
+	f.b_close.t:SetText("X")
 
 	-- create the bags frame
 	local fb = CreateFrame ("Frame", n .. "BagsFrame", f)
@@ -602,38 +634,19 @@ function Stuffing:Layout(lb)
 	end
 
 	f:SetClampedToScreen(1)
-	f:SetBackdrop({
-		bgFile = C["media"].blank,
-		edgeFile = C["media"].blank,
-		edgeSize = T.mult,
-		insets = {left = -T.mult, right = -T.mult, top = -T.mult, bottom = -T.mult}
-	})
-	f:SetBackdropColor(unpack(C["media"].backdropcolor))
-	f:SetBackdropBorderColor(unpack(C["media"].bordercolor))
+	f:SetTemplate("Default")
 
 
 	-- bag frame stuff
 	local fb = f.bags_frame
 	if bag_bars == 1 then
-		fb:SetClampedToScreen(1)
-		fb:SetBackdrop({
-			bgFile = C["media"].blank,
-			edgeFile = C["media"].blank,
-			edgeSize = T.mult,
-			insets = {left = -T.mult, right = -T.mult, top = -T.mult, bottom = -T.mult}
-		})
-		fb:SetBackdropColor(unpack(C["media"].backdropcolor))
-		fb:SetBackdropBorderColor(unpack(C["media"].bordercolor))
+		fb:SetTemplate("Default")
 
 		local bsize = 30
 		if lb then bsize = 37 end
 
-		local w = 2 * 12
-		w = w + ((#bs - 1) * bsize)
-		w = w + (12 * (#bs - 2))
-
-		fb:Height(2 * 12 + bsize)
-		fb:Width(w)
+		fb:Height(bsize + 16)
+		fb:Width(f:GetWidth())
 		fb:Show()
 	else
 		fb:Hide()
@@ -714,21 +727,13 @@ function Stuffing:Layout(lb)
 
 				b.frame:ClearAllPoints()
 				b.frame:Point("TOPLEFT", f, "TOPLEFT", xoff, yoff)
-				b.frame:Height(31)
-				b.frame:Width(31)
-				b.frame:SetPushedTexture("")
-				b.frame:SetNormalTexture("")
+
 				b.frame:Show()
-				b.frame:SetTemplate("Default")
-				b.frame:SetBackdropColor(0, 0, 0, 0) -- we just need border with SetTemplate, not the backdrop. Hopefully this will fix invisible item that some users have.
-				b.frame:StyleButton()
 				
 				-- color fish bag border slot to red
 				if bagType == ST_FISHBAG then b.frame:SetBackdropBorderColor(1, 0, 0) b.frame.lock = true end
 				-- color profession bag slot border ~yellow
 				if bagType == ST_SPECIAL then b.frame:SetBackdropBorderColor(255/255, 243/255,  82/255) b.frame.lock = true end
-				
-				self:SlotUpdate(b)
 				
 				local iconTex = _G[b.frame:GetName() .. "IconTexture"]
 				iconTex:SetTexCoord(.08, .92, .08, .92)
@@ -769,20 +774,6 @@ function Stuffing:SetBagsForSorting(c)
 					end
 				end
 			end
-		elseif s == "p" then
-			if not self.bankFrame or not self.bankFrame:IsShown() then
-				for _, i in ipairs(bags_BACKPACK) do
-					if self.bags[i] and self.bags[i].bagType == ST_SPECIAL then
-						table.insert(self.sortBags, i)
-					end
-				end
-			else
-				for _, i in ipairs(bags_BANK) do
-					if self.bags[i] and self.bags[i].bagType == ST_SPECIAL then
-						table.insert(self.sortBags, i)
-					end
-				end
-			end
 		else
 			if tonumber(s) == nil then
 				Print(string.format(Loc["Error: don't know what \"%s\" means."], s))
@@ -809,8 +800,6 @@ local function StuffingSlashCmd(Cmd)
 		Stuffing_OpenConfig()
 	elseif cmd == "sort" then
 		Stuffing_Sort(args)
-	elseif cmd == "psort" then
-		Stuffing_Sort("c/p")
 	elseif cmd == "stack" then
 		Stuffing:SetBagsForSorting(args)
 		Stuffing:Restack()
@@ -1347,29 +1336,12 @@ function Stuffing.Menu(self, level)
 		Stuffing_Sort("d")
 	end
 	UIDropDownMenu_AddButton(info, level)
-	
-	wipe(info)
-	info.text = L.bags_sortspecial
-	info.notCheckable = 1
-	info.func = function()
-		Stuffing_Sort("c/p")
-	end
-	UIDropDownMenu_AddButton(info, level)
 
 	wipe(info)
 	info.text = L.bags_stackmenu
 	info.notCheckable = 1
 	info.func = function()
 		Stuffing:SetBagsForSorting("d")
-		Stuffing:Restack()
-	end
-	UIDropDownMenu_AddButton(info, level)
-	
-	wipe(info)
-	info.text = L.bags_stackspecial
-	info.notCheckable = 1
-	info.func = function()
-		Stuffing:SetBagsForSorting("c/p")
 		Stuffing:Restack()
 	end
 	UIDropDownMenu_AddButton(info, level)

@@ -1,7 +1,6 @@
-local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
+local T, C, L = unpack(select(2, ...))
 
 if T.client == "zhTW" then
-
 	L.chat_BATTLEGROUND_GET = "[B]"
 	L.chat_BATTLEGROUND_LEADER_GET = "[B]"
 	L.chat_BN_WHISPER_GET = "From"
@@ -28,6 +27,7 @@ if T.client == "zhTW" then
 	
 	L.disband = "正在解散隊伍"
 
+	L.datatext_notalents ="無天賦"
 	L.datatext_download = "下載: "
 	L.datatext_bandwidth = "寬頻: "
 	L.datatext_guild = "公會"
@@ -115,6 +115,7 @@ if T.client == "zhTW" then
 	L.popup_install_no = "不用了, 救命這UI真差"
 	L.popup_reset_yes = "當然啦, 預設就是美!"
 	L.popup_reset_no = "不囉, 不然我會發文抱怨!"
+	L.popup_fix_ab = "動作列發生問題, 您想要重新載入介面來修復嗎?"
  
 	L.merchant_repairnomoney = "您沒有足夠的金錢來修理!"
 	L.merchant_repaircost = "您的裝備已修理, 花費了"
@@ -162,8 +163,8 @@ if T.client == "zhTW" then
 	L.bags_stackend = "重新堆疊完成"
 	L.bags_rightclick_search = "點擊右鍵以搜尋物品."
 	
-	L.loot_fish = "Fishy loot"
-	L.loot_empty = "Empty slot"
+	L.loot_fish = "漁獲"
+	L.loot_empty = "無戰利品"
  
 	L.chat_invalidtarget = "無效的目標"
  
@@ -221,6 +222,7 @@ if T.client == "zhTW" then
 	L.move_achievements = "移動成就介面"
 	L.move_roll = "移動Roll戰利品的介面"
 	L.move_vehicle = "移動載具坐位介面"
+	L.move_extrabutton = "額外的按鈕"
 	
 	-- tuto/install
 	L.install_header_1 = "歡迎"
