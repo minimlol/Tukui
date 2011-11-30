@@ -86,7 +86,11 @@ local function LoadSkin()
 		icon:Point("TOPLEFT", 2, -2)
 		icon:Point("BOTTOMRIGHT", -2, 2)
 		icon:SetTexCoord(.08, .92, .08, .92)
-	end	
+	end
+	
+	if T.toc >= 40300 then
+		T.SkinEditBox(GuildItemSearchBox)
+	end
 end
 
 T.SkinFuncs["Blizzard_GuildBankUI"] = LoadSkin
