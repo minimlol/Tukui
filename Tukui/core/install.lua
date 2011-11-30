@@ -21,6 +21,7 @@ T.ChatSetup = function()
 
 	for i = 1, NUM_CHAT_WINDOWS do
 		local frame = _G[format("ChatFrame%s", i)]
+		local id = frame:GetID()
 
 		-- set default tukui font size
 		FCF_SetChatWindowFontSize(nil, frame, 12)
