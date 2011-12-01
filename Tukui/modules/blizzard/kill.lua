@@ -33,9 +33,7 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 
 		-- kill party 1 to 5
 		local function KillPartyFrame()
-			CompactPartyFrame:UnregisterAllEvents()
-			CompactPartyFrame.Show = ShadowUF.noop
-			CompactPartyFrame:Hide()
+			CompactPartyFrame:Kill()
 
 			for i=1, MEMBERS_PER_RAID_GROUP do
 				local name = "CompactPartyFrameMember" .. i
