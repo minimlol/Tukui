@@ -10,13 +10,59 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 		end
 	end
 	
-	if addon == "Tukui_Raid" or addon == "Tukui_Raid_Healing" then
-		CompactRaidFrameManager:SetScale(0.000001)
-		CompactRaidFrameContainer:SetScale(0.000001)		
+	-- disable Blizzard party & raid frame if our Raid Frames are loaded
+	if addon == "Tukui_Raid" or addon == "Tukui_Raid_Healing" then   
+		InterfaceOptionsFrameCategoriesButton11:SetScale(0.00001)
+		InterfaceOptionsFrameCategoriesButton11:SetAlpha(0)
+
+		local function KillRaidFrame()
+			CompactRaidFrameManager:UnregisterAllEvents()
+			if not InCombatLockdown() then CompactRaidFrameManager:Hide() end
+
+			local shown = CompactRaidFrameManager_GetSetting("IsShown")
+			if shown and shown ~= "0" then
+				CompactRaidFrameManager_SetSetting("IsShown", "0")
+			end
+		end
+
+		hooksecurefunc("CompactRaidFrameManager_UpdateShown", function()
+			KillRaidFrame()
+		end)
+
+		KillRaidFrame()
+
+		-- kill party 1 to 5
+		local function KillPartyFrame()
+			CompactPartyFrame:UnregisterAllEvents()
+			CompactPartyFrame.Show = ShadowUF.noop
+			CompactPartyFrame:Hide()
+
+			for i=1, MEMBERS_PER_RAID_GROUP do
+				local name = "CompactPartyFrameMember" .. i
+				local frame = _G[name]
+				frame:UnregisterAllEvents()
+			end			
+		end
+			
+		for i=1, MAX_PARTY_MEMBERS do
+			local name = "PartyMemberFrame" .. i
+			local frame = _G[name]
+
+			frame:Kill()
+
+			_G[name .. "HealthBar"]:UnregisterAllEvents()
+			_G[name .. "ManaBar"]:UnregisterAllEvents()
+		end
+		
+		if CompactPartyFrame then
+			KillPartyFrame()
+		elseif CompactPartyFrame_Generate then -- 4.1
+			hooksecurefunc("CompactPartyFrame_Generate", KillPartyFrame)
+		end		
 	end
 	
 	if addon ~= "Tukui" then return end
-	
+		
 	StreamingIcon:Kill()
 	Advanced_UseUIScale:Kill()
 	Advanced_UIScaleSlider:Kill()
@@ -38,6 +84,8 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 	SetCVar("showArenaEnemyFrames", 0)
 	
 	if C.arena.unitframes then
+		InterfaceOptionsFrameCategoriesButton10:SetScale(0.00001)
+		InterfaceOptionsFrameCategoriesButton10:SetAlpha(0) 
 		InterfaceOptionsUnitFramePanelArenaEnemyFrames:Kill()
 		InterfaceOptionsUnitFramePanelArenaEnemyCastBar:Kill()
 		InterfaceOptionsUnitFramePanelArenaEnemyPets:Kill()
