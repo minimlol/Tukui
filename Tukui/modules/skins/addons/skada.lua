@@ -61,9 +61,7 @@ barmod.ApplySettings = function(self, win)
 	skada.button:SetNormalFontObject(titlefont)
 
 	local color = win.db.title.color
-	--skada.button:SetBackdropColor(0, 0, 0, 0)
 	skada.button:SetBackdropColor(unpack(C["media"].backdropcolor))
-
 
 	skada:SetBackdrop(nil)
 	if not skada.backdrop then
