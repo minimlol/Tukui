@@ -193,5 +193,5 @@
 	
 	<Script file="developer\test.lua"/>	
 	
-	<Script file="modules\addonskins\sharedmedia.lua" />
+	<Script file="modules\skins\addons\sharedmedia.lua" />
 </Ui>
