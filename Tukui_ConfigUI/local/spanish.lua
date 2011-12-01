@@ -1,4 +1,4 @@
-﻿if GetLocale() == "esES" or "esMX" then
+﻿if GetLocale() == "esES" or GetLocale() == "esMX" then
 	-- translated by mrglmrgl
 	-- based on esMX client
 

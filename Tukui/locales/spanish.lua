@@ -1,6 +1,6 @@
 local T, C, L = unpack(select(2, ...))
 
-if T.client == "esES" or "esMX" then
+if T.client == "esES" or T.client == "esMX" then
 	L.chat_BATTLEGROUND_GET = "[B]"
 	L.chat_BATTLEGROUND_LEADER_GET = "[B]"
 	L.chat_BN_WHISPER_GET = "De"
