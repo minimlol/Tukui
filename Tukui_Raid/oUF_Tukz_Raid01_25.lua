@@ -76,6 +76,7 @@ local function Shared(self, unit)
 		power.bg.multiplier = 0.1				
 	else
 		power.colorPower = true
+		power.PostUpdate = T.PreUpdatePower
 	end
 		
 	local name = health:CreateFontString(nil, 'OVERLAY')

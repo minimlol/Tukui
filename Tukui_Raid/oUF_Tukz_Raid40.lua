@@ -50,7 +50,8 @@ local function Shared(self, unit)
 	else
 		health.colorDisconnected = true
 		health.colorClass = true
-		health.colorReaction = true			
+		health.colorReaction = true
+		power.PostUpdate = T.PreUpdatePower
 	end
 		
 	local name = health:CreateFontString(nil, 'OVERLAY')
