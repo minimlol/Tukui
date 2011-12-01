@@ -4,7 +4,7 @@ if not IsAddOnLoaded("Skada") then return end
 local Skada = Skada
 
 local Skada = Skada
-local barSpacing = T.Scale(1, 1)
+local barSpacing = T.Scale(0, 0)
 local borderWidth = T.Scale(2, 2)
 
 local barmod = Skada.displays["bar"]

@@ -20,9 +20,9 @@ Omen.UpdateBarLabelSettings_ = Omen.UpdateBarLabelSettings
 Omen.UpdateBarLabelSettings = function(self)
 	self:UpdateBarLabelSettings_()
 	for i, v in ipairs(self.Bars) do
-		v.Text1:SetFont(C.media.font, 12, "OUTLINE")
-		v.Text2:SetFont(C.media.font, 12, "OUTLINE")
-		v.Text3:SetFont(C.media.font, 12, "OUTLINE")
+		v.Text1:SetFont(C.media.font, 12)
+		v.Text2:SetFont(C.media.font, 12)
+		v.Text3:SetFont(C.media.font, 12)
 	end
 end
 
@@ -64,7 +64,7 @@ omen_mt.__index = function(self, barID)
 end
 
 -- Option Overrides
-Omen.db.profile.Bar.Spacing = 2
+Omen.db.profile.Bar.Spacing = 0
 
 -- Force updates
 Omen:UpdateBarTextureSettings()
