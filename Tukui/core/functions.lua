@@ -787,7 +787,6 @@ T.PreUpdatePower = function(power, unit)
 	local color = T.UnitColor.power[pType]
 	if color then
 		power:SetStatusBarColor(color[1], color[2], color[3])
-		if power.bg then power.bg:SetVertexColor(color[1] * power.bg.multiplier, color[2] * power.bg.multiplier, color[3] * power.bg.multiplier) end
 	end
 end
 
