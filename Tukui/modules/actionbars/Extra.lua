@@ -1,5 +1,6 @@
 local T, C, L = unpack(select(2, ...))
 if T.toc < 40300 then return end
+if not C.actionbar.enable then return end
 
 -- create the holder to allow moving extra button
 local holder = CreateFrame("Frame", "TukuiExtraActionBarFrameHolder", UIParent)
