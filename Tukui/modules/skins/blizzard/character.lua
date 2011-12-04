@@ -296,6 +296,7 @@ local function LoadSkin()
 		TokenFramePopup:SetTemplate("Default")
 		TokenFramePopup:Point("TOPLEFT", TokenFrame, "TOPRIGHT", 4, -28)				
 	end)
+	T.SkinScrollBar(TokenFrameContainerScrollBar)
 
 	--Pet
 	PetModelFrame:CreateBackdrop("Default")
