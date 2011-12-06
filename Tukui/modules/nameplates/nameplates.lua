@@ -59,13 +59,6 @@ local PlateBlacklist = {
 
 	--Army of the Dead
 	["Army of the Dead Ghoul"] = true,
-
-	--Hunter Trap
-	["Venomous Snake"] = true,
-	["Viper"] = true,
-
-	--Test
-	--["Unbound Seer"] = true,
 }
 
 -- Check Player's Role
