@@ -154,6 +154,7 @@ local function LoadSkin()
 	--Equipement Manager
 	T.SkinButton(PaperDollEquipmentManagerPaneEquipSet)
 	T.SkinButton(PaperDollEquipmentManagerPaneSaveSet)
+	T.SkinScrollBar(GearManagerDialogPopupScrollFrameScrollBar)
 	PaperDollEquipmentManagerPaneEquipSet:Width(PaperDollEquipmentManagerPaneEquipSet:GetWidth() - 8)
 	PaperDollEquipmentManagerPaneSaveSet:Width(PaperDollEquipmentManagerPaneSaveSet:GetWidth() - 8)
 	PaperDollEquipmentManagerPaneEquipSet:Point("TOPLEFT", PaperDollEquipmentManagerPane, "TOPLEFT", 8, 0)
