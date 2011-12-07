@@ -4,6 +4,7 @@ local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, vari
 --------------------------------------------------------------------
 
 if C["datatext"].avd and C["datatext"].avd > 0 then
+	local dodge, parry, block, MissChance, avoidance, targetlv, playerlv, basemisschance, leveldifference
 	local Stat = CreateFrame("Frame", "TukuiStatAvoidance")
 	Stat:EnableMouse(true)
 	Stat:SetFrameStrata("BACKGROUND")
