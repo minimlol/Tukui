@@ -16,7 +16,7 @@ local backdrop = {
 }
 
 local function Shared(self, unit)
-	self.colors = T.oUF_colors
+	self.colors = T.UnitColor
 	self:RegisterForClicks("AnyUp")
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)
@@ -50,7 +50,7 @@ local function Shared(self, unit)
 	else
 		health.colorDisconnected = true
 		health.colorClass = true
-		health.colorReaction = true			
+		health.colorReaction = true
 	end
 		
 	local name = health:CreateFontString(nil, 'OVERLAY')
