@@ -141,15 +141,20 @@ end
 
 f:RegisterEvent("PLAYER_LOGIN")
 f:SetScript("OnEvent", function(self, event)
-	if not IsAddOnLoaded("BigWigs_Plugins") then return end
 	if IsAddOnLoaded("Tukui_BigWigs") then return end
-	RegisterStyle()
-	local profile = BigWigs3DB["profileKeys"][T.myname.." - "..T.myrealm]
-	local path = BigWigs3DB["namespaces"]["BigWigs_Plugins_Bars"]["profiles"][profile]
-	path.texture = C.media.normTex
-	path.barStyle = "Tukui"
-	path.font = C.media.font
-	
-	path = BigWigs3DB["namespaces"]["BigWigs_Plugins_Proximity"]["profiles"][profile]
-	path.font = C.media.font
+	local load = CreateFrame("Frame")
+	load:RegisterEvent("ADDON_LOADED")
+	load:SetScript("OnEvent", function(self, event, addon)
+		if addon == "BigWigs_Plugins" then
+			RegisterStyle()
+			local profile = BigWigs3DB["profileKeys"][T.myname.." - "..T.myrealm]
+			local path = BigWigs3DB["namespaces"]["BigWigs_Plugins_Bars"]["profiles"][profile]
+			path.texture = C.media.normTex
+			path.barStyle = "Tukui"
+			path.font = C.media.font
+			
+			path = BigWigs3DB["namespaces"]["BigWigs_Plugins_Proximity"]["profiles"][profile]
+			path.font = C.media.font
+		end
+	end)
 end)
