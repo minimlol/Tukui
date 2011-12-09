@@ -142,7 +142,6 @@ end
 f:RegisterEvent("ADDON_LOADED")
 f:SetScript("OnEvent", function(self, event, addon)
 	if IsAddOnLoaded("Tukui_BigWigs") then return end
-	print(addon)
 	if addon == "BigWigs_Plugins" then
 		RegisterStyle()
 		local profile = BigWigs3DB["profileKeys"][T.myname.." - "..T.myrealm]
