@@ -31,7 +31,7 @@ local function freestyle(bar)
 	end
 
 	-- reparent and hide icon background
-	local ibg = bar:Get("bigwigs:tukui_bigwigs:ibg")
+	local ibg = bar:Get("bigwigs:Tukui:ibg")
 	if ibg then
 		ibg:ClearAllPoints()
 		ibg:SetParent(UIParent)
