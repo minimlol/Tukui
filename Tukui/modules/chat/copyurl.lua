@@ -32,9 +32,6 @@ local FindURL = function(self, event, msg, ...)
 
 	newMsg, found = gsub(msg, "([_A-Za-z0-9-%.]+)@([_A-Za-z0-9-]+)(%.+)([_A-Za-z0-9-%.]+)%s?", PrintURL("%1@%2%3%4"))
 	if found > 0 then return false, newMsg, ... end
-	
-	newMsg, found = gsub(msg, "([_A-Za-z0-9-]+)%.([_A-Za-z0-9-%./:]+)%s?", PrintURL("%1.%2"))
-	if found > 0 then return false, newMsg, ... end
 end
 
 ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", FindURL)
