@@ -2,44 +2,38 @@ local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, vari
 if C["chat"].enable ~= true then return end
 
 local gsub = gsub
+local color = "16FF5D"
+local usebracket = false
+local usecolor = true
+
+local function PrintURL(url)
+	if (usecolor) then
+		if (usebracket) then
+			url = "|cff"..color.."|Hurl:"..url.."|h["..url.."]|h|r "
+		else
+			url = "|cff"..color.."|Hurl:"..url.."|h"..url.."|h|r "
+		end
+	else
+		if (usebracket) then
+			url = "|Hurl:"..url.."|h["..url.."]|h "
+		else
+			url = "|Hurl:"..url.."|h"..url.."|h "
+		end
+	end
+	return url
+end
+
 local FindURL = function(self, event, msg, ...)
-	local newMsg, found = gsub(msg, "http://[%a%-%d]*%.?[%a%-%d]+%.%a+/%S+", "|cff16FF5D|Hurl:%1|h[%1]|h|r")
+	local newMsg, found = gsub(msg, "(%a+)://(%S+)%s?", PrintURL("%1://%2"))
+	if found > 0 then return false, newMsg, ... end
+	
+	newMsg, found = gsub(msg, "www%.([_A-Za-z0-9-]+)%.(%S+)%s?", PrintURL("www.%1.%2"))
 	if found > 0 then return false, newMsg, ... end
 
-	newMsg, found = gsub(msg, "http://[%a%-%d]*%.?[%a%-%d]+%.[%a%-%d]+%.%a+/%S+", "|cff16FF5D|Hurl:%1|h[%1]|h|r")
+	newMsg, found = gsub(msg, "([_A-Za-z0-9-%.]+)@([_A-Za-z0-9-]+)(%.+)([_A-Za-z0-9-%.]+)%s?", PrintURL("%1@%2%3%4"))
 	if found > 0 then return false, newMsg, ... end
-
-	newMsg, found = gsub(msg, "http://[%a%-%d]*%.?[%a%-%d]+%.%a+/", "|cff16FF5D|Hurl:%1|h[%1]|h|r")
-	if found > 0 then return false, newMsg, ... end
-
-	newMsg, found = gsub(msg, "http://[%a%-%d]*%.?[%a%-%d]+%.[%a%-%d]+%.%a+/", "|cff16FF5D|Hurl:%1|h[%1]|h|r")
-	if found > 0 then return false, newMsg, ... end
-
-	newMsg, found = gsub(msg, "http://[%a%-%d]*%.?[%a%-%d]+%.%a+$", "|cff16FF5D|Hurl:%1|h[%1]|h|r")
-	if found > 0 then return false, newMsg, ... end
-
-	newMsg, found = gsub(msg, "http://[%a%-%d]*%.?[%a%-%d]+%.[%a%-%d]+%.%a+$", "|cff16FF5D|Hurl:%1|h[%1]|h|r")
-	if found > 0 then return false, newMsg, ... end
-
-	newMsg, found = gsub(msg, "(http://[%a%-%d]*%.?[%a%-%d]+%.%a+) ", "|cff16FF5D|Hurl:%1|h[%1]|h|r ")
-	if found > 0 then return false, newMsg, ... end
-
-	newMsg, found = gsub(msg, "(http://[%a%-%d]*%.?[%a%-%d]+%.[%a%-%d]+%.%a+) ", "|cff16FF5D|Hurl:%1|h[%1]|h|r ")
-	if found > 0 then return false, newMsg, ... end
-
-	newMsg, found = gsub(msg, "[%a%-%d]*%.?[%a%-%d]+%.%a+/%S+", "|cff16FF5D|Hurl:%1|h[%1]|h|r")
-	if found > 0 then return false, newMsg, ... end
-
-	newMsg, found = gsub(msg, "[%a%-%d]*%.?[%a%-%d]+%.%a+/", "|cff16FF5D|Hurl:%1|h[%1]|h|r")
-	if found > 0 then return false, newMsg, ... end
-
-	newMsg, found = gsub(msg, "[%a%-%d]*%.?[%a%-%d]+%.%a+$", "|cff16FF5D|Hurl:%1|h[%1]|h|r")
-	if found > 0 then return false, newMsg, ... end
-
-	newMsg, found = gsub(msg, "([%a%-%d]*%.?[%a%-%d]+%.%a+) ", "|cff16FF5D|Hurl:%1|h[%1]|h|r ")
-	if found > 0 then return false, newMsg, ... end
-
-	newMsg, found = gsub(msg, "%d+%.%d+%.%d+%.%d+:?%d*/?%S*", "|cff16FF5D|Hurl:%1|h[%1]|h|r")
+	
+	newMsg, found = gsub(msg, "([_A-Za-z0-9-]+)%.(%S+)%s?", PrintURL("%1.%2"))
 	if found > 0 then return false, newMsg, ... end
 end
 
