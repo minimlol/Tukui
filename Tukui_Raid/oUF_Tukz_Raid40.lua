@@ -101,6 +101,11 @@ local function Shared(self, unit)
 		self.Range = range
 	end
 	
+	-- for editors, easy way to edit raid unit frames
+	local header = self:GetParent():GetName()
+	self.PostUpdateRaidUnit = T.PostUpdateRaidUnit or T.dummy
+	self:PostUpdateRaidUnit(unit, header)
+	
 	return self
 end
 

@@ -9,6 +9,13 @@ TukuiConfigUILocalization.generaluiscale = "UI Scale (if auto-scale is disabled)
 TukuiConfigUILocalization.generalbackdropcolor = "Set default backdrop color of panels"
 TukuiConfigUILocalization.generalbordercolor = "Set default border color of panels"
 TukuiConfigUILocalization.generalblizzardreskin = "Reskin Blizzard frames to match Tukui"
+TukuiConfigUILocalization.generalbigwigsreskin = "Reskin Big Wigs frames to match Tukui"
+TukuiConfigUILocalization.generaldbmreskin = "Reskin Deadly Boss Mods frames to match Tukui"
+TukuiConfigUILocalization.generaldxereskin = "Reskin Deus Vox Encounter frames to match Tukui"
+TukuiConfigUILocalization.generalomenreskin = "Reskin Omen frames to match Tukui"
+TukuiConfigUILocalization.generalrecountreskin = "Reskin Recount frames to match Tukui"
+TukuiConfigUILocalization.generalskadareskin = "Reskin Skada frames to match Tukui"
+TukuiConfigUILocalization.generaltinydpsreskin = "Reskin Tiny DPS frames to match Tukui"
  
 -- nameplate
 TukuiConfigUILocalization.nameplate = "Nameplates"

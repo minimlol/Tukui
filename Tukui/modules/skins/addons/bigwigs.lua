@@ -5,6 +5,7 @@
 
 local T, C, L = unpack(select(2, ...))
 
+if not C.general.bigwigsreskin then return end
 if not IsAddOnLoaded("BigWigs") then return end
 
 local buttonsize = 19
@@ -30,7 +31,7 @@ local function freestyle(bar)
 	end
 
 	-- reparent and hide icon background
-	local ibg = bar:Get("bigwigs:Tukui:bg")
+	local ibg = bar:Get("bigwigs:Tukui:ibg")
 	if ibg then
 		ibg:ClearAllPoints()
 		ibg:SetParent(UIParent)
@@ -42,6 +43,30 @@ local function freestyle(bar)
 	bar.candyBarBar.SetPoint=bar.candyBarBar.OldSetPoint
 	bar.candyBarIconFrame.SetWidth=bar.candyBarIconFrame.OldSetWidth
 	bar.SetScale=bar.OldSetScale
+	
+	--Reset Positions
+	--Icon
+	bar.candyBarIconFrame:ClearAllPoints()
+	bar.candyBarIconFrame:SetPoint("TOPLEFT")
+	bar.candyBarIconFrame:SetPoint("BOTTOMLEFT")
+	bar.candyBarIconFrame:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+
+	--Status Bar
+	bar.candyBarBar:ClearAllPoints()
+	bar.candyBarBar:SetPoint("TOPRIGHT")
+	bar.candyBarBar:SetPoint("BOTTOMRIGHT")
+
+	--BG
+	bar.candyBarBackground:SetAllPoints()
+
+	--Duration
+	bar.candyBarDuration:ClearAllPoints()
+	bar.candyBarDuration:SetPoint("RIGHT", bar.candyBarBar, "RIGHT", -2, 0)
+
+	--Name
+	bar.candyBarLabel:ClearAllPoints()
+	bar.candyBarLabel:SetPoint("LEFT", bar.candyBarBar, "LEFT", 2, 0)
+	bar.candyBarLabel:SetPoint("RIGHT", bar.candyBarBar, "RIGHT", -2, 0)
 end
 
 local applystyle = function(bar)
@@ -81,7 +106,7 @@ local applystyle = function(bar)
 		ibg:Point("BOTTOMRIGHT", bar.candyBarIconFrame, "BOTTOMRIGHT", 2, -2)
 		ibg:SetFrameStrata("BACKGROUND")
 		ibg:Show()
-		bar:Set("bigwigs:Tukui:bg", ibg)
+		bar:Set("bigwigs:Tukui:ibg", ibg)
 	end
 
 	-- setup timer and bar name fonts and positions
@@ -140,7 +165,8 @@ end
 
 f:RegisterEvent("ADDON_LOADED")
 f:SetScript("OnEvent", function(self, event, addon)
-	if event == "ADDON_LOADED" and addon == "BigWigs_Plugins" then
+	if IsAddOnLoaded("Tukui_BigWigs") then return end
+	if addon == "BigWigs_Plugins" then
 		RegisterStyle()
 		local profile = BigWigs3DB["profileKeys"][T.myname.." - "..T.myrealm]
 		local path = BigWigs3DB["namespaces"]["BigWigs_Plugins_Bars"]["profiles"][profile]
@@ -151,6 +177,6 @@ f:SetScript("OnEvent", function(self, event, addon)
 		path = BigWigs3DB["namespaces"]["BigWigs_Plugins_Proximity"]["profiles"][profile]
 		path.font = C.media.font
 		
-		f:UnregisterEvent("ADDON_LOADED")
+		self:UnregisterEvent("ADDON_LOADED")
 	end
 end)
