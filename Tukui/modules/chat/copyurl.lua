@@ -24,10 +24,10 @@ local function PrintURL(url)
 end
 
 local FindURL = function(self, event, msg, ...)
-	local newMsg, found = gsub(msg, "(%a+)://([_A-Za-z0-9-%./:]+)%s?", PrintURL("%1://%2"))
+	local newMsg, found = gsub(msg, "(%a+)://(%S+)%s?", PrintURL("%1://%2"))
 	if found > 0 then return false, newMsg, ... end
 	
-	newMsg, found = gsub(msg, "www%.([_A-Za-z0-9-]+)%.([_A-Za-z0-9-%./:]+)%s?", PrintURL("www.%1.%2"))
+	newMsg, found = gsub(msg, "www%.([_A-Za-z0-9-]+)%.(%S+)%s?", PrintURL("www.%1.%2"))
 	if found > 0 then return false, newMsg, ... end
 
 	newMsg, found = gsub(msg, "([_A-Za-z0-9-%.]+)@([_A-Za-z0-9-]+)(%.+)([_A-Za-z0-9-%.]+)%s?", PrintURL("%1@%2%3%4"))
