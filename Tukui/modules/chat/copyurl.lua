@@ -53,27 +53,15 @@ local currentLink = nil
 local ChatFrame_OnHyperlinkShow_Original = ChatFrame_OnHyperlinkShow
 ChatFrame_OnHyperlinkShow = function(self, link, ...)
 	if (link):sub(1, 3) == "url" then
+		local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
 		currentLink = (link):sub(5)
-		StaticPopup_Show("TukuiChatCopyUrlPopup")
+		if (not ChatFrameEditBox:IsShown()) then
+			ChatEdit_ActivateChat(ChatFrameEditBox)
+		end
+		ChatFrameEditBox:Insert(currentLink)
+		ChatFrameEditBox:HighlightText()
+		currentLink = nil
 		return
 	end
 	ChatFrame_OnHyperlinkShow_Original(self, link, ...)
 end
-
-StaticPopupDialogs["TukuiChatCopyUrlPopup"] = {
-	text = "URL",
-	button1 = CLOSE,
-	hasEditBox = 1,
-	editBoxWidth = 350,
-	OnShow = function(frame)
-		frame.editBox:SetText(currentLink)
-		frame.editBox:SetFocus()
-		frame.editBox:HighlightText(0)
-		currentLink = nil
-	end,
-	EditBoxOnEscapePressed = function(frame) frame:GetParent():Hide() end,
-	timeout = 0,
-	whileDead = 1,
-	hideOnEscape = 1,
-	preferredIndex = 3,
-}
