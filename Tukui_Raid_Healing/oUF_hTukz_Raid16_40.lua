@@ -347,7 +347,7 @@ oUF:Factory(function(self)
 end)
 
 -- only show 5 groups in raid (25 mans raid)
-local MaxGroup = CreateFrame("Frame")
+local MaxGroup = CreateFrame("Frame", "TukuiRaidHealerGridMaxGroup")
 MaxGroup:RegisterEvent("PLAYER_ENTERING_WORLD")
 MaxGroup:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 MaxGroup:SetScript("OnEvent", function(self)
