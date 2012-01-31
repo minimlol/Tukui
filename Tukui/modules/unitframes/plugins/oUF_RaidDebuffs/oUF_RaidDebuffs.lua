@@ -227,7 +227,7 @@ local blacklist = {
 }
 
 -- kind of fix for deep corruption, which need to show stacking first
-local DeepCorruption {
+local DeepCorruption = {
 	[103628] = true, -- Deep Corruption (stacking)
 	[109389] = true, -- Deep Corruption (stacking)
 }
