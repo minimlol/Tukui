@@ -1,9 +1,8 @@
-local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
-
+local T, C, L, G = unpack(select(2, ...)) 
 if not C["actionbar"].enable == true then return end
 
 ---------------------------------------------------------------------------
--- setup MultiBarBottomRight as bar #3
+-- setup MultiBarLeft as bar #3 
 ---------------------------------------------------------------------------
 
 local bar = TukuiBar3
@@ -16,10 +15,22 @@ for i= 1, 12 do
 	b:ClearAllPoints()
 	b:SetFrameStrata("BACKGROUND")
 	b:SetFrameLevel(15)
-
+	
 	if i == 1 then
-		b:SetPoint("TOPLEFT", bar,"TOPLEFT", T.buttonspacing, -T.buttonspacing)
+		b:SetPoint("BOTTOMLEFT", bar, T.buttonspacing, T.buttonspacing)
+	elseif i == 7 then
+		b:SetPoint("TOPLEFT", bar, T.buttonspacing, -T.buttonspacing)
 	else
 		b:SetPoint("LEFT", b2, "RIGHT", T.buttonspacing, 0)
 	end
+	
+	G.ActionBars.Bar3["Button"..i] = b
 end
+
+for i=7, 12 do
+	local b = _G["MultiBarBottomRightButton"..i]
+	local b2 = _G["MultiBarBottomRightButton1"]
+	b:SetFrameLevel(b2:GetFrameLevel() - 2)
+end
+
+RegisterStateDriver(bar, "visibility", "[vehicleui][petbattle][overridebar] hide; show")
