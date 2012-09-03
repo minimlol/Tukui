@@ -200,7 +200,7 @@ if C.chat.background then
 	-- CHAT BG LEFT
 	local chatleftbg = CreateFrame("Frame", "TukuiChatBackgroundLeft", TukuiInfoLeft)
 	chatleftbg:SetTemplate("Transparent")
-	chatleftbg:Size(T.InfoLeftRightWidth + 12, 177)
+	chatleftbg:Size(T.InfoLeftRightWidth + 12, 149)
 	chatleftbg:Point("BOTTOM", TukuiInfoLeft, "BOTTOM", 0, -6)
 	chatleftbg:SetFrameLevel(1)
 	G.Panels.LeftChatBackground = chatleftbg
