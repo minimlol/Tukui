@@ -77,6 +77,7 @@ local function UpdateTooltip(self)
 		end
 	elseif self:GetAnchorType() == "ANCHOR_NONE" and InCombatLockdown() and C["tooltip"].hidecombat == true then
 		self:Hide()
+		return
 	end
 	
 	if name and (TukuiPlayerBuffs or TukuiPlayerDebuffs) then
@@ -122,7 +123,7 @@ end
 
 local function SetTooltipDefaultAnchor(self, parent)
 	if C["tooltip"].cursor == true then
-		if IsAddOnLoaded("Tukui_Raid_Healing") and parent ~= UIParent then
+		if parent ~= UIParent then
 			self:SetOwner(parent, "ANCHOR_NONE")
 		else
 			self:SetOwner(parent, "ANCHOR_CURSOR")
