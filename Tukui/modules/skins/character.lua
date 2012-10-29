@@ -34,6 +34,11 @@ local function LoadSkin()
 		icon:Point("TOPLEFT", 2, -2)
 		icon:Point("BOTTOMRIGHT", -2, 2)
 		
+		slot.ignoreTexture = slot:CreateTexture(nil, "OVERLAY")
+		slot.ignoreTexture:SetTexture("Interface\\PaperDollInfoFrame\\UI-GearManager-LeaveItem-Transparent")
+		slot.ignoreTexture:SetSize(40, 40)
+		slot.ignoreTexture:SetPoint("CENTER", slot)
+		
 		slot:SetFrameLevel(slot:GetFrameLevel() + 2)
 		slot:CreateBackdrop("Default")
 		slot.backdrop:SetAllPoints()
@@ -133,7 +138,6 @@ local function LoadSkin()
 			object.BgBottom:SetTexture(nil)
 			object.BgMiddle:SetTexture(nil)
 
-			object.Check:SetTexture(nil)
 			object.icon:SetTexCoord(.08, .92, .08, .92)
 			object:SetTemplate("Default")
 		end
