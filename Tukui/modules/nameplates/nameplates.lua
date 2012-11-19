@@ -55,9 +55,10 @@ local PlateBlacklist = {
 	["Windfury Totem"] = true,
 	["Totem of Wrath"] = true,
 	["Wrath of Air Totem"] = true,
-	
-	--Enhancement Shaman wolfs
-	["Spirit Wolf"] = true,
+	["Air Totem"] = true,
+	["Water Totem"] = true,
+	["Fire Totem"] = true,
+	["Earth Totem"] = true,
 
 	--Balance Druid treants
 	["Treant"] = true,
