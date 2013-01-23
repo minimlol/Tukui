@@ -22,8 +22,4 @@ for i= 1, 12 do
 	else
 		b:SetPoint("TOP", b2, "BOTTOM", 0, -T.buttonspacing)
 	end
-	
-	G.ActionBars.Bar5["Button"..i] = b
 end
-
-RegisterStateDriver(bar, "visibility", "[vehicleui][petbattle][overridebar] hide; show")

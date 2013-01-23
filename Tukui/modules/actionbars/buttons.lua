@@ -2,6 +2,7 @@ local T, C, L, G = unpack(select(2, ...))
 
 -- omg this file sux, it really need a rewrite someday, I was probably drunk when I made this. :X
 
+
 local function ShowOrHideBar(bar, button)
 	local db = TukuiDataPerChar
 
