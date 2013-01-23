@@ -138,29 +138,32 @@ end
 --hook the SetCooldown method of all cooldown frames
 --ActionButton1Cooldown is used here since its likely to always exist
 --and I'd rather not create my own cooldown frame to preserve a tiny bit of memory
-local function Timer_Start(self, start, duration)
+local function Timer_Start(self, start, duration, charges, maxCharges)
 	if self.noOCC then return end
+	
 	--start timer
 	if start > 0 and duration > T.SetDefaultActionButtonCooldownMinDuration then
 		local timer = self.timer or Timer_Create(self)
+		local num = charges or 0
 		timer.start = start
 		timer.duration = duration
+		timer.charges = num
+		timer.maxCharges = maxCharges
 		timer.enabled = true
 		timer.nextUpdate = 0
-		if timer.fontScale >= T.SetDefaultActionButtonCooldownMinScale then timer:Show() end
+		if timer.fontScale >= T.SetDefaultActionButtonCooldownMinScale and timer.charges < 1 then
+			timer:Show()
+		end
 	--stop timer
-	--Note 5.1, look like we always need the cooldown update script to be enabled. (Example: Shaman & Ascendance)
-	--[[
 	else
 		local timer = self.timer
 		if timer then
 			Timer_Stop(timer)
 		end
-	--]]
 	end
 end
 
-hooksecurefunc(getmetatable(ActionButton1Cooldown).__index, "SetCooldown", Timer_Start)
+hooksecurefunc(getmetatable(_G["ActionButton1Cooldown"]).__index, "SetCooldown", Timer_Start)
 
 local active = {}
 local hooked = {}
@@ -173,24 +176,12 @@ local function cooldown_OnHide(self)
 	active[self] = nil
 end
 
-local function cooldown_ShouldUpdateTimer(self, start, duration)
-	local timer = self.timer
-	if not timer then
-		return true
-	end
-	return timer.start ~= start
-end
-
 T.UpdateActionButtonCooldown = function(self)
 	local button = self:GetParent()
 	local start, duration, enable = GetActionCooldown(button.action)
 	local charges, maxCharges, chargeStart, chargeDuration = GetActionCharges(button.action)
-	
-	if charges and charges > 0 then return end
-	
-	if cooldown_ShouldUpdateTimer(self, start, duration) then
-		Timer_Start(self, start, duration)
-	end
+
+	Timer_Start(self, start, duration, charges, maxCharges)
 end
 
 local EventWatcher = CreateFrame("Frame")
