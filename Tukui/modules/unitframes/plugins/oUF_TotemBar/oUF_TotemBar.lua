@@ -1,4 +1,4 @@
-local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
+local T, C, L, G = unpack(select(2, ...)) 
 if C.unitframes.enable ~= true or T.myclass ~= "SHAMAN" then return end
 --[[
 	Documentation:
@@ -43,32 +43,10 @@ local GetTotemInfo, SetValue, GetTime = GetTotemInfo, SetValue, GetTime
 local Abbrev = function(name)	
 	return (string.len(name) > 10) and string.gsub(name, "%s*(.)%S*%s*", "%1. ") or name
 end
-local function TotemOnClick(self,...)
-	local id = self.ID
-	local mouse = ...
---~ 	print(id, mouse)
-		if IsShiftKeyDown() then
-			for j = 1,4 do 
-				DestroyTotem(j)
-			end 
-		else 
-			DestroyTotem(id) 
-		end
-end
 	
-local function InitDestroy(self)
-	local totem = self.TotemBar
-	for i = 1 , 4 do
-		local Destroy = CreateFrame("Button",nil, totem[i])
-		Destroy:SetAllPoints(totem[i])
-		Destroy:RegisterForClicks("LeftButtonUp", "RightButtonUp")
-		Destroy.ID = i
-		Destroy:SetScript("OnClick", TotemOnClick)
-	end
-end			
 local function UpdateSlot(self, slot)
 	local totem = self.TotemBar
-
+	if not totem[slot] then return end
 
 	local haveTotem, name, startTime, duration, totemIcon = GetTotemInfo(slot)
 
@@ -99,7 +77,7 @@ local function UpdateSlot(self, slot)
 					if total >= delay then
 						total = 0
 						haveTotem, name, startTime, duration, totemIcon = GetTotemInfo(self.ID)
-							if ((GetTime() - startTime) == 0) then
+							if ((GetTime() - startTime) == 0) or (duration == 0) then
 								self:SetValue(0)
 							else
 								self:SetValue(1 - ((GetTime() - startTime) / duration))
@@ -142,9 +120,32 @@ local function Enable(self, unit)
 		totem.colors = setmetatable(totem.colors or {}, {__index = colors})
 		delay = totem.delay or delay
 		if totem.Destroy then
-			InitDestroy(self)
-		end		
-		TotemFrame:UnregisterAllEvents()		
+			-- since 5.1, DestroyTotem is restricted/protected with Blizzard UI only, so, use some kind of hack ...
+			for i = 1, 4 do
+				if totem[i] then
+					local t = _G['TotemFrameTotem'..i]
+					t:ClearAllPoints()
+					t:SetParent(totem[i])
+					t:SetAllPoints(totem[i])
+					t:SetFrameLevel(totem[i]:GetFrameLevel() + 1)
+					t:SetFrameStrata(totem[i]:GetFrameStrata())
+					t:SetAlpha(0)
+				end
+			end
+			
+			hooksecurefunc("TotemFrame_Update", function()
+				for i=1, MAX_TOTEMS do
+					local t = _G['TotemFrameTotem'..i]
+					local slot = t.slot
+					
+					if slot and slot > 0 then
+						t:ClearAllPoints()
+						t:SetAllPoints(totem[slot])
+					end
+				end
+			end)
+		end
+	
 		return true
 	end	
 end
@@ -159,4 +160,3 @@ local function Disable(self,unit)
 end
 			
 oUF:AddElement("TotemBar",Update,Enable,Disable)
-

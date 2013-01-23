@@ -1,8 +1,11 @@
-local T, C, L = unpack(select(2, ...))
+local T, C, L, G = unpack(select(2, ...))
 
 if T.client == "deDE" then
-	L.chat_BATTLEGROUND_GET = "B"
-	L.chat_BATTLEGROUND_LEADER_GET = "B"
+	L.UI_Outdated = "Deine Version von Tukui ist veraltet. Du kannst die aktuelle Version von www.tukui.org laden"
+	L.UI_Talent_Change_Bug = "A blizzard bug has occured which is preventing you from changing your talents, this happen when you've inspected someone. Unfortunatly there is nothing we can do in this WoW Patch to fix it, please reload your ui and try again."
+	
+	L.chat_INSTANCE_CHAT = "I"
+	L.chat_INSTANCE_CHAT_LEADER = "IL"
 	L.chat_BN_WHISPER_GET = "Von"
 	L.chat_GUILD_GET = "G"
 	L.chat_OFFICER_GET = "O"
@@ -94,6 +97,9 @@ if T.client == "deDE" then
 	L.datatext_control = "Kontrolliert von:"
 	L.datatext_cta_allunavailable = "Could not get Call To Arms information."
 	L.datatext_cta_nodungeons = "No dungeons are currently offering a Call To Arms."
+	L.datatext_carts_controlled = "Kontrollierte Loren:"
+	L.datatext_victory_points = "Siegespunkte:"
+	L.datatext_orb_possessions = "Gehaltene Kugeln:"
  
 	L.Slots = {
 		[1] = {1, "Kopf", 1000},
@@ -167,6 +173,8 @@ if T.client == "deDE" then
 	
 	L.loot_fish = "Faule Beute" --changed
 	L.loot_empty = "Leerer slot" --changed
+	L.loot_randomplayer = "Random Player"
+	L.loot_self = "Self Loot"
  
 	L.chat_invalidtarget = "Falsches Ziel"
  

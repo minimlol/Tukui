@@ -10,6 +10,7 @@
 	TukuiConfigUILocalization.generalbackdropcolor = "設定面板背景顏色"
 	TukuiConfigUILocalization.generalbordercolor = "設定面板邊框顏色"
 	TukuiConfigUILocalization.generalblizzardreskin = "使用Tukui樣式來美化暴雪框架"
+	TukuiConfigUILocalization.generalmultiplescreendamage = "Enable multiple monitors text damage (Surround/Eyefinity)"
 	 
 	-- nameplate
 	TukuiConfigUILocalization.nameplate = "名條"
@@ -109,6 +110,15 @@
 	TukuiConfigUILocalization.unitframesmovecombobar = "移動目標的連擊點條 (盜賊限定)"
 	TukuiConfigUILocalization.unitframesclassiccombo = "使用經典連擊點樣式"
 	TukuiConfigUILocalization.unitframesgridvertical = "Grid上的隊伍以垂直方向顯示"
+	TukuiConfigUILocalization.unitframesraid = "啟用Tukui團隊框架"
+	TukuiConfigUILocalization.unitframesshowraidpets = "在團隊框架中顯示寵物"
+	TukuiConfigUILocalization.unitframesdruidmanabar = "在熊或貓形態下顯示德魯伊的法力條"
+	TukuiConfigUILocalization.unitframesdruidmushroombar = "在德魯伊平衡專精下顯示狂野蘑菇的個數"
+	TukuiConfigUILocalization.unitframesmageclassbar = "在法師奧法專精下顯示奧沖層數"
+	TukuiConfigUILocalization.unitframesraidunitspercolumn = "团队團隊框架中每行/列的單位數量"
+	TukuiConfigUILocalization.unitframesmaxraidplayers = "根據最大玩家人數顯示最大團隊框架"
+	TukuiConfigUILocalization.unitframesshowstatuebar = "Show Statue Bar (Dependencies: Class Bar Option need to be enabled)"
+	TukuiConfigUILocalization.unitframesshowgroupresurrect = "Show ressurect icon on raid frames"
 	 
 	-- loot
 	TukuiConfigUILocalization.loot = "戰利品"
@@ -145,11 +155,14 @@
 	TukuiConfigUILocalization.actionbarbuttonsize = "動作列按鍵大小"
 	TukuiConfigUILocalization.actionbarbuttonspacing = "動作列按鍵的間隔距離"
 	TukuiConfigUILocalization.actionbarpetbuttonsize = "寵物或變形列按鍵大小"
-	TukuiConfigUILocalization.actionbarownshdbar = "暗影之舞使用空白列而不是潛行列 (盜賊)"
+	TukuiConfigUILocalization.actionbarownshdbar = "當惡影之舞時使用一個空的動作條替代主動作條（仅盜賊）"
+	TukuiConfigUILocalization.actionbarownmetabar = "當惡魔形態時使用一個空的動作條來替代主動作條（仅术士）"
+	TukuiConfigUILocalization.actionbarownwarstancebar = "切換姿態時用一個空的動作條來替代主動作（仅戰士）"
+	TukuiConfigUILocalization.actionbarmacro = "在動作條上顯示宏名稱"
 	 
 	-- arena
 	TukuiConfigUILocalization.arena = "競技場"
-	TukuiConfigUILocalization.arenaunitframes = "啟用競技場單位框架"
+	TukuiConfigUILocalization.unitframesarena = "啟用競技場單位框架"
 	 
 	-- cooldowns
 	TukuiConfigUILocalization.cooldown = "冷卻"
@@ -167,6 +180,8 @@
 	TukuiConfigUILocalization.aurasplayer = "啟用Tukui增/減益狀態框架"
 	TukuiConfigUILocalization.aurasconsolidate = "合併增益狀態"
 	TukuiConfigUILocalization.aurasflash = "光環少於30秒時以閃動動畫顯示"
+	TukuiConfigUILocalization.aurasclassictimer = "啟用經典光環計時"
+	TukuiConfigUILocalization.aurashidedebuffs = "Hide Debuffs"
 
 	-- buttons
 	TukuiConfigUILocalization.option_button_reset = "重置"

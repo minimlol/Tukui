@@ -9,13 +9,7 @@ TukuiConfigUILocalization.generaluiscale = "UI Scale (if auto-scale is disabled)
 TukuiConfigUILocalization.generalbackdropcolor = "Set default backdrop color of panels"
 TukuiConfigUILocalization.generalbordercolor = "Set default border color of panels"
 TukuiConfigUILocalization.generalblizzardreskin = "Reskin Blizzard frames to match Tukui"
-TukuiConfigUILocalization.generalbigwigsreskin = "Reskin Big Wigs frames to match Tukui"
-TukuiConfigUILocalization.generaldbmreskin = "Reskin Deadly Boss Mods frames to match Tukui"
-TukuiConfigUILocalization.generaldxereskin = "Reskin Deus Vox Encounter frames to match Tukui"
-TukuiConfigUILocalization.generalomenreskin = "Reskin Omen frames to match Tukui"
-TukuiConfigUILocalization.generalrecountreskin = "Reskin Recount frames to match Tukui"
-TukuiConfigUILocalization.generalskadareskin = "Reskin Skada frames to match Tukui"
-TukuiConfigUILocalization.generaltinydpsreskin = "Reskin Tiny DPS frames to match Tukui"
+TukuiConfigUILocalization.generalmultiplescreendamage = "Enable multiple monitors text damage (Surround/Eyefinity)"
  
 -- nameplate
 TukuiConfigUILocalization.nameplate = "Nameplates"
@@ -66,9 +60,6 @@ TukuiConfigUILocalization.datatextmastery = "Mastery position (0 for disabled)"
 TukuiConfigUILocalization.datatexttalent = "Display talents (0 for disabled)"
 TukuiConfigUILocalization.datatextcalltoarms = "Call to Arms & Dungeons (0 for disabled)"
 TukuiConfigUILocalization.datatextregen = MANA_REGEN_ABBR
-TukuiConfigUILocalization.unitframesmovecombobar = "Move the combo bar from target (ROGUE ONLY)"
-TukuiConfigUILocalization.unitframesclassiccombo = "Use classic combo point"
-TukuiConfigUILocalization.unitframesgridvertical = "Display raid groups on Grid vertically"
 
  
 -- unit frames
@@ -116,7 +107,19 @@ TukuiConfigUILocalization.unitframesweakenedsoulbar = "Enable Weakened Soul bar 
 TukuiConfigUILocalization.unitframesonlyselfdebuffs = "Display only our debuffs on target"
 TukuiConfigUILocalization.unitframesshowfocustarget = "Enable Focus target"
 TukuiConfigUILocalization.unitframesbordercolor = "Set default border color of panels"
- 
+TukuiConfigUILocalization.unitframesraid = "Enable Tukui Raid Frames"
+TukuiConfigUILocalization.unitframesshowraidpets = "Show Pets in Tukui Raid Frames"
+TukuiConfigUILocalization.unitframesdruidmanabar = "Show Druid Mana Bar in Bear/Cat form"
+TukuiConfigUILocalization.unitframesdruidmushroombar = "Show Druid Mushroom bar in Balance or Restoration specialization"
+TukuiConfigUILocalization.unitframesmageclassbar = "Show Mage Arcane Bar"
+TukuiConfigUILocalization.unitframesraidunitspercolumn = "Number of raid units per column/row"
+TukuiConfigUILocalization.unitframesmaxraidplayers = "Max raid frames displayed according to instance max players"
+TukuiConfigUILocalization.unitframesshowstatuebar = "Show Statue Bar (Dependencies: Class Bar Option need to be enabled)"
+TukuiConfigUILocalization.unitframesmovecombobar = "Move the combo bar from target (ROGUE ONLY)"
+TukuiConfigUILocalization.unitframesclassiccombo = "Use classic combo point"
+TukuiConfigUILocalization.unitframesgridvertical = "Display raid groups on Grid vertically"
+TukuiConfigUILocalization.unitframesshowgroupresurrect = "Show ressurect icon on raid frames"
+
 -- loot
 TukuiConfigUILocalization.loot = "Loot"
 TukuiConfigUILocalization.lootlootframe = "Enable loot window"
@@ -153,10 +156,13 @@ TukuiConfigUILocalization.actionbarbuttonsize = "Size of the main action buttons
 TukuiConfigUILocalization.actionbarbuttonspacing = "Spacing of the main action buttons"
 TukuiConfigUILocalization.actionbarpetbuttonsize = "Size of pet/shapeshift buttons"
 TukuiConfigUILocalization.actionbarownshdbar = "Use an empty bar for shadow dance (rogue) instead of stealth bar"
+TukuiConfigUILocalization.actionbarownmetabar = "Use an empty bar for Metamorphosis (warlock) instead of main bar"
+TukuiConfigUILocalization.actionbarownwarstancebar = "Use an empty bar for each stance (warrior) instead of main bar"
+TukuiConfigUILocalization.actionbarmacro = "Show macro text on action bar"
  
 -- arena
 TukuiConfigUILocalization.arena = "Arena"
-TukuiConfigUILocalization.arenaunitframes = "Enable arena unit frames"
+TukuiConfigUILocalization.unitframesarena = "Enable arena unit frames"
  
 -- cooldowns
 TukuiConfigUILocalization.cooldown = "Cooldowns"
@@ -174,6 +180,9 @@ TukuiConfigUILocalization.auras = "Auras"
 TukuiConfigUILocalization.aurasplayer = "Enable Tukui Buff/Debuff Frames"
 TukuiConfigUILocalization.aurasconsolidate = "Enable Consolidate Buffs"
 TukuiConfigUILocalization.aurasflash = "Enable flashing animation on aura less than 30 seconds"
+TukuiConfigUILocalization.aurasclassictimer = "Display classic timer on player auras"
+TukuiConfigUILocalization.aurashidedebuffs = "Hide Debuffs"
+
 
 -- buttons
 TukuiConfigUILocalization.option_button_reset = "Reset"

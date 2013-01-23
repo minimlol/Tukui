@@ -1,4 +1,4 @@
-local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
+local T, C, L, G = unpack(select(2, ...)) 
 
 -------------------------------------------------------------
 -- DAMAGE / HEAL DISPLAY REPLACEMENT FOR EYEFINITY
@@ -6,6 +6,7 @@ local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, vari
 -------------------------------------------------------------
 
 if not T.eyefinity then return end
+if not C.general.multiplescreendamage then return end
 
 local displaydamage = GetCVar("CombatDamage")
 local displayheal = GetCVar("CombatHealing")
@@ -14,75 +15,35 @@ local displaydot = GetCVar("CombatLogPeriodicSpells")
 local gflags = bit.bor(COMBATLOG_OBJECT_AFFILIATION_MINE, COMBATLOG_OBJECT_REACTION_FRIENDLY, COMBATLOG_OBJECT_CONTROL_PLAYER, COMBATLOG_OBJECT_TYPE_GUARDIAN)
 	
 local function OnEvent(self, event, ...)
-	local timestamp, eventType, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags
-	
-	if T.toc < 40200 then
-		timestamp, eventType, hideCaster, sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags = select(1,...)
-	else
-		timestamp, eventType, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags = select(1,...)
-	end
+	local timestamp, eventType, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags = select(1,...)
 
 	if sourceGUID == UnitGUID("player") or sourceGUID == UnitGUID("pet") or sourceFlags == gflags then
 		-- dmg
-		if displaydamage then
-			if eventType == "SWING_DAMAGE" then
-				local _, amount, critical
-				if T.toc < 40200 then
-					_, amount, _, _, _, _, critical = select(9, ...)
-				else
-					_, _, _, amount, _, _, _, _, critical = select(9, ...)
-				end
-				self:AddMessage(amount, 1, 1, 1)
-			elseif eventType == "SPELL_DAMAGE" or eventType == "SPELL_PERIODIC_DAMAGE" then
-				local _, spellId, spellSchool, amount, critical
-				if T.toc < 40200 then
-					_, spellId, _, spellSchool, amount, _, _, _, _, _, critical = select(9, ...)
-				else
-					_, _, _, spellId, _, spellSchool, amount, _, _, _, _, _, critical = select(9, ...)
-				end
-				if eventType == "SPELL_PERIODIC_DAMAGE" then
-					if displaydot then self:AddMessage(amount, 151/255, 70/255, 194/255) end
-				else
-					self:AddMessage(amount, 1, 1, 0)
-				end
-			elseif eventType == "RANGE_DAMAGE" then
-				local _, spellId, amount, critical
-				if T.toc < 40200 then
-					_, spellId, _, _, amount, _, _, _, _, _, critical = select(9, ...)
-				else
-					_, _, _, spellId, _, _, amount, _, _, _, _, _, critical = select(9, ...)
-				end
-				self:AddMessage(amount, 1, 1, 1)
-			elseif eventType == "SWING_MISSED" then
-				local _, missType
-				if T.toc < 40200 then
-					_, missType, _ = select(9, ...)
-				else
-					_, _, _, missType, _ = select(9, ...)
-				end
-				self:AddMessage(missType, 1, 1, 1)
-			elseif eventType == "SPELL_MISSED" or eventType == "RANGE_MISSED" then
-				local _, spellId, missType
-				if T.toc < 40200 then
-					_, spellId, _, _, missType, _ = select(9,...)
-				else
-					_, _, _, spellId, _, _, missType, _ = select(9,...)
-				end
-				self:AddMessage(missType, 1, 1, 1)
+		if eventType == "SWING_DAMAGE" then
+			local _, _, _, amount, _, _, _, _, critical = select(9, ...)
+			self:AddMessage(amount, 1, 1, 1)
+		elseif eventType == "SPELL_DAMAGE" or eventType == "SPELL_PERIODIC_DAMAGE" then
+			local _, _, _, spellId, _, spellSchool, amount, _, _, _, _, _, critical = select(9, ...)
+			if eventType == "SPELL_PERIODIC_DAMAGE" then
+				self:AddMessage(amount, 151/255, 70/255, 194/255)
+			else
+				self:AddMessage(amount, 1, 1, 0)
 			end
+		elseif eventType == "RANGE_DAMAGE" then
+			local _, _, _, spellId, _, _, amount, _, _, _, _, _, critical = select(9, ...)
+			self:AddMessage(amount, 1, 1, 1)
+		elseif eventType == "SWING_MISSED" then
+			local _, _, _, missType, _ = select(9, ...)
+			self:AddMessage(missType, 1, 1, 1)
+		elseif eventType == "SPELL_MISSED" or eventType == "RANGE_MISSED" then
+			local _, _, _, spellId, _, _, missType, _ = select(9,...)
+			self:AddMessage(missType, 1, 1, 1)
 		end
 		
 		-- heal
-		if displayheal then
-			if eventType == "SPELL_HEAL" or eventType== "SPELL_PERIODIC_HEAL" then
-				local _, amount
-				if T.toc < 40200 then
-					_, _, _, _, amount, _, _, _ = select(9,...)
-				else
-					_, _, _, _, _, _, amount, _, _, _ = select(9,...)
-				end
-				self:AddMessage(amount, 0, 1, 0)			
-			end
+		if eventType == "SPELL_HEAL" or eventType== "SPELL_PERIODIC_HEAL" then
+			local _, _, _, _, _, _, amount, _, _, _ = select(9,...)
+			self:AddMessage(amount, 0, 1, 0)			
 		end
 	end
 end
@@ -99,34 +60,4 @@ f:SetFadeDuration(0.5)
 f:SetTimeVisible(1)
 f:SetMaxLines(64)
 f:SetSpacing(2)
-
-local o = CreateFrame("Frame")
-o:RegisterEvent("CVAR_UPDATE")
-o:SetScript("OnEvent", function(self, event, cvar, value)
-	if cvar == "SHOW_DAMAGE_TEXT" then
-		if value == 1 then
-			displaydamage = true
-		else
-			displaydamage = false
-		end
-	end
-	
-	if cvar == "LOG_PERIODIC_EFFECTS" then
-		if value == 1 then
-			displaydot = true
-		else
-			displaydot = false
-		end
-	end
-	
-	if cvar == "SHOW_COMBAT_HEALING" then
-		if value == 1 then
-			displayheal = true
-		else
-			displayheal = false
-		end
-	end
-end)
-
--- kill
-InterfaceOptionsCombatTextPanelPetDamage:Kill()
+G.Misc.EyeFinityDamage = f

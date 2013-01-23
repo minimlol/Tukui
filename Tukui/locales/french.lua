@@ -1,8 +1,11 @@
-local T, C, L = unpack(select(2, ...))
+local T, C, L, G = unpack(select(2, ...))
 
 if T.client == "frFR" then
-	L.chat_BATTLEGROUND_GET = "BG"
-	L.chat_BATTLEGROUND_LEADER_GET = "BG"
+	L.UI_Outdated = "Une version plus récente de Tukui est disponible. Vous pouvez télécharger la dernière version sur www.tukui.org"
+	L.UI_Talent_Change_Bug = "A blizzard bug has occured which is preventing you from changing your talents, this happen when you've inspected someone. Unfortunatly there is nothing we can do in this WoW Patch to fix it, please reload your ui and try again."
+	
+	L.chat_INSTANCE_CHAT = "I"
+	L.chat_INSTANCE_CHAT_LEADER = "IL"
 	L.chat_BN_WHISPER_GET = "De"
 	L.chat_GUILD_GET = "G"
 	L.chat_OFFICER_GET = "O"
@@ -94,6 +97,9 @@ if T.client == "frFR" then
 	L.datatext_control = "Controlé par : "
 	L.datatext_cta_allunavailable = "Impossible de récupérer les informations d'appel aux armes."
 	L.datatext_cta_nodungeons = "Aucun donjon offre actuellement d'appel aux armes."
+	L.datatext_carts_controlled = "Chariots contrôlée:"
+	L.datatext_victory_points = "Points de Victoire:"
+	L.datatext_orb_possessions = "Orbes en possession:"
 
 	L.Slots = {
 	  [1] = {1, "Tête", 1000},
@@ -115,8 +121,8 @@ if T.client == "frFR" then
 	L.popup_reset = "Attention ! Vous allez charger les paramètres par défaut de Tukui. Voulez-vous poursuivre ?"
 	L.popup_install_yes = "Ouais! (recommandé!)"
 	L.popup_install_no = "Non, ça craint trop!"
-	L.popup_reset_yes = "Ouais bébé!"
-	L.popup_reset_no = "Non, ou j'irai pleurer sur les forums!"
+	L.popup_reset_yes = "Ouais!"
+	L.popup_reset_no = "Non!"
 	L.popup_fix_ab = "Quelque chose ne va pas avec vos barres d'action. Voulez-vous recharger l'interface pour les réparer?"
 
 	L.merchant_repairnomoney = "Vous n'avez pas assez d'argent pour réparer !"
@@ -168,6 +174,8 @@ if T.client == "frFR" then
 	
 	L.loot_fish = "Poisson!"
 	L.loot_empty = "Emplacement vide"
+	L.loot_randomplayer = "Random Player"
+	L.loot_self = "Self Loot"
 
 	L.chat_invalidtarget = "Cible non valide"
 

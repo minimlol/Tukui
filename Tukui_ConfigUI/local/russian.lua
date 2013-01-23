@@ -10,6 +10,7 @@
 	TukuiConfigUILocalization.generalbackdropcolor = "Установить цвет фона панелей"
 	TukuiConfigUILocalization.generalbordercolor = "Установить цвет границы панелей"
 	TukuiConfigUILocalization.generalblizzardreskin = "Включить стилизацию элементов интерфейса Blizzard"
+	TukuiConfigUILocalization.generalmultiplescreendamage = "Enable multiple monitors text damage (Surround/Eyefinity)"
 	 
 	-- nameplate
 	TukuiConfigUILocalization.nameplate = "Индикаторы здоровья"
@@ -109,6 +110,15 @@
 	TukuiConfigUILocalization.unitframesmovecombobar = "Передвинуть индикатор серии приемов(ТОЛЬКО ДЛЯ РАЗБОЙНИКОВ)"
 	TukuiConfigUILocalization.unitframesclassiccombo = "Классический вид индикатора серий приемов"
 	TukuiConfigUILocalization.unitframesgridvertical = "Группы рейда вертикально"
+	TukuiConfigUILocalization.unitframesraid = "Включить рамки рейда Tukui"
+	TukuiConfigUILocalization.unitframesshowraidpets = "Показывать питомцев в рамках рейда Tukui"
+	TukuiConfigUILocalization.unitframesdruidmanabar = "Показывать полосу маны друида в формах медведя/кота"
+	TukuiConfigUILocalization.unitframesdruidmushroombar = "Показывать индикатор грибов для друидов баланса и исцеления"
+	TukuiConfigUILocalization.unitframesmageclassbar = "Отображать полосу чародейских зарядов мага"
+	TukuiConfigUILocalization.unitframesraidunitspercolumn = "Количество рейдовых юнитов на ряд/столбец"
+	TukuiConfigUILocalization.unitframesmaxraidplayers = "Max raid frames displayed according to instance max players"
+	TukuiConfigUILocalization.unitframesshowstatuebar = "Show Statue Bar (Dependencies: Class Bar Option need to be enabled)"
+	TukuiConfigUILocalization.unitframesshowgroupresurrect = "Show ressurect icon on raid frames"
 	 
 	-- loot
 	TukuiConfigUILocalization.loot = "Добыча"
@@ -146,10 +156,13 @@
 	TukuiConfigUILocalization.actionbarbuttonspacing = "Расстояние между кнопками"
 	TukuiConfigUILocalization.actionbarpetbuttonsize = "Размер кнопок панели питомца/стоек"
 	TukuiConfigUILocalization.actionbarownshdbar = "Использовать пустую панель для танца теней (разбойник) вместо панели невидимости"
+	TukuiConfigUILocalization.actionbarownmetabar = "Использовать пустую панель для Метаморфозы чернокнижника вместо основной панели"
+	TukuiConfigUILocalization.actionbarownwarstancebar = "Использовать пустую панель для каждой стойки (воин) вместо основной панели"
+	TukuiConfigUILocalization.actionbarmacro = "Показывать названия макросов на панели команд"
 	 
 	-- arena
 	TukuiConfigUILocalization.arena = "Арена"
-	TukuiConfigUILocalization.arenaunitframes = "Включить рамки портретов арены"
+	TukuiConfigUILocalization.unitframesarena = "Включить рамки портретов арены"
 	 
 	-- cooldowns
 	TukuiConfigUILocalization.cooldown = "Перезарядки"
@@ -167,6 +180,8 @@
 	TukuiConfigUILocalization.aurasplayer = "Включить Баффы/Дебаффы Tukui"
 	TukuiConfigUILocalization.aurasconsolidate = "Объединить ауры"
 	TukuiConfigUILocalization.aurasflash = "Включить анимацию мигания ауры на 30 секундах"
+	TukuiConfigUILocalization.aurasclassictimer = "Использовать классические таймеры на аурах игрока"
+	TukuiConfigUILocalization.aurashidedebuffs = "Hide Debuffs"
 
 	-- buttons
 	TukuiConfigUILocalization.option_button_reset = "Сброс"

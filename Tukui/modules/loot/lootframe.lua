@@ -1,25 +1,24 @@
-local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
+local T, C, L, G = unpack(select(2, ...)) 
 -- credits : Haste
 
 if not C["loot"].lootframe == true then return end
 
 local addon = CreateFrame("Button", "TukuiLootFrame")
+G.Loot.Frame = addon
 local title = addon:CreateFontString(nil, "OVERLAY")
+G.Loot.Frame.title = title
 
 local iconSize = 30
 local frameScale = 1
 
-local sq, ss, sn
+local sq, ss, sn, st
 
 local OnEnter = function(self)
 	local slot = self:GetID()
-	if(LootSlotIsItem(slot)) then
-		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetLootItem(slot)
-		CursorUpdate(self)
-	end
+	GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+	GameTooltip:SetLootItem(slot)
+	CursorUpdate(self)
 	
-	LootFrame.selectedSlot = self:GetID()
 	self.drop:Show()
 	self.drop:SetVertexColor(1, 1, 0)
 end
@@ -39,13 +38,23 @@ local OnLeave = function(self)
 end
 
 local OnClick = function(self)
+	if not self:GetID() then return end
+	
 	if(IsModifiedClick()) then
 		HandleModifiedItemClick(GetLootSlotLink(self:GetID()))
 	else
-		StaticPopup_Hide"CONFIRM_LOOT_DISTRIBUTION"
 		ss = self:GetID()
 		sq = self.quality
 		sn = self.name:GetText()
+		st = self.icon:GetTexture()
+		
+		-- master looter
+		LootFrame.selectedLootButton = self:GetName()
+		LootFrame.selectedSlot = ss
+		LootFrame.selectedQuality = sq
+		LootFrame.selectedItemName = sn
+		LootFrame.selectedTexture = st
+
 		LootSlot(ss)
 	end
 end
@@ -151,7 +160,6 @@ addon:SetMovable(true)
 addon:RegisterForClicks"anyup"
 
 addon:SetParent(UIParent)
---addon:SetUserPlaced(true)
 addon:Point("TOPLEFT", 0, -104)
 addon:SetTemplate("Default")
 addon:Width(256)
@@ -207,7 +215,7 @@ addon.LOOT_OPENED = function(self, event, autoloot)
 			if texture then
 				local color = ITEM_QUALITY_COLORS[quality]
 
-				if(LootSlotIsCoin(i)) then
+				if texture and texture:find('INV_Misc_Coin') then
 					item = item:gsub("\n", ", ")
 				end
 
@@ -280,7 +288,7 @@ addon.LOOT_CLOSED = function(self)
 end
 
 addon.OPEN_MASTER_LOOT_LIST = function(self)
-	ToggleDropDownMenu(1, nil, GroupLootDropDown, addon.slots[ss], 0, 0)
+	ToggleDropDownMenu(nil, nil, TukuiMasterLootDropDown, addon.slots[ss], 0, 0)
 end
 
 addon.UPDATE_MASTER_LOOT_LIST = function(self)
@@ -312,19 +320,3 @@ addon:Hide()
 -- Fuzz
 LootFrame:UnregisterAllEvents()
 table.insert(UISpecialFrames, "TukuiLootFrame")
-
-function _G.GroupLootDropDown_GiveLoot(self)
-	if ( sq >= MASTER_LOOT_THREHOLD ) then
-		local dialog = StaticPopup_Show("CONFIRM_LOOT_DISTRIBUTION", ITEM_QUALITY_COLORS[sq].hex..sn..FONT_COLOR_CODE_CLOSE, self:GetText())
-		if (dialog) then
-			dialog.data = self.value
-		end
-	else
-		GiveMasterLoot(ss, self.value)
-	end
-	CloseDropDownMenus()
-end
-
-StaticPopupDialogs["CONFIRM_LOOT_DISTRIBUTION"].OnAccept = function(self, data)
-	GiveMasterLoot(ss, data)
-end
