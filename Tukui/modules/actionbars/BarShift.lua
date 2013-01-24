@@ -7,7 +7,7 @@ if not C["actionbar"].enable == true then return end
 
 -- create the shapeshift bar if we enabled it
 local bar = CreateFrame("Frame", "TukuiStance", UIParent, "SecureHandlerStateTemplate")
-bar:SetPoint("TOPLEFT", 0, -43)
+bar:SetPoint("TOPLEFT", 0, -37)
 bar:SetWidth((T.petbuttonsize * 5) + (T.petbuttonsize * 4))
 bar:SetHeight(10)
 bar:SetFrameStrata("MEDIUM")
