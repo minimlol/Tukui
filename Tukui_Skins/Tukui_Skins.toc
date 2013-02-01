@@ -1,0 +1,12 @@
+## Interface: 50100
+## Title: |cffC495DDTukui|r Skins
+## Version: 1.26a
+## Author: Azilroka, Sortokk, and others see Credits.txt
+## OptionalDeps: AsphyxiaUI, DuffedUI, Skada, Tukui, Tukui_ChatTweaks
+## SavedVariables: UISkinOptions, CBEnableSpecialBars, CBBar2and3Width, CBBar2and3Position, CBShowButtonPosition, TPEnableSpecialBars, TPBar2and3Width, TPBar2and3Position, TPShowButtonPosition
+## X-Tukui-ProjectID: 127
+## X-Tukui-ProjectFolders: Tukui_Skins
+
+init.lua
+core\load_core.xml
+skins\load_skins.xml

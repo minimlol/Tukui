@@ -1,0 +1,27 @@
+if not (IsAddOnLoaded("Tukui") or IsAddOnLoaded("AsphyxiaUI") or IsAddOnLoaded("DuffedUI")) then return end
+local U = unpack(select(2,...))
+
+local name = "EveryGoldToBankerSkin"
+local function SkinEveryGoldToBanker()
+	U.SkinFrame(EveryGoldToBankerCalculator)
+	U.SkinFrame(SettingFrame)
+	U.SkinEditBox(AmountEditBox)
+	AmountEditBox:Height(22)
+	U.SkinEditBox(ReceiverEditBox)
+	ReceiverEditBox:Height(22)
+	U.SkinEditBox(DefaultAmountEditBox)
+	DefaultAmountEditBox:Height(22)
+	U.SkinEditBox(DefaultReceiverEditBox)
+	DefaultReceiverEditBox:Height(22)
+	U.SkinButton(CheckButton)
+	U.SkinButton(SendButton)
+	U.SkinButton(SettingButton)
+	U.SkinButton(DoneSettingButton)
+	TitleFrame:StripTextures()
+	AmountFrame:StripTextures()
+	ResponseFrame:StripTextures()
+	ReceiverFrame:StripTextures()
+	DefaultAmountFrame:StripTextures()
+	DefaultReceiverFrame:StripTextures()
+end
+U.RegisterSkin(name, SkinEveryGoldToBanker)

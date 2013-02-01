@@ -1,0 +1,7 @@
+## Interface: 50001
+## Title: |cffC495DDTukui Class Timer|r
+## Author: Kryso
+## Version: 3.2
+## RequiredDeps: Tukui
+
+core.lua
