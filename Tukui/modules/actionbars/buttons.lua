@@ -2,11 +2,10 @@ local T, C, L, G = unpack(select(2, ...))
 
 -- omg this file sux, it really need a rewrite someday, I was probably drunk when I made this. :X
 
-
 local function ShowOrHideBar(bar, button)
 	local db = TukuiDataPerChar
 
-	if button == TukuiBarBLButton or button == TukuiBarBRButton then
+	if button == TukuiBarBottomButton then
 		if TukuiBarUpper:IsShown() then
 			db.hidebar3 = true
 			db.hidebar4 = true
@@ -65,34 +64,19 @@ local function DrPepper(self, bar) -- guess what! :P
 	MoveButtonBar(button, bar)
 end
 
-local TukuiBarBRButton = CreateFrame("Button", "TukuiBarBRButton", UIParent)
-TukuiBarBRButton:SetWidth(17)
-TukuiBarBRButton:Height(TukuiBar1:GetHeight())
-TukuiBarBRButton:Point("BOTTOMLEFT", TukuiBarLower, "BOTTOMRIGHT", T.buttonspacing, 0)
-TukuiBarBRButton:SetTemplate("Default")
-TukuiBarBRButton:RegisterForClicks("AnyUp")
-TukuiBarBRButton:SetAlpha(0)
-TukuiBarBRButton:SetScript("OnClick", function(self) DrPepper(self, TukuiBar2) end)
-TukuiBarBRButton:SetScript("OnEnter", function(self) self:SetAlpha(1) end)
-TukuiBarBRButton:SetScript("OnLeave", function(self) self:SetAlpha(0) end)
-TukuiBarBRButton.text = T.SetFontString(TukuiBarBRButton, C.media.uffont, 30)
-TukuiBarBRButton.text:SetPoint("CENTER", 0, 0)
-TukuiBarBRButton.text:SetText("|cff4BAF4C-|r")
-
-
-local TukuiBarBLButton = CreateFrame("Button", "TukuiBarBLButton", UIParent)
-TukuiBarBLButton:SetWidth(17)
-TukuiBarBLButton:Height(TukuiBar1:GetHeight())
-TukuiBarBLButton:Point("BOTTOMRIGHT", TukuiBarLower, "BOTTOMLEFT", -T.buttonspacing, 0)
-TukuiBarBLButton:SetTemplate("Default")
-TukuiBarBLButton:RegisterForClicks("AnyUp")
-TukuiBarBLButton:SetAlpha(0)
-TukuiBarBLButton:SetScript("OnClick", function(self) DrPepper(self, TukuiBar2) end)
-TukuiBarBLButton:SetScript("OnEnter", function(self) self:SetAlpha(1) end)
-TukuiBarBLButton:SetScript("OnLeave", function(self) self:SetAlpha(0) end)
-TukuiBarBLButton.text = T.SetFontString(TukuiBarBLButton, C.media.uffont, 30)
-TukuiBarBLButton.text:SetPoint("CENTER", 0, 0)
-TukuiBarBLButton.text:SetText("|cff4BAF4C-|r")
+local TukuiBarBottomButton = CreateFrame("Button", "TukuiBarBottomButton", UIParrent)
+TukuiBarBottomButton:SetWidth((T.buttonsize * 16) + (T.buttonspacing * 17))
+TukuiBarBottomButton:Height(10)
+TukuiBarBottomButton:SetPoint("TOP", TukuiBarLower, "BOTTOM", 0, -2)
+TukuiBarBottomButton:SetTemplate("Default")
+TukuiBarBottomButton:RegisterForClicks("AnyUp")
+TukuiBarBottomButton:SetAlpha(0)
+TukuiBarBottomButton:SetScript("OnClick", function(self) DrPepper(self, TukuiBar2) end)
+TukuiBarBottomButton:SetScript("OnEnter", function(self) self:SetAlpha(1) end)
+TukuiBarBottomButton:SetScript("OnLeave", function(self) self:SetAlpha(0) end)
+TukuiBarBottomButton.text = T.SetFontString(TukuiBarBottomButton, C.media.uffont, 18)
+TukuiBarBottomButton.text:SetPoint("CENTER", 0, 0)
+TukuiBarBottomButton.text:SetText("- - - - - - - - - - - - - - - - -")
 
 local TukuiBar5Button = CreateFrame("Button", "TukuiBar5Button", UIParent)
 TukuiBar5Button:Width(TukuiLineToPetActionBarBackground:GetWidth())
@@ -110,31 +94,33 @@ TukuiBar5Button.text:SetText("<")
 
 -- exit vehicle button on left side of bottom action bar
 local vehicleleft = CreateFrame("Button", "TukuiExitVehicleButtonLeft", UIParent, "SecureHandlerClickTemplate")
-vehicleleft:SetAllPoints(TukuiBarBLButton)
-vehicleleft:SetFrameStrata(TukuiBarBLButton:GetFrameStrata())
-vehicleleft:SetFrameLevel(TukuiBarBLButton:GetFrameLevel() + 1)
+vehicleleft:SetAllPoints(TukuiInfoLeft)
+vehicleleft:SetFrameStrata("LOW")
+vehicleleft:SetFrameLevel(10)
 vehicleleft:SetTemplate("Default")
 vehicleleft:SetBackdropBorderColor(75/255,  175/255, 76/255)
 vehicleleft:RegisterForClicks("AnyUp")
 vehicleleft:SetScript("OnClick", function() VehicleExit() end)
-vehicleleft.text = T.SetFontString(vehicleleft, C.media.uffont, 20)
-vehicleleft.text:SetPoint("CENTER", T.Scale(1), T.Scale(1))
-vehicleleft.text:SetText("|cff4BAF4CV|r")
+vehicleleft:FontString("text", C.media.font, 12)
+vehicleleft.text:Point("CENTER", 0, 0)
+vehicleleft.text:SetText("|cff4BAF4C"..string.upper(LEAVE_VEHICLE).."|r")
 RegisterStateDriver(vehicleleft, "visibility", "[target=vehicle,exists] show;hide")
+G.ActionBars.ExitVehicleLeft = vehicleleft
 
 -- exit vehicle button on right side of bottom action bar
 local vehicleright = CreateFrame("Button", "TukuiExitVehicleButtonRight", UIParent, "SecureHandlerClickTemplate")
-vehicleright:SetAllPoints(TukuiBarBRButton)
-vehicleright:SetFrameStrata(TukuiBarBRButton:GetFrameStrata())
-vehicleright:SetFrameLevel(TukuiBarBRButton:GetFrameLevel() + 1)
+vehicleright:SetAllPoints(TukuiInfoRight)
 vehicleright:SetTemplate("Default")
+vehicleright:SetFrameStrata("LOW")
+vehicleright:SetFrameLevel(10)
 vehicleright:SetBackdropBorderColor(75/255,  175/255, 76/255)
 vehicleright:RegisterForClicks("AnyUp")
 vehicleright:SetScript("OnClick", function() VehicleExit() end)
-vehicleright.text = T.SetFontString(vehicleright, C.media.uffont, 20)
-vehicleright.text:SetPoint("CENTER", T.Scale(1), T.Scale(1))
-vehicleright.text:SetText("|cff4BAF4CV|r")
+vehicleright:FontString("text", C.media.font, 12)
+vehicleright.text:Point("CENTER", 0, 0)
+vehicleright.text:SetText("|cff4BAF4C"..string.upper(LEAVE_VEHICLE).."|r")
 RegisterStateDriver(vehicleright, "visibility", "[target=vehicle,exists] show;hide")
+G.ActionBars.ExitVehicleRight = vehicleright
 
 --------------------------------------------------------------
 -- DrPepper taste is really good with Vodka. 

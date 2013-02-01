@@ -263,8 +263,11 @@ BNToastFrame:CreateShadow()
 -- reposition battle.net popup over chat #1
 BNToastFrame:HookScript("OnShow", function(self)
 	self:ClearAllPoints()
-	self:Point("TOPLEFT", TukuiGMFrameAnchor, "BOTTOMLEFT", -3, 13)
-
+	if StanceBarFrame:IsShown() then 
+		self:SetPoint("TOPLEFT", UIParrent, "TOPLEFT", 0, -(T.buttonsize + T.buttonspacing))
+	else
+		self:Point("TOPLEFT", UIParrent, "TOPLEFT", 0, 0)
+	end
 end)
 
 -- reskin Toast Frame Close Button

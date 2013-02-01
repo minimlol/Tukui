@@ -100,20 +100,12 @@ bar:SetScript("OnEvent", function(self, event, unit, ...)
 	elseif event == "UPDATE_VEHICLE_ACTIONBAR" or event == "UPDATE_OVERRIDE_ACTIONBAR" then
 		if HasVehicleActionBar() or HasOverrideActionBar() then
 			if not self.inVehicle then
-				TukuiBar2Button:Hide()
-				TukuiBar3Button:Hide()
-				TukuiBar4Button:Hide()
-				TukuiBar5ButtonTop:Hide()
-				TukuiBar5ButtonBottom:Hide()
+				TukuiBarBottomButton:Hide()
 				self.inVehicle = true
 			end
 		else
 			if self.inVehicle then
-				TukuiBar2Button:Show()
-				TukuiBar3Button:Show()
-				TukuiBar4Button:Show()
-				TukuiBar5ButtonTop:Show()
-				TukuiBar5ButtonBottom:Show()
+				TukuiBarBottomButton:Show()
 				self.inVehicle = false
 			end
 		end
