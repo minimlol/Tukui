@@ -2540,7 +2540,7 @@ if C.unitframes.raid == true then
 
 		local raid = self:SpawnHeader(T.RaidFrameAttributes())
 		raid:SetParent(TukuiPetBattleHider)
-		raid:Point("TOPLEFT", UIParent, "TOPLEFT", 18, -y)
+		raid:Point("BOTTOMLEFT", TukuiChatBackgroundLeft, "TOPLEFT", 30, 30)
 		G.UnitFrames.RaidUnits = raid
 	
 		if C.unitframes.showraidpets then

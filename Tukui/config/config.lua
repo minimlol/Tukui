@@ -6,7 +6,7 @@
 
 C["general"] = {
 	["autoscale"] = false,                               -- mainly enabled for users that don't want to mess with the config file
-	["uiscale"] = 0.78,                                 -- set your value (between 0.64 and 1) of your uiscale if autoscale is off
+	["uiscale"] = 0.85,                                 -- set your value (between 0.64 and 1) of your uiscale if autoscale is off
 	["overridelowtohigh"] = false,                      -- EXPERIMENTAL ONLY! override lower version to higher version on a lower reso.
 	["backdropcolor"] = { .1,.1,.1 },                   -- default backdrop color of panels
 	["bordercolor"] = { .6,.6,.6 },                     -- default border color of panels
@@ -93,7 +93,7 @@ C["actionbar"] = {
 	["petbuttonsize"] = 29,                             -- pet & stance buttons size
 	["buttonspacing"] = 4,                              -- buttons spacing
 	["ownshdbar"] = false,                              -- use a complete new stance bar for shadow dance (rogue only)
-	["ownmetabar"] = true,                              -- use a complete new stance bar for metamorphosis (warlock only)
+	["ownmetabar"] = false,                              -- use a complete new stance bar for metamorphosis (warlock only)
 	["ownwarstancebar"] = false,                        -- use a different bar for every warrior stance like it was in previous xpac (warrior only)
 }
 
