@@ -415,23 +415,23 @@ local function Shared(self, unit)
 				mb:SetBackdropColor(0, 0, 0)
 				mb:SetBackdropBorderColor(0, 0, 0)				
 				
-				for i = 1, 6 do
+				for i = 1, 4 do
 					mb[i] = CreateFrame("StatusBar", "TukuiArcaneBar"..i, mb)
 					mb[i]:Height(8)
 					mb[i]:SetStatusBarTexture(C.media.normTex)
 					
 					if i == 1 then
 						if T.lowversion then
-							mb[i]:Width((186 / 6))
+							mb[i]:Width((186 / 4) - 2)
 						else
-							mb[i]:Width((250 / 6) - 2)
+							mb[i]:Width((250 / 4) - 2)
 						end
 						mb[i]:SetPoint("LEFT", mb, "LEFT", 0, 0)
 					else
 						if T.lowversion then
-							mb[i]:Width((186 / 6) - 1)
+							mb[i]:Width((186 / 4) - 1)
 						else
-							mb[i]:Width((250 / 6 - 1))
+							mb[i]:Width((250 / 4 - 1))
 						end
 						mb[i]:SetPoint("LEFT", mb[i-1], "RIGHT", 1, 0)
 					end
@@ -1790,7 +1790,7 @@ local function Shared(self, unit)
 			AltPowerBar:Height(4)
 			AltPowerBar:SetStatusBarTexture(C.media.normTex)
 			AltPowerBar:GetStatusBarTexture():SetHorizTile(false)
-			AltPowerBar:SetStatusBarColor(1, 0, 0)
+			AltPowerBar:SetStatusBarColor(0, 0, 0)
 
 			AltPowerBar:SetPoint("LEFT")
 			AltPowerBar:SetPoint("RIGHT")
@@ -1803,6 +1803,8 @@ local function Shared(self, unit)
 			  insets = { left = 0, right = 0, top = 0, bottom = T.Scale(-1)}
 			})
 			AltPowerBar:SetBackdropColor(0, 0, 0)
+			AltPowerBar:SetBackdropBorderColor(0, 0, 0)
+			AltPowerBar.PostUpdate = T.UpdateBossAltPower
 
 			self.AltPowerBar = AltPowerBar
 			
