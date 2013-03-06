@@ -154,6 +154,7 @@ local TRINKET_FILTER = {
 		CreateSpellEntry( 128986 ), -- Relic of Xuen (Strength)
 		CreateSpellEntry( 128987 ), -- Relic of Chi Ji
 		CreateSpellEntry( 126657 ), -- Darkmist Vortex
+		CreateSpellEntry( 126659 ), -- Essence of Terror
 	};
 	
 --[[ Class specific filters
@@ -541,38 +542,35 @@ local CLASS_FILTERS = {
 		},
 		WARLOCK = {
 			target = {
-				CreateSpellEntry( 980 ), -- Bane of Agony
-				CreateSpellEntry( 603 ), -- Bane of Doom
-				CreateSpellEntry( 80240 ), -- Bane of Havoc
+				CreateSpellEntry( 980 ), -- Agony
+				CreateSpellEntry( 603 ), -- Doom
+				CreateSpellEntry( 80240 ), -- Havoc
 				CreateSpellEntry( 1490 ), -- Curse of the Elements
-				CreateSpellEntry( 86105 ), -- Jinx: Curse of the Elements
 				CreateSpellEntry( 18223 ), -- Curse of Exhaustion
-				CreateSpellEntry( 1714 ), -- Curse of Tongue
-				CreateSpellEntry( 702 ), -- Curse of Weakness
 				CreateSpellEntry( 172 ), -- Corruption
 				CreateSpellEntry( 27243, false, nil, nil, 27243 ), -- Seed of Corruption
 				CreateSpellEntry( 48181, false, nil, nil, 48181 ), -- Haunt
-				CreateSpellEntry( 32389 ), -- Shadow Embrace
 				CreateSpellEntry( 30108, false, nil, nil, 30108 ), -- Unstable Affliction
 				CreateSpellEntry( 348, false, nil, nil, 348 ), -- Immolate
 				CreateSpellEntry( 5782 ), -- Fear
 				CreateSpellEntry( 710 ), -- Banish
 				CreateSpellEntry( 5484 ), -- Howl of Terror
-				CreateSpellEntry( 6789 ), -- Deathcoil
-				CreateSpellEntry( 17800 ), -- Shadow & Flame
+				CreateSpellEntry( 6789 ), -- Mortal Coil
+				CreateSpellEntry( 47960 ), -- Shadowflame (Hand of Guldan)
 			},
 				player = {
-				CreateSpellEntry( 17941 ), -- Shadow Trance
-				CreateSpellEntry( 64371 ), -- Eradication
-				CreateSpellEntry( 85383 ), -- Improved Soul Fire
-				CreateSpellEntry( 79459 ),  CreateSpellEntry( 79463 ),  CreateSpellEntry( 79460 ),  CreateSpellEntry( 79462 ),  CreateSpellEntry( 79464 ), -- Demon Soul
+				CreateSpellEntry( 117828 ), -- Backdraft
+				CreateSpellEntry( 108503 ), -- Grimoire of Sacrifice
+				CreateSpellEntry( 132413 ), -- Shadow Bulwark
+				CreateSpellEntry( 86211 ), -- Soul Swap
+				CreateSpellEntry( 113860 ), -- Dark Soul: Misery
+				CreateSpellEntry( 113861 ), -- Dark Soul: Knowledge
+				CreateSpellEntry( 113858 ), -- Dark Soul: Instability
+				CreateSpellEntry( 116202 ), -- Aura of Elements
 			},
 			procs = {
-				CreateSpellEntry( 86121 ), -- Soul Swap
-				CreateSpellEntry( 54274 ), CreateSpellEntry( 54276 ), CreateSpellEntry( 54277 ), -- Backdraft rank 1/2/3
-				CreateSpellEntry( 71165 ), -- Molten Core
-				CreateSpellEntry( 63167 ), -- Decimation
-				CreateSpellEntry( 47283 ), -- Empowered Imp
+				CreateSpellEntry( 34936 ), -- Backlash
+				CreateSpellEntry( 122355 ), -- Molten Core
 			},
 		},
 		WARRIOR = { 
@@ -1321,13 +1319,13 @@ elseif ( LAYOUT == 3 ) then
 	end
 	playerFrame:Show();
 
-	local trinketFrame = CreateAuraBarFrame( trinketDataSource, TukuiPlayer );
+	local trinketFrame = CreateAuraBarFrame( targetDataSource, TukuiPlayer );
 	trinketFrame:SetHiddenHeight( -yOffset );
 	trinketFrame:SetPoint( "BOTTOMLEFT", playerFrame, "TOPLEFT", 0, yOffset );
 	trinketFrame:SetPoint( "BOTTOMRIGHT", playerFrame, "TOPRIGHT", 0, yOffset );
 	trinketFrame:Show();
 	
-	local targetFrame = CreateAuraBarFrame( targetDataSource, TukuiPlayer );
+	local targetFrame = CreateAuraBarFrame( trinketDataSource, TukuiPlayer );
 	targetFrame:SetHiddenHeight( -yOffset );
 	targetFrame:SetPoint( "BOTTOMLEFT", trinketFrame, "TOPLEFT", 0, yOffset );
 	targetFrame:SetPoint( "BOTTOMRIGHT", trinketFrame, "TOPRIGHT", 0, yOffset );

@@ -264,7 +264,7 @@ BNToastFrame:CreateShadow()
 BNToastFrame:HookScript("OnShow", function(self)
 	self:ClearAllPoints()
 	if StanceBarFrame:IsShown() then 
-		self:SetPoint("TOPLEFT", UIParrent, "TOPLEFT", 0, -(T.buttonsize + T.buttonspacing))
+		self:SetPoint("TOPLEFT", UIParrent, "TOPLEFT", 0, -(T.buttonsize + T.buttonspacing + 1))
 	else
 		self:Point("TOPLEFT", UIParrent, "TOPLEFT", 0, 0)
 	end
