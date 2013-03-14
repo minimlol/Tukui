@@ -155,6 +155,7 @@ local TRINKET_FILTER = {
 		CreateSpellEntry( 128987 ), -- Relic of Chi Ji
 		CreateSpellEntry( 126657 ), -- Darkmist Vortex
 		CreateSpellEntry( 126659 ), -- Essence of Terror
+		CreateSpellEntry( 138702 ), -- Brutal Talisman of the Shado-Pan Assault
 	};
 	
 --[[ Class specific filters
