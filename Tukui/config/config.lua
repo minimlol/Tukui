@@ -39,7 +39,7 @@ C["unitframes"] = {
 	["playeraggro"] = false,                             -- color player border to red if you have aggro on current target.
 	["healcomm"] = false,                               -- enable healprediction support.
 	["onlyselfdebuffs"] = false,                        -- display only our own debuffs applied on target
-	["showfocustarget"] = true,                         -- show focus target
+	["showfocustarget"] = false,                         -- show focus target
 	["showstatuebar"] = true,                           -- show statue bar (Dependencies: class bar option)
 	["bordercolor"] = { .4,.4,.4 },                     -- unit frames panel border color
 
@@ -169,7 +169,7 @@ C["merchant"] = {
 }
 
 C["error"] = {
-	["enable"] = true,                                  -- true to enable this mod, false to disable
+	["enable"] = false,                                  -- true to enable this mod, false to disable
 	filter = {                                          -- what messages to not hide
 		[INVENTORY_FULL] = true,                        -- inventory is full will not be hidden by default
 	},

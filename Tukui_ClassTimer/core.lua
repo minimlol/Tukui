@@ -156,6 +156,9 @@ local TRINKET_FILTER = {
 		CreateSpellEntry( 126657 ), -- Darkmist Vortex
 		CreateSpellEntry( 126659 ), -- Essence of Terror
 		CreateSpellEntry( 138702 ), -- Brutal Talisman of the Shado-Pan Assault
+		CreateSpellEntry( 138786 ), -- Wushoolay's Lightning
+		CreateSpellEntry( 138703 ), -- Volatile Talisman of the Shado-Pan Assault
+		CreateSpellEntry( 96230 ), -- Synapse Springs
 	};
 	
 --[[ Class specific filters
@@ -425,12 +428,14 @@ local CLASS_FILTERS = {
 				CreateSpellEntry( 20925 ), -- Sacred Shield
 				CreateSpellEntry( 31821 ), -- Devotion Aura
 				CreateSpellEntry( 86700 ), -- Ancient Power
+				CreateSpellEntry( 114637 ), -- Bastion of Glory
 			},
 			procs = {
 				CreateSpellEntry( 90174 ), -- Hand of Light
 				CreateSpellEntry( 54149 ), -- Infusion of Light
 				CreateSpellEntry( 85496 ), -- Speed of Light
 				CreateSpellEntry( 88819 ), -- Daybreak
+				CreateSpellEntry( 114250 ), -- Selfless Healer
 			},
 		},
 		PRIEST = { 
@@ -558,6 +563,8 @@ local CLASS_FILTERS = {
 				CreateSpellEntry( 5484 ), -- Howl of Terror
 				CreateSpellEntry( 6789 ), -- Mortal Coil
 				CreateSpellEntry( 47960 ), -- Shadowflame (Hand of Guldan)
+				CreateSpellEntry( 108686 ), -- Immolate (Fire and Brimstone)
+				CreateSpellEntry( 104232 ), -- Rain of Fire
 			},
 				player = {
 				CreateSpellEntry( 117828 ), -- Backdraft
@@ -1253,7 +1260,7 @@ if ( LAYOUT == 1 ) then
 
 	local frame = CreateAuraBarFrame( dataSource, TukuiPlayer );
 	local yOffset = 1;
-	if ( playerClass == "DEATHKNIGHT" or playerClass == "SHAMAN" or playerClass == "PALADIN" or playerClass == "DRUID" or playerClass == "WARLOCK") then
+	if ( playerClass == "DEATHKNIGHT" or playerClass == "SHAMAN" or playerClass == "PALADIN" or playerClass == "DRUID" or playerClass == "WARLOCK" or playerClass == "MONK") then
 		yOffset = yOffset + 8;
 	end
 	frame:SetPoint( "BOTTOMLEFT", TukuiPlayer, "TOPLEFT", 0, yOffset );
@@ -1278,7 +1285,7 @@ elseif ( LAYOUT == 2 ) then
 	
 	local playerFrame = CreateAuraBarFrame( playerDataSource, TukuiPlayer );	
 	playerFrame:SetHiddenHeight( -yOffset );
-	if ( playerClass == "DEATHKNIGHT" or playerClass == "SHAMAN" or playerClass == "PALADIN" or playerClass == "DRUID" or playerClass == "WARLOCK") then
+	if ( playerClass == "DEATHKNIGHT" or playerClass == "SHAMAN" or playerClass == "PALADIN" or playerClass == "DRUID" or playerClass == "WARLOCK"  or playerClass == "MONK") then
 		playerFrame:SetPoint( "BOTTOMLEFT", TukuiPlayer, "TOPLEFT", 0, yOffset + 8 );
 		playerFrame:SetPoint( "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, yOffset + 8 );
 	else
@@ -1311,7 +1318,7 @@ elseif ( LAYOUT == 3 ) then
 
 	local playerFrame = CreateAuraBarFrame( playerDataSource, TukuiPlayer );
 	playerFrame:SetHiddenHeight( -yOffset );
-	if ( playerClass == "DEATHKNIGHT" or playerClass == "SHAMAN" or playerClass == "PALADIN" or playerClass == "DRUID" or playerClass == "WARLOCK") then
+	if ( playerClass == "DEATHKNIGHT" or playerClass == "SHAMAN" or playerClass == "PALADIN" or playerClass == "DRUID" or playerClass == "WARLOCK" or playerClass == "MONK") then
 		playerFrame:SetPoint( "BOTTOMLEFT", TukuiPlayer, "TOPLEFT", 0, yOffset + 8 );
 		playerFrame:SetPoint( "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, yOffset + 8 );
 	else
@@ -1351,7 +1358,7 @@ elseif ( LAYOUT == 4 ) then
 
 	local playerFrame = CreateAuraBarFrame( playerDataSource, TukuiPlayer );
 	playerFrame:SetHiddenHeight( -yOffset );
-	if ( playerClass == "DEATHKNIGHT" or playerClass == "SHAMAN" or playerClass == "PALADIN" or playerClass == "DRUID" or playerClass == "WARLOCK") then
+	if ( playerClass == "DEATHKNIGHT" or playerClass == "SHAMAN" or playerClass == "PALADIN" or playerClass == "DRUID" or playerClass == "WARLOCK"  or playerClass == "MONK") then
 		playerFrame:SetPoint( "BOTTOMLEFT", TukuiPlayer, "TOPLEFT", 0, yOffset + 8 );
 		playerFrame:SetPoint( "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, yOffset + 8 );
 	else
