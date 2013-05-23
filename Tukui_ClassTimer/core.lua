@@ -131,10 +131,11 @@ local TRINKET_FILTER = {
         CreateSpellEntry( 74497 ), -- Lifeblood Rank 8 (Herbalism)
         CreateSpellEntry( 74245 ), -- Landslide (Enchanting)
         CreateSpellEntry( 74221 ), -- Hurricane (Enchanting)
+		CreateSpellEntry( 104993 ), -- Jade Spirit (Enchanting)
+		CreateSpellEntry( 96230 ), -- Synapse Springs (Engineering)
 
-		--Raid buff
-		CreateSpellEntry( 80627 ), -- Stolen Power
-		
+
+
 		-- Racials
 		CreateSpellEntry( 20954 ), -- Stoneform (Dwarf)
 		CreateSpellEntry( 59752 ), -- Every Man for Himself (Human)
@@ -158,7 +159,7 @@ local TRINKET_FILTER = {
 		CreateSpellEntry( 138702 ), -- Brutal Talisman of the Shado-Pan Assault
 		CreateSpellEntry( 138786 ), -- Wushoolay's Lightning
 		CreateSpellEntry( 138703 ), -- Volatile Talisman of the Shado-Pan Assault
-		CreateSpellEntry( 96230 ), -- Synapse Springs
+		CreateSpellEntry( 139133 ), -- Cha-Ye's Essence of Brilliance
 	};
 	
 --[[ Class specific filters
@@ -220,8 +221,6 @@ local CLASS_FILTERS = {
 				CreateSpellEntry( 116768 ), -- Combobreaker: Blackout-Kick
 				CreateSpellEntry( 120273 ), -- Tiger Strikes
 				CreateSpellEntry( 118864 ), -- Combobreaker: Tigerpalm
-				 CreateSpellEntry( 104993 ), -- Jade Spirit
-				CreateSpellEntry( 128985 ), -- Relic of Yu'lon
 			}
 		},
 		DEATHKNIGHT = { 
@@ -322,8 +321,6 @@ local CLASS_FILTERS = {
 				CreateSpellEntry( 93400 ), -- Shooting Stars
 				CreateSpellEntry( 81006 ), CreateSpellEntry( 81191 ), CreateSpellEntry( 81192 ), -- Lunar Shower Rank 1/2/3
 				CreateSpellEntry( 16886 ), -- Nature's Grace Rank
-				CreateSpellEntry( 104993 ), -- Jade Spirit
-				CreateSpellEntry( 128985 ), -- Relic of Yu'lon
 			},
 		},
 		HUNTER = { 
@@ -475,8 +472,6 @@ local CLASS_FILTERS = {
 				CreateSpellEntry( 71584 ), -- Revitalize
 				CreateSpellEntry( 59888 ), -- Borrowed Time
 				CreateSpellEntry( 95799 ), -- Empowered Shadow
-				CreateSpellEntry( 104993 ), -- Jade Spirit
-				CreateSpellEntry( 128985 ), -- Relic of Yu'lon
 			},
 		},
 		ROGUE = { 
@@ -542,8 +537,6 @@ local CLASS_FILTERS = {
 			procs = {
 				CreateSpellEntry( 53817 ), -- Maelstrom Weapon
 				CreateSpellEntry( 16246 ), -- Clearcasting
-				CreateSpellEntry( 104993 ), -- Jade Spirit
-				CreateSpellEntry( 128985 ), -- Relic of Yu'lon				
 			},
 		},
 		WARLOCK = {
@@ -575,10 +568,13 @@ local CLASS_FILTERS = {
 				CreateSpellEntry( 113861 ), -- Dark Soul: Knowledge
 				CreateSpellEntry( 113858 ), -- Dark Soul: Instability
 				CreateSpellEntry( 116202 ), -- Aura of Elements
+				CreateSpellEntry( 116198 ), -- Aura of Enfeeblement
+				CreateSpellEntry( 104025 ), -- Immolation Aura
 			},
 			procs = {
 				CreateSpellEntry( 34936 ), -- Backlash
 				CreateSpellEntry( 122355 ), -- Molten Core
+				CreateSpellEntry( 140074 ), -- Molten Core (green)
 			},
 		},
 		WARRIOR = { 
