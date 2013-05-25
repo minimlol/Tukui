@@ -1,11 +1,14 @@
 if not (IsAddOnLoaded("Tukui") or IsAddOnLoaded("AsphyxiaUI") or IsAddOnLoaded("DuffedUI")) then return end
 local U = unpack(select(2,...))
 local name = "AuctionatorSkin"
-local function AtrSkin(self,event)
-	if event == "PLAYER_ENTERING_WORLD" then return end
+local function AtrSkin(self, event, addon)
+	if event == "ADDON_LOADED" and addon == "Blizzard_TradeSkillUI" then 
+		U.SkinButton(Auctionator_Search, true)
+		U.UnregisterEvent(name, self, event)
+	elseif event == "ADDON_LOADED" or event == "PLAYER_ENTERING_WORLD" then return end
 	local s = U.s
 	local c = U.c
-		
+
 	AuctionsCancelAuctionButton:Point("RIGHT", AuctionFrameMoneyFrame, "RIGHT", 554, 0)
 	AuctionsCloseButton:ClearAllPoints()
 	AuctionsCloseButton:Point("RIGHT", AuctionsCancelAuctionButton, "RIGHT", 86, 0)
@@ -57,14 +60,12 @@ local function AtrSkin(self,event)
 	U.SkinFrame(AuctionatorDescriptionFrame)
 	U.SkinFrame(Atr_Stacking_List)
 	U.SkinFrame(Atr_ShpList_Frame)
-		
 	U.SkinCheckBox(AuctionatorOption_Enable_Alt_CB)
 	U.SkinCheckBox(AuctionatorOption_Open_All_Bags_CB)
 	U.SkinCheckBox(AuctionatorOption_Show_StartingPrice_CB)
 	U.SkinCheckBox(ATR_tipsVendorOpt_CB)
 	U.SkinCheckBox(ATR_tipsAuctionOpt_CB)
 	U.SkinCheckBox(ATR_tipsDisenchantOpt_CB)
-		
 	U.SkinDropDownBox(AuctionatorOption_Deftab)
 	U.SkinDropDownBox(Atr_tipsShiftDD)
 	U.SkinDropDownBox(Atr_deDetailsDD)
@@ -89,7 +90,6 @@ local function AtrSkin(self,event)
 
 	U.SkinEditBox(Atr_Starting_Discount)
 	U.SkinEditBox(Atr_ScanOpts_MaxHistAge)
-		
 	U.SkinButton(Atr_UCConfigFrame_Reset)
 	U.SkinButton(Atr_StackingOptionsFrame_Edit)
 	U.SkinButton(Atr_StackingOptionsFrame_New)
@@ -100,7 +100,6 @@ local function AtrSkin(self,event)
 			U.SkinButton(object)
 		end
 	end
-		
 	for i = 1, AuctionatorResetsFrame:GetNumChildren() do
 		local object = select(i, AuctionatorResetsFrame:GetChildren())
 		if object:GetObjectType() == 'Button' then
@@ -192,4 +191,4 @@ local function AtrSkin(self,event)
 	U.UnregisterEvent(name, self, event)
 end
 
-U.RegisterSkin(name,AtrSkin,'AUCTION_HOUSE_SHOW')
+U.RegisterSkin(name,AtrSkin,'AUCTION_HOUSE_SHOW','ADDON_LOADED')

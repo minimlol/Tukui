@@ -44,6 +44,7 @@
 	<Script file="GupPet.lua"/>
 	<Script file="GuildMemberInfo_TradeSkills.lua"/>
 	<Script file="Healium.lua"/>
+	<Script file="Ignition.lua"/>
 	<Script file="Incoming.lua"/>
 	<Script file="KarniCrap.lua"/>
 	<Script file="Lightheaded.lua"/>

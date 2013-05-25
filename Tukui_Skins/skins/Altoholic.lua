@@ -3,7 +3,7 @@ local U = unpack(select(2,...))
 local s = U.s
 local c = U.c 
 local name = "AltoholicSkin"
-local function SkinAltoholic(self)
+local function SkinAltoholic(self, event, addon)
 	LoadAddOn("Altoholic_Characters")
 	AltoholicFrame.IsSkinned = "False"
 	U.SkinTooltip(AltoTooltip)
@@ -117,9 +117,7 @@ local function SkinAltoholic(self)
 		end
 	end
 
-
 	local function LoadSkinAgenda()
-
 		U.SkinFrame(AltoholicFrameCalendarScrollFrame)
 		U.SkinFrame(AltoholicTabAgendaMenuItem1)
 		U.SkinScrollBar(AltoholicFrameCalendarScrollFrameScrollBar)
@@ -133,7 +131,6 @@ local function SkinAltoholic(self)
 	end
 
 	local function LoadSkinGrids()
-
 		AltoholicFrameGridsScrollFrame:StripTextures(True)
 		U.SkinBackdropFrame(AltoholicFrameGrids)
 		U.SkinScrollBar(AltoholicFrameGridsScrollFrameScrollBar)
@@ -153,7 +150,6 @@ local function SkinAltoholic(self)
 	end
 
 	local function LoadSkinGuild()
-
 		U.SkinFrame(AltoholicFrameGuildMembers)
 		U.SkinFrame(AltoholicFrameGuildBank)
 		U.SkinScrollBar(AltoholicFrameGuildMembersScrollFrameScrollBar)
@@ -183,7 +179,6 @@ local function SkinAltoholic(self)
 	end
 
 	local function LoadSkinSearch()
-
 		U.SkinBackdropFrame(AltoholicFrameSearch, true)
 		AltoholicFrameSearchScrollFrame:StripTextures(True)
 		AltoholicSearchMenuScrollFrame:StripTextures(True)

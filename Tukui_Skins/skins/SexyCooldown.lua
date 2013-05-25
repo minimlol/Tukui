@@ -25,7 +25,7 @@ end
 local function SkinSexyCooldownBar(bar)
 	SCDStripSkinSettings(bar)
 	U.SkinFrame(bar)
-	cRegisterForPetBattleHide(bar)
+	U.RegisterForPetBattleHide(bar)
 	if(U.CheckOption("EmbedSexyCooldown")) then
 		bar:ClearAllPoints()
 		if DuffedUI then
@@ -50,14 +50,10 @@ local function SkinSexyCooldownBar(bar)
 			bar:SetWidth(TukuiBar1:GetWidth())
 		end
 		if AsphyxiaUI then
-			if IsAddOnLoaded("AzilSettings") then
-				bar:Point('BOTTOM', AsphyxiaUIActionBar1, 'TOP', 0, 16)
-			end
 			bar:Point('BOTTOM', AsphyxiaUIActionBar1, 'TOP', 0, 1)
 			bar:SetHeight(ActionButton1:GetHeight())
 			bar:SetWidth(AsphyxiaUIActionBar1:GetWidth())
 		end
-		bar:CreateShadow()
 		bar:EnableMouse(false)
 	end
 end
@@ -77,6 +73,7 @@ end
 local function SkinSexyCooldownLabel(bar,label,store)
 	if not label.skinned then
 		label:SetFont(c["media"].pixelfont, store.fontsize, "OUTLINE")
+		label.skinned = true
 	end
 end
 local function SkinSexyCooldownBackdrop(bar)

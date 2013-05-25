@@ -2,7 +2,7 @@ if not (IsAddOnLoaded("Tukui") or IsAddOnLoaded("AsphyxiaUI") or IsAddOnLoaded("
 local U = unpack(select(2,...))
 local name = "PetBattleTeamsSkin"
 local function SkinPetBattleTeams(self)
-	cDelay(6, function()
+	U.Delay(6, function()
 		U.SkinFrame(PetBattleTeamFrame)
 		U.SkinScrollBar(PetBattleTeamsScrollFrameScrollBar)
 

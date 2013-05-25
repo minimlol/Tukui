@@ -13,7 +13,7 @@ local Skins = U.Skins
 XS.Init = function(self)
 	if self.frame then return end
 
-	local f = CreateFrame("Frame",nil)
+	local f = CreateFrame("Frame")
 	f:RegisterEvent("PET_BATTLE_CLOSE")
 	f:RegisterEvent("PET_BATTLE_OPENING_START")
 	self.frame = f
@@ -75,16 +75,16 @@ XS.UnregisterEvent = function(self,skinName,event)
 	end
 end
 
-local XSFrame = CreateFrame("Frame",nil)
+local XSFrame = CreateFrame("Frame")
 XSFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
-XSFrame:SetScript("OnEvent",function(self)
+XSFrame:SetScript("OnEvent", function(self)
 	XS:Init()
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 end)
 
-local DefaultSetSkin = CreateFrame("Frame")
-	DefaultSetSkin:RegisterEvent( "PLAYER_ENTERING_WORLD" )
-	DefaultSetSkin:SetScript( "OnEvent", function(self)
+local SkinOptionsLoader = CreateFrame("Frame")
+SkinOptionsLoader:RegisterEvent("PLAYER_ENTERING_WORLD")
+SkinOptionsLoader:SetScript("OnEvent", function(self, event)
 	if(UISkinOptions.RecountBackdrop == nil) then UISkinOptions.RecountBackdrop = "Enabled" end
 	if(UISkinOptions.SkadaBackdrop == nil) then UISkinOptions.SkadaBackdrop = "Enabled" end
 	if(UISkinOptions.EmbedOoC == nil) then UISkinOptions.EmbedOoC = "Disabled" end
@@ -99,12 +99,6 @@ local DefaultSetSkin = CreateFrame("Frame")
 	if(UISkinOptions.EmbedLeft == nil) then UISkinOptions.EmbedLeft =  "Omen" end
 	if(UISkinOptions.EmbedRight == nil) then UISkinOptions.EmbedRight = "Skada" end
 	UISkinOptions.MiscFixes = "Enabled"
-	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
-end)
-
-local SkinOptionsLoader = CreateFrame("Frame")
-	SkinOptionsLoader:RegisterEvent("PLAYER_ENTERING_WORLD")
-	SkinOptionsLoader:SetScript("OnEvent", function(self)
 	print("|cffC495DDTukui|r Skins by |cFFFF7D0AAzilroka|r - Version: |cff1784d1"..U.Version.."|r Loaded!")
 
 	local function CreateOptionsFrame(name, frametext, parent)
@@ -118,31 +112,28 @@ local SkinOptionsLoader = CreateFrame("Frame")
 		frame:SetFrameStrata("DIALOG")
 		frame:SetClampedToScreen(true)
 		frame:SetMovable(true)
-		frame.text = frame:CreateFontString(nil, "OVERLAY")
-		frame.text:SetFont(c["media"].font, 14, "OUTLINE")
+		frame:FontString("text", c["media"].font, 14, "OUTLINE")
 		frame.text:SetPoint("TOP", frame, 0, -6)
 		frame.text:SetText(frametext..U.Version)
 		frame:EnableMouse(true)
 		frame:RegisterForDrag("LeftButton")
 	end
-	
+
 	CreateOptionsFrame("SkinOptions", "|cffC495DDTukui|r Skin Options - Version ", UIParent)
 	SkinOptions:SetScript("OnDragStart", function(self) self:StartMoving() end)
 	SkinOptions:SetScript("OnDragStop", function(self) self:StopMovingOrSizing() end)	
 
 	CreateOptionsFrame("SkinOptions2", "|cffC495DDTukui|r Module Options - Version ", SkinOptions)
 	CreateOptionsFrame("SkinOptions3", "|cffC495DDTukui|r Embed Options - Version ", SkinOptions)
-	SkinOptions3.text2 = SkinOptions3:CreateFontString(nil, "OVERLAY")
-	SkinOptions3.text2:SetFont(c["media"].font, 14, "OUTLINE")
+	SkinOptions3:FontString("text2", c["media"].font, 14, "OUTLINE")
 	SkinOptions3.text2:SetPoint("TOPRIGHT", SkinOptions3, "TOPRIGHT", -30, -38)
 	SkinOptions3.text2:SetText("|cff00AAFFAvailable Embeds|r:\n\nalDamageMeter\nOmen\nRecount\nSkada\nTinyDPS")
-	
+
 	local function CreateOptionsButton(name, btntext, parent)
 		local frame = CreateFrame("Button", name.."Button", SkinOptions)
 		frame:Size(100,24)
 		U.SkinButton(frame)
-		frame.text = frame:CreateFontString(nil, "OVERLAY")
-		frame.text:SetFont(c["media"].font, 12, "OUTLINE")
+		frame:FontString("text", c["media"].font, 12, "OUTLINE")
 		frame.text:SetPoint("CENTER", frame, 0, 0)
 		frame.text:SetText(btntext)
 		frame:SetScript("OnClick", function()
@@ -170,33 +161,28 @@ local SkinOptionsLoader = CreateFrame("Frame")
 	SkinOptionsCloseButton:SetPoint("RIGHT", SkinOptions2Button, "RIGHT", 102, 0)
 	SkinOptionsCloseButton:HookScript("OnClick", function() SkinOptions3:Hide() SkinOptions:Hide() SkinOptions2:Hide() end)
 
-	ApplySkinSettingsButton = CreateFrame("Button", "ApplySkinSettingsButton", SkinOptions)
+	local ApplySkinSettingsButton = CreateFrame("Button", "ApplySkinSettingsButton", SkinOptions)
 	ApplySkinSettingsButton:SetPoint("RIGHT", EmbedWindowSettingsButton, "LEFT", -2, 0)
 	ApplySkinSettingsButton:Size(100,24)
 	U.SkinButton(ApplySkinSettingsButton)
-	ApplySkinSettingsButton.text = ApplySkinSettingsButton:CreateFontString(nil, "OVERLAY")
-	ApplySkinSettingsButton.text:SetFont(c["media"].font, 12, "OUTLINE")
+	ApplySkinSettingsButton:FontString("text", c["media"].font, 12, "OUTLINE")
 	ApplySkinSettingsButton.text:SetPoint("CENTER", ApplySkinSettingsButton, 0, 0)
 	ApplySkinSettingsButton.text:SetText("Apply Settings")
-	ApplySkinSettingsButton:HookScript("OnClick", function() ReloadUI() end)
+	ApplySkinSettingsButton:SetScript("OnClick", function() ReloadUI() end)
 
 	local function ToggleEmbed()
 		U.DisableOption("EmbedOmen")
 		U.DisableOption("EmbedRecount")
 		U.DisableOption("EmbedTinyDPS")
 		U.DisableOption("EmbedSkada")
-		U.EnableOption("Embed"..UISkinOptions.EmbedRight)
-		U.EnableOption("Embed"..UISkinOptions.EmbedLeft)
-		if (U.CheckOption("EmbedOmen","Omen")) then EmbedOmen() end
-		if (U.CheckOption("EmbedSkada","Skada")) then EmbedSkada() end
-		if (U.CheckOption("EmbedTinyDPS","TinyDPS")) then EmbedTDPS() end
-		if (U.CheckOption("EmbedRecount","Recount")) then EmbedRecount() end
+		U.EnableOption("Embed"..UISkinOptions["EmbedRight"])
+		U.EnableOption("Embed"..UISkinOptions["EmbedLeft"])
+		EmbedCheck()
 	end
 
 	local function CreateEmbedEditBox(name, boxtext)
 		local frame = CreateFrame("EditBox", name.."EditBox", SkinOptions3)
-		frame.text = frame:CreateFontString(nil, "OVERLAY")
-		frame.text:SetFont(c["media"].font, 12, "OUTLINE")
+		frame:FontString("text", c["media"].font, 12, "OUTLINE")
 		frame.text:SetPoint("BOTTOM", frame, "TOP", 0, 2)
 		frame.text:SetText(boxtext)
 		frame:SetAutoFocus(false)
@@ -213,35 +199,27 @@ local SkinOptionsLoader = CreateFrame("Frame")
 		frame:SetBackdropBorderColor(0,0,0,1)
 		frame:SetFontObject(GameFontHighlight)
 		frame:CreateBackdrop("Default")
+		frame:SetText(UISkinOptions[name])
+		frame:SetScript("OnEscapePressed", function(self) self:ClearFocus() self:SetText(UISkinOptions[name]) end)
+		frame:SetScript("OnEnterPressed", function(self)
+			self:ClearFocus()
+			UISkinOptions[name] = self:GetText()
+			ToggleEmbed()
+		end)
 	end
 
 	CreateEmbedEditBox("EmbedRight", "Embed Right AddOn")
 	EmbedRightEditBox:SetPoint("TOPLEFT", 12, -50)
-	EmbedRightEditBox:SetText(UISkinOptions.EmbedRight)
-	EmbedRightEditBox:SetScript("OnEscapePressed", function(self) self:ClearFocus() self:SetText(UISkinOptions.EmbedRight) end)
-	EmbedRightEditBox:SetScript("OnEnterPressed", function(self)
-		self:ClearFocus()
-		UISkinOptions.EmbedRight = self:GetText()
-		ToggleEmbed()
-	end)
 
 	CreateEmbedEditBox("EmbedLeft", "Embed Left AddOn")
 	EmbedLeftEditBox:SetPoint("TOPLEFT", 12, -100)
-	EmbedLeftEditBox:SetText(UISkinOptions.EmbedLeft)
-	EmbedLeftEditBox:SetScript("OnEscapePressed", function(self) self:ClearFocus() self:SetText(UISkinOptions.EmbedLeft) end)
-	EmbedLeftEditBox:SetScript("OnEnterPressed", function(self)
-		self:ClearFocus()
-		UISkinOptions.EmbedLeft = self:GetText()
-		ToggleEmbed()
-	end)
 
 	local function CreateEmbedButton(name, btntext)
 		local frame = CreateFrame("Button", name.."Button", SkinOptions3)
 		frame:Size(16)
 		U.SkinBackdropFrame(frame)
-		frame:SetBackdrop({bgFile = c.media.normTex, edgeFile = nil, tile = false, tileSize = 0, edgeSize = 0, insets = { left = 0, right = 0, top = 0, bottom = 0 }})
-		frame.text = frame:CreateFontString(nil, "OVERLAY")
-		frame.text:SetFont(c["media"].font, 12, "OUTLINE")
+		frame:SetBackdrop({bgFile = c.media.normTex, edgeFile = nil, tile = false, tileSize = 0, edgeSize = 0})
+		frame:FontString("text", c["media"].font, 12, "OUTLINE")
 		frame.text:SetPoint("LEFT", frame, "RIGHT", 10, 0)
 		frame.text:SetText(btntext)
 		frame:SetScript("OnShow", function(self)
@@ -271,15 +249,14 @@ local SkinOptionsLoader = CreateFrame("Frame")
 	CreateEmbedButton("EmbedCoolLine", "Embed CoolLine")
 	EmbedCoolLineButton:SetPoint("TOP", -68, -100)
 
-	SkinsGameMenuButton = CreateFrame("Button", "SkinsGameMenuButton", GameMenuFrame, "GameMenuButtonTemplate")
+	local SkinsGameMenuButton = CreateFrame("Button", "SkinsGameMenuButton", GameMenuFrame, "GameMenuButtonTemplate")
 	SkinsGameMenuButton:Point("TOP", GameMenuButtonMacros, "BOTTOM", 0 , -1)
 	SkinsGameMenuButton:Size(GameMenuButtonLogout:GetWidth(),GameMenuButtonLogout:GetHeight())
 	U.SkinButton(SkinsGameMenuButton)
-	SkinsGameMenuButton.text = SkinsGameMenuButton:CreateFontString(nil, "OVERLAY")
-	SkinsGameMenuButton.text:SetFont(c["media"].font, 12)
+	SkinsGameMenuButton:FontString("text", c["media"].font, 12, "NONE")
 	SkinsGameMenuButton.text:SetPoint("CENTER", SkinsGameMenuButton, 0, 0)
 	SkinsGameMenuButton.text:SetText("Skins")
-	SkinsGameMenuButton:HookScript("OnClick", function() SkinOptions:Show() HideUIPanel(GameMenuFrame) end)
+	SkinsGameMenuButton:SetScript("OnClick", function() SkinOptions:Show() HideUIPanel(GameMenuFrame) end)
 	GameMenuButtonLogout:Point("TOP", GameMenuButtonMacros, "BOTTOM", 0 , -38)
 	GameMenuFrame:Height(GameMenuFrame:GetHeight() + 26)
 	if IsAddOnLoaded("stAddonmanager") then 
@@ -301,21 +278,24 @@ local SkinOptionsLoader = CreateFrame("Frame")
 		button:SetPoint(xTable[x].point, xTable[x].offset, yOffset)
 		button:Size(16)
 		U.SkinBackdropFrame(button)
-		button:SetBackdrop({bgFile = c.media.normTex, edgeFile = nil, tile = false, tileSize = 0, edgeSize = 0, insets = { left = 0, right = 0, top = 0, bottom = 0 }});
-
-		button.text = button:CreateFontString(nil, "OVERLAY")
-		button.text:SetFont(c["media"].font, 12, "OUTLINE")
+		button:SetBackdrop({bgFile = c.media.normTex, edgeFile = nil, tile = false, tileSize = 0, edgeSize = 0})
+		button:FontString("text", c["media"].font, 12, "OUTLINE")
 		button.text:SetPoint("LEFT", button, "RIGHT", 10, 0)
 		button.text:SetText(buttonText)
-		if (UISkinOptions[option] == "Enabled") then button:SetBackdropColor(0.6,0,0.86,1) end
-		if (UISkinOptions[option] == "Disabled") then button:SetBackdropColor(0.68,0.14,0.14,1) end
-		button:HookScript("OnClick", function()
+		button:SetScript("OnShow", function(self)
+			if (UISkinOptions[option] == "Enabled") then
+				self:SetBackdropColor(0.6,0,0.86,1)
+			else
+				self:SetBackdropColor(0.68,0.14,0.14,1)
+			end
+		end)
+		button:SetScript("OnClick", function(self)
 			if (UISkinOptions[option] == "Enabled") then
 				UISkinOptions[option] = "Disabled"
-				button:SetBackdropColor(0.68,0.14,0.14,1)
+				self:SetBackdropColor(0.68,0.14,0.14,1)
 			else
 				UISkinOptions[option] = "Enabled"
-				button:SetBackdropColor(0.6,0,0.86,1)
+				self:SetBackdropColor(0.6,0,0.86,1)
 			end
 		end)
 	end
@@ -380,7 +360,7 @@ local SkinOptionsLoader = CreateFrame("Frame")
 		curY = curY + 1
 	end
 
-	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+	self:UnregisterEvent(event)
 end)
 
 SLASH_SKINOPTIONSWINDOW1 = '/skinoptions';

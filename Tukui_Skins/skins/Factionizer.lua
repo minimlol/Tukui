@@ -73,7 +73,6 @@ local function SkinFactionizer(self)
 		FIZ_ReputationDetailAtWarCheckBox:SetScript("OnUpdate", function(frame)
 		frame:StripTextures()
 		frame:CreateBackdrop()
-		cUpdateColor(frame.backdrop)
 		frame.backdrop:Point("TOPLEFT", 4, -4)
 		frame.backdrop:Point("BOTTOMRIGHT", -4, 4)
 

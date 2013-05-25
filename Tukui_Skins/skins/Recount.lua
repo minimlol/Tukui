@@ -87,20 +87,20 @@ local function SkinRecount(self)
 		return frame
 	end
 
-		if Recount.MainWindow then SkinMainFrame(Recount.MainWindow) Recount.MainWindow:SetFrameStrata("MEDIUM") end
-		if Recount.ConfigWindow then SkinFrame(Recount.ConfigWindow) end
-		if Recount.GraphWindow then SkinFrame(Recount.GraphWindow) end
-		if Recount.DetailWindow then SkinFrame(Recount.DetailWindow) end
-		if Recount.ResetFrame then SkinFrame(Recount.ResetFrame) end
-		if _G["Recount_Realtime_!RAID_DAMAGE"] then SkinFrame(_G["Recount_Realtime_!RAID_DAMAGE"].Window) end
-		if _G["Recount_Realtime_!RAID_HEALING"] then SkinFrame(_G["Recount_Realtime_!RAID_HEALING"].Window) end
-		if _G["Recount_Realtime_!RAID_HEALINGTAKEN"] then SkinFrame(_G["Recount_Realtime_!RAID_HEALINGTAKEN"].Window) end
-		if _G["Recount_Realtime_!RAID_DAMAGETAKEN"] then SkinFrame(_G["Recount_Realtime_!RAID_DAMAGETAKEN"].Window) end
-		if _G["Recount_Realtime_Bandwidth Available_AVAILABLE_BANDWIDTH"] then SkinFrame(_G["Recount_Realtime_Bandwidth Available_AVAILABLE_BANDWIDTH"].Window) end
-		if _G["Recount_Realtime_FPS_FPS"] then SkinFrame(_G["Recount_Realtime_FPS_FPS"].Window) end
-		if _G["Recount_Realtime_Latency_LAG"] then SkinFrame(_G["Recount_Realtime_Latency_LAG"].Window) end
-		if _G["Recount_Realtime_Downstream Traffic_DOWN_TRAFFIC"] then SkinFrame(_G["Recount_Realtime_Downstream Traffic_DOWN_TRAFFIC"].Window) end
-		if _G["Recount_Realtime_Upstream Traffic_UP_TRAFFIC"] then SkinFrame(_G["Recount_Realtime_Upstream Traffic_UP_TRAFFIC"].Window) end
+	if Recount.MainWindow then SkinMainFrame(Recount.MainWindow) Recount.MainWindow:SetFrameStrata("MEDIUM") end
+	if Recount.ConfigWindow then SkinFrame(Recount.ConfigWindow) end
+	if Recount.GraphWindow then SkinFrame(Recount.GraphWindow) end
+	if Recount.DetailWindow then SkinFrame(Recount.DetailWindow) end
+	if Recount.ResetFrame then SkinFrame(Recount.ResetFrame) end
+	if _G["Recount_Realtime_!RAID_DAMAGE"] then SkinFrame(_G["Recount_Realtime_!RAID_DAMAGE"].Window) end
+	if _G["Recount_Realtime_!RAID_HEALING"] then SkinFrame(_G["Recount_Realtime_!RAID_HEALING"].Window) end
+	if _G["Recount_Realtime_!RAID_HEALINGTAKEN"] then SkinFrame(_G["Recount_Realtime_!RAID_HEALINGTAKEN"].Window) end
+	if _G["Recount_Realtime_!RAID_DAMAGETAKEN"] then SkinFrame(_G["Recount_Realtime_!RAID_DAMAGETAKEN"].Window) end
+	if _G["Recount_Realtime_Bandwidth Available_AVAILABLE_BANDWIDTH"] then SkinFrame(_G["Recount_Realtime_Bandwidth Available_AVAILABLE_BANDWIDTH"].Window) end
+	if _G["Recount_Realtime_FPS_FPS"] then SkinFrame(_G["Recount_Realtime_FPS_FPS"].Window) end
+	if _G["Recount_Realtime_Latency_LAG"] then SkinFrame(_G["Recount_Realtime_Latency_LAG"].Window) end
+	if _G["Recount_Realtime_Downstream Traffic_DOWN_TRAFFIC"] then SkinFrame(_G["Recount_Realtime_Downstream Traffic_DOWN_TRAFFIC"].Window) end
+	if _G["Recount_Realtime_Upstream Traffic_UP_TRAFFIC"] then SkinFrame(_G["Recount_Realtime_Upstream Traffic_UP_TRAFFIC"].Window) end
 
 	Recount:UpdateBarTextures()
 
@@ -212,13 +212,11 @@ local function SkinRecount(self)
 	ResetCloseText:SetFontObject(ChatFontNormal)
 	ResetCloseText:SetPoint("CENTER")
 	ResetCloseText:SetText("No")
-	
+
 	function Recount:ShowReset()
 		ResetFrame:Show()
 	end
 
-	if U.CheckOption("EmbedRecount") then EmbedRecount() end
-	
 end
 
 U.RegisterSkin(name,SkinRecount)

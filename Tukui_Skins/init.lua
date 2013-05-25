@@ -12,4 +12,5 @@ AddOn.FrameLocks = {}
 local T, C, L, G = unpack(Tukui or AsphyxiaUI or DuffedUI)
 AddOn.s = T
 AddOn.c = C
+AddOn.G = G
 AddOn.ccolor = T.myclass

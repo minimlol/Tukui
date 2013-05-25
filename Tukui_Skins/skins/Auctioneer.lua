@@ -54,11 +54,6 @@ local function AuctioneerSkin(self,event)
 	for i = 1, AuctionFrame.numTabs do
 		U.SkinTab(_G["AuctionFrameTab"..i])
 	end
-	AuctionFrameTab1:HookScript("OnUpdate", function()
-		for i = 1, AuctionFrame.numTabs do
-			cUpdateColor(_G["AuctionFrameTab"..i].backdrop)
-		end
-	end)
 	if AucAdvScanButton then U.SkinButton(AucAdvScanButton) end
 	if AucAdvSimpFrameCreate then U.SkinButton(AucAdvSimpFrameCreate) end
 	if AucAdvSimpFrameRemember then U.SkinButton(AucAdvSimpFrameRemember) end

@@ -123,7 +123,7 @@ local function SkinMageNuggets(self)
 	MageNugIgnite_FrameTexture:SetTexCoord(0.12, 0.88, 0.12, 0.88)
 	MageNugManaGem_FrameTexture:SetTexCoord(0.12, 0.88, 0.12, 0.88)
 	MageNugClearcast_FrameTexture:SetTexCoord(0.12, 0.88, 0.12, 0.88)
-	MageNugFrostBomb_Frame_Texture:SetTexCoord(0.12, 0.88, 0.12, 0.88)
+--	MageNugFrostBomb_FrameTexture:SetTexCoord(0.12, 0.88, 0.12, 0.88)
 
 	MageNugManaGem_Frame_Text2:ClearAllPoints()
 	MageNugManaGem_Frame_Text2:SetPoint("CENTER", MageNugManaGem_Frame_Bar, "CENTER", 0, 0)

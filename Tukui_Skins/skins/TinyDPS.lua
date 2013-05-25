@@ -14,7 +14,7 @@ local function SkinTinyDps(self)
 	local template
 	U.SkinFrame(frame)
 	if(tdps) then
-		tdps.width = GetUIFrame("UIMinimap"):GetWidth()
+		tdps.width = U.Minimap:GetWidth()
 	end
 	if(status) then
 		tdpsStatusBar:SetBackdrop( {

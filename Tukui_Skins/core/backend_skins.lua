@@ -143,6 +143,9 @@ U.Skins = {
 	["HealiumSkin"] = {
 		["addon"] = "Healium",
 	},
+	["IgnitionSkin"] = {
+		["addon"] = "Ignition",
+	},
 	["IncomingSkin"] = {
 		["addon"] = "Incoming",
 	},
