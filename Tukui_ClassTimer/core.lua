@@ -216,6 +216,9 @@ local CLASS_FILTERS = {
 				CreateSpellEntry( 118636 ), -- Power Guard 
 				CreateSpellEntry( 115295 ), -- Guard 
 				CreateSpellEntry( 128939 ), -- Elusive Brew
+				CreateSpellEntry( 127722 ), -- Serpent's Zeal
+				CreateSpellEntry( 139597 ), -- Muscle Memory
+				CreateSpellEntry( 118674 ), -- Vital Mists
 			},
 			procs = {
 				CreateSpellEntry( 116768 ), -- Combobreaker: Blackout-Kick
@@ -426,6 +429,7 @@ local CLASS_FILTERS = {
 				CreateSpellEntry( 31821 ), -- Devotion Aura
 				CreateSpellEntry( 86700 ), -- Ancient Power
 				CreateSpellEntry( 114637 ), -- Bastion of Glory
+				CreateSpellEntry( 132403 ), -- Shield of the Righteous
 			},
 			procs = {
 				CreateSpellEntry( 90174 ), -- Hand of Light
