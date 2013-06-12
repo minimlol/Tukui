@@ -160,6 +160,7 @@ local TRINKET_FILTER = {
 		CreateSpellEntry( 138786 ), -- Wushoolay's Lightning
 		CreateSpellEntry( 138703 ), -- Volatile Talisman of the Shado-Pan Assault
 		CreateSpellEntry( 139133 ), -- Cha-Ye's Essence of Brilliance
+		CreateSpellEntry( 137590 ), -- Tempus Repit (Spell caster meta gem)
 	};
 	
 --[[ Class specific filters
@@ -219,6 +220,7 @@ local CLASS_FILTERS = {
 				CreateSpellEntry( 127722 ), -- Serpent's Zeal
 				CreateSpellEntry( 139597 ), -- Muscle Memory
 				CreateSpellEntry( 118674 ), -- Vital Mists
+				CreateSpellEntry( 116740 ), -- Tigereye Brew
 			},
 			procs = {
 				CreateSpellEntry( 116768 ), -- Combobreaker: Blackout-Kick
@@ -634,7 +636,7 @@ do
 	local CheckFilter = function( self, id, caster, filter )
 		if ( filter == nil ) then return false; end
 			
-		local byPlayer = caster == "player" or caster == "pet" or caster == "vehicle";
+		local byPlayer = caster == "player" or caster == "pet" or caster == "vehicle" or caster == nil;
 			
 		for _, v in ipairs( filter ) do
 			if ( v.id == id and ( v.castByAnyone or byPlayer ) ) then return v; end
