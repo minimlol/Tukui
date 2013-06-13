@@ -131,7 +131,7 @@ local TRINKET_FILTER = {
         CreateSpellEntry( 74497 ), -- Lifeblood Rank 8 (Herbalism)
         CreateSpellEntry( 74245 ), -- Landslide (Enchanting)
         CreateSpellEntry( 74221 ), -- Hurricane (Enchanting)
-		CreateSpellEntry( 104993 ), -- Jade Spirit (Enchanting)
+		CreateSpellEntry( 104993, true ), -- Jade Spirit (Enchanting)
 		CreateSpellEntry( 96230 ), -- Synapse Springs (Engineering)
 
 
@@ -160,7 +160,7 @@ local TRINKET_FILTER = {
 		CreateSpellEntry( 138786 ), -- Wushoolay's Lightning
 		CreateSpellEntry( 138703 ), -- Volatile Talisman of the Shado-Pan Assault
 		CreateSpellEntry( 139133 ), -- Cha-Ye's Essence of Brilliance
-		CreateSpellEntry( 137590 ), -- Tempus Repit (Spell caster meta gem)
+		CreateSpellEntry( 137590, true ), -- Tempus Repit (Spell caster meta gem)
 	};
 	
 --[[ Class specific filters
@@ -550,7 +550,7 @@ local CLASS_FILTERS = {
 				CreateSpellEntry( 980 ), -- Agony
 				CreateSpellEntry( 603 ), -- Doom
 				CreateSpellEntry( 80240 ), -- Havoc
-				CreateSpellEntry( 1490 ), -- Curse of the Elements
+				CreateSpellEntry( 1490, true ), -- Curse of the Elements
 				CreateSpellEntry( 18223 ), -- Curse of Exhaustion
 				CreateSpellEntry( 172 ), -- Corruption
 				CreateSpellEntry( 27243, false, nil, nil, 27243 ), -- Seed of Corruption
@@ -636,7 +636,7 @@ do
 	local CheckFilter = function( self, id, caster, filter )
 		if ( filter == nil ) then return false; end
 			
-		local byPlayer = caster == "player" or caster == "pet" or caster == "vehicle" or caster == nil;
+		local byPlayer = caster == "player" or caster == "pet" or caster == "vehicle";
 			
 		for _, v in ipairs( filter ) do
 			if ( v.id == id and ( v.castByAnyone or byPlayer ) ) then return v; end
