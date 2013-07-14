@@ -161,6 +161,8 @@ local TRINKET_FILTER = {
 		CreateSpellEntry( 138703 ), -- Volatile Talisman of the Shado-Pan Assault
 		CreateSpellEntry( 139133 ), -- Cha-Ye's Essence of Brilliance
 		CreateSpellEntry( 137590, true ), -- Tempus Repit (Spell caster meta gem)
+		CreateSpellEntry( 138898 ), -- Breath of the Hydra
+		CreateSpellEntry( 138963 ), -- Unerring Vision of Lei Shen
 	};
 	
 --[[ Class specific filters
@@ -207,7 +209,6 @@ local CLASS_FILTERS = {
 				CreateSpellEntry( 107428 ), -- Risin Sun Kick
 				CreateSpellEntry( 123727 ), -- Dizzying Haze
 				CreateSpellEntry( 123725 ), -- Breath of Fire
-				CreateSpellEntry( 115804 ), -- Mortal Wounds
 			},
 			player = {
 				CreateSpellEntry( 124081 ), -- Zensphere
@@ -394,6 +395,7 @@ local CLASS_FILTERS = {
 				CreateSpellEntry( 130 ), -- Slow Fall
 				CreateSpellEntry( 57761 ), -- Brain Freeze
 				CreateSpellEntry( 12536 ), -- Clearcasting
+				CreateSpellEntry( 116257), -- Invocation
 			},
 			procs = {
 				CreateSpellEntry( 44544 ), -- Fingers of Frost
@@ -1320,7 +1322,10 @@ elseif ( LAYOUT == 3 ) then
 
 	local playerFrame = CreateAuraBarFrame( playerDataSource, TukuiPlayer );
 	playerFrame:SetHiddenHeight( -yOffset );
-	if ( playerClass == "DEATHKNIGHT" or playerClass == "SHAMAN" or playerClass == "PALADIN" or playerClass == "DRUID" or playerClass == "WARLOCK" or playerClass == "MONK") then
+	if ( playerClass == "MONK" ) then
+		playerFrame:SetPoint( "BOTTOMLEFT", TukuiPlayer, "TOPLEFT", 0, yOffset + 16 );
+		playerFrame:SetPoint( "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, yOffset + 16 );
+	elseif ( playerClass == "DEATHKNIGHT" or playerClass == "SHAMAN" or playerClass == "PALADIN" or playerClass == "DRUID" or playerClass == "WARLOCK" ) then
 		playerFrame:SetPoint( "BOTTOMLEFT", TukuiPlayer, "TOPLEFT", 0, yOffset + 8 );
 		playerFrame:SetPoint( "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, yOffset + 8 );
 	else
