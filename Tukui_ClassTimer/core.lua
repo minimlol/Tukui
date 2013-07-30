@@ -123,14 +123,10 @@ local TRINKET_FILTER = {
 		
 		CreateSpellEntry( 2825, true ), CreateSpellEntry( 32182, true ), CreateSpellEntry( 80353, true), -- Bloodlust/Heroism/Timewarp
 		CreateSpellEntry( 90355, true ), -- Ancient Hysteria, bloodlust from hunters pet
-		CreateSpellEntry( 26297 ), -- Berserking (troll racial)
-		CreateSpellEntry( 33702 ), CreateSpellEntry( 33697 ), CreateSpellEntry( 20572 ), -- Blood Fury (orc racial)
 		CreateSpellEntry( 57933 ), -- Tricks of Trade (15% dmg buff)
 		
 		-- Professions
-        CreateSpellEntry( 74497 ), -- Lifeblood Rank 8 (Herbalism)
-        CreateSpellEntry( 74245 ), -- Landslide (Enchanting)
-        CreateSpellEntry( 74221 ), -- Hurricane (Enchanting)
+        CreateSpellEntry( 121279 ), -- Lifeblood 
 		CreateSpellEntry( 104993, true ), -- Jade Spirit (Enchanting)
 		CreateSpellEntry( 96230 ), -- Synapse Springs (Engineering)
 
