@@ -1,9 +1,8 @@
 ﻿if not (IsAddOnLoaded("Tukui") or IsAddOnLoaded("AsphyxiaUI") or IsAddOnLoaded("DuffedUI")) then return end
-local U = unpack(select(2,...))
-local s = U.s
-local c = U.c
+local AS = unpack(select(2,...))
+
 local name = "HealiumSkin"
-local function SkinHealium(self)
+function AS:SkinHealium()
 	local captionFrames = {
 		"HealiumPartyFrame",
 		"HealiumPetFrame",
@@ -29,16 +28,12 @@ local function SkinHealium(self)
 		if not(self) or (skinnedFrames[self:GetName()]) then
 			return
 		end
-
 		local frameName = self:GetName()
-
 		local captionbar = self.CaptionBar
 		local captiontext = self.CaptionBar.Caption
 		local closebutton = self.CaptionBar.CloseButton
-
-		U.SkinFrame(captionbar, false, true)
-		U.SkinCloseButton(closebutton)
-
+		AS:SkinFrame(captionbar, false, true)
+		AS:SkinCloseButton(closebutton)
 		skinnedFrames[self:GetName()] = true
 	end
 
@@ -46,7 +41,6 @@ local function SkinHealium(self)
 		if not(self) or (skinnedFrames[self:GetName()]) then
 			return
 		end
-
 		local frameName = self:GetName()
 		local name = self.name
 		local hptext = self.HPText
@@ -56,76 +50,62 @@ local function SkinHealium(self)
 		local predictbar = self.PredictBar
 		local healthbar = self.HealthBar
 		local manabar = self.ManaBar
-			
 		self:StripTextures()
-
-		U.SkinStatusBar(predictbar)
-		U.SkinStatusBar(healthbar)
-		U.SkinStatusBar(manabar)
-			
+		AS:SkinStatusBar(predictbar)
+		AS:SkinStatusBar(healthbar)
+		AS:SkinStatusBar(manabar)
 		predictbar:SetHeight(24)
 		healthbar:SetHeight(24)
 		manabar:SetHeight(24)
-			
 		predictbar:SetPoint("TOPLEFT", 7, 0)
 		healthbar:SetPoint("TOPLEFT", 7, 0)
 		manabar:ClearAllPoints()
 		manabar:SetPoint("TOPLEFT", -4, 0)
-			
 		skinnedFrames[self:GetName()] = true
 	end
-		
+
 	local skinHeal = function(self)
 		if not(self) or (skinnedFrames[self:GetName()]) then
 			return
 		end
-
 		local icon = self.icon
 		local texture = icon:GetTexture()
-		U.SkinIconButton(self, true, true, true)
-
+		AS:SkinIconButton(self, true, true, true)
 		icon:SetTexture(texture)
 		icon:SetDrawLayer("OVERLAY")
 		icon:ClearAllPoints()
 		icon:SetInside()
-
 		skinnedFrames[self:GetName()] = true
 	end
-		
+
 	local skinBuff = function(self)
 		if not(self) or (skinnedFrames[self:GetName()]) then
 			return
 		end
-			
 		local icon = self.icon
 		local cooldown = self.cooldown
 		local count = self.count 
 		local border = self.border 
-
-		U.SkinIconButton(self, false, true, true)
+		AS:SkinIconButton(self, false, true, true)
 		self:SetSize(28,28)			
 		icon:SetDrawLayer("OVERLAY")
 		icon:ClearAllPoints()
 		icon:SetInside()
-
 		count:ClearAllPoints()
 		count:SetPoint("BOTTOMRIGHT", icon, "BOTTOMRIGHT", -1, 1)
-
 		skinnedFrames[self:GetName()] = true
 	end
-		
+
 	local skinAllHealiumFrames = function()
 		if not(Healium_Frames) then
 			return
 		end
-			
 		for i,frameName in pairs(captionFrames) do
 			if (_G[frameName]) then
 				skinHeader(_G[frameName])
 			end
 			for i,frame in pairs(Healium_Frames) do
 				skinUnitFrame(frame)
-
 				for v = 1, Healium_MaxButtons do
 					skinHeal(_G[frame:GetName().. "_Heal" .. v])
 					if v == 1 then
@@ -134,7 +114,6 @@ local function SkinHealium(self)
 						_G[frame:GetName().. "_Heal" .. v]:SetPoint("LEFT", _G[frame:GetName().. "_Heal".. (v-1)], "RIGHT", 2, 0)
 					end
 				end
-
 				for v = 1, 6 do
 					skinBuff(_G[frame:GetName() .. "_Buff" .. v])
 					if v == 1 then
@@ -154,4 +133,4 @@ local function SkinHealium(self)
 	hooksecurefunc("HealiumUnitFrames_Button_OnLoad", skinUnitFrame)
 end
 
-U.RegisterSkin(name,SkinHealium)
+AS:RegisterSkin(name, AS.SkinHealium)

@@ -1,7 +1,8 @@
 if not (IsAddOnLoaded("Tukui") or IsAddOnLoaded("AsphyxiaUI") or IsAddOnLoaded("DuffedUI")) then return end
-local U = unpack(select(2,...))
+local AS = unpack(select(2,...))
+
 local name = "SoundtrackSkin"
-local function SkinSoundtrack(self)
+function AS:SkinSoundtrack()
 	local frames = {
 		"SoundtrackFrame",
 		"SoundtrackFrameEventList",
@@ -85,60 +86,59 @@ local function SkinSoundtrack(self)
 
 	for _, object in pairs(frames) do
 		if _G[object] then
-			U.SkinFrame(_G[object])
+			AS:SkinFrame(_G[object])
 		end
 	end
 
 	for _, object in pairs(buttons) do
 		if _G[object] then
-			U.SkinButton(_G[object])
+			AS:SkinButton(_G[object])
 		end
 	end
 
 	for _, object in pairs(cboxes) do
 		if _G[object] then
-			U.SkinCheckBox(_G[object])
+			AS:SkinCheckBox(_G[object])
 		end
 	end
 
 	for i = 1, 10 do
-		U.SkinTab(_G["SoundtrackFrameTab"..i])
+		AS:SkinTab(_G["SoundtrackFrameTab"..i])
 	end
 
 	SoundtrackFrameTab1:SetPoint("TOPLEFT", SoundtrackFrame, "BOTTOMLEFT", 10, 2)
 	SoundtrackFrame_CloseButton:SetPoint("BOTTOMRIGHT", SoundtrackFrame, "BOTTOMRIGHT", -15, 5)
 
-	U.SkinCloseButton(SoundtrackFrame_TopCloseButton)
-	U.SkinStatusBar(SoundtrackFrame_StatusBarTrack)
+	AS:SkinCloseButton(SoundtrackFrame_TopCloseButton)
+	AS:SkinStatusBar(SoundtrackFrame_StatusBarTrack)
 	SoundtrackFrame_StatusBarTrackBorder:Kill()
-	U.SkinStatusBar(SoundtrackFrame_StatusBarEvent)
+	AS:SkinStatusBar(SoundtrackFrame_StatusBarEvent)
 	SoundtrackFrame_StatusBarEventBorder:Kill()
 	SoundtrackFrame_TrackFilter:StripTextures()
 	SoundtrackFrame_TrackFilter:SetHeight(18)
-	U.SkinEditBox(SoundtrackFrame_TrackFilter)
-	U.SkinBackdropFrame(NowPlayingTextFrame)
-	U.SkinScrollBar(SoundtrackFrameTrackScrollFrameScrollBar)
-	U.SkinScrollBar(SoundtrackFrameAssignedTracksScrollFrameScrollBar)
-	U.SkinScrollBar(SoundtrackFrameEventScrollFrameScrollBar)
-	U.SkinDropDownBox(SoundtrackFrame_ColumnHeaderNameDropDown)
-	U.SkinDropDownBox(SoundtrackFrame_PlaybackButtonsLocationDropDown)
-	U.SkinDropDownBox(SoundtrackFrame_BattleCooldownDropDown)
-	U.SkinDropDownBox(SoundtrackFrame_LowHealthPercentDropDown)
-	U.SkinDropDownBox(SoundtrackFrame_SilenceDropDown)
-	U.SkinDropDownBox(SoundtrackFrame_ProjectDropDown)
-	U.SkinBackdropFrame(SoundtrackControlFrame)
-	U.SkinStatusBar(SoundtrackControlFrame_StatusBarTrack)
+	AS:SkinEditBox(SoundtrackFrame_TrackFilter)
+	AS:SkinBackdropFrame(NowPlayingTextFrame)
+	AS:SkinScrollBar(SoundtrackFrameTrackScrollFrameScrollBar)
+	AS:SkinScrollBar(SoundtrackFrameAssignedTracksScrollFrameScrollBar)
+	AS:SkinScrollBar(SoundtrackFrameEventScrollFrameScrollBar)
+	AS:SkinDropDownBox(SoundtrackFrame_ColumnHeaderNameDropDown)
+	AS:SkinDropDownBox(SoundtrackFrame_PlaybackButtonsLocationDropDown)
+	AS:SkinDropDownBox(SoundtrackFrame_BattleCooldownDropDown)
+	AS:SkinDropDownBox(SoundtrackFrame_LowHealthPercentDropDown)
+	AS:SkinDropDownBox(SoundtrackFrame_SilenceDropDown)
+	AS:SkinDropDownBox(SoundtrackFrame_ProjectDropDown)
+	AS:SkinBackdropFrame(SoundtrackControlFrame)
+	AS:SkinStatusBar(SoundtrackControlFrame_StatusBarTrack)
 	SoundtrackControlFrame_StatusBarTrackBorder:Kill()
-	U.SkinStatusBar(SoundtrackControlFrame_StatusBarEvent)
+	AS:SkinStatusBar(SoundtrackControlFrame_StatusBarEvent)
 	SoundtrackControlFrame_StatusBarEventBorder:Kill()
-	U.SkinEditBox(SoundtrackReportFrame_WhisperEditBox)
-	U.SkinEditBox(SoundtrackReportFrame_ChannelEditBox)
+	AS:SkinEditBox(SoundtrackReportFrame_WhisperEditBox)
+	AS:SkinEditBox(SoundtrackReportFrame_ChannelEditBox)
 	
-	U.SkinTooltip(SoundtrackTooltip)
+	AS:SkinTooltip(SoundtrackTooltip)
 	NowPlayingTextFrame:Show()
 	NowPlayingTextFrame:Hide()
 	NowPlayingTextFrame:Size(200, 40)
-
 end
 
-U.RegisterSkin(name,SkinSoundtrack)
+AS:RegisterSkin(name, AS.SkinSoundtrack)

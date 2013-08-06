@@ -159,6 +159,8 @@ local TRINKET_FILTER = {
 		CreateSpellEntry( 137590, true ), -- Tempus Repit (Spell caster meta gem)
 		CreateSpellEntry( 138898 ), -- Breath of the Hydra
 		CreateSpellEntry( 138963 ), -- Unerring Vision of Lei Shen
+		CreateSpellEntry( 138958 ), -- Spark of Zandalar
+		CreateSpellEntry( 138702 ), -- Brutal Talisman of the Shado-Pan Assault
 	};
 	
 --[[ Class specific filters

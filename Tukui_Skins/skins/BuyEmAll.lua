@@ -1,15 +1,13 @@
 if not (IsAddOnLoaded("Tukui") or IsAddOnLoaded("AsphyxiaUI") or IsAddOnLoaded("DuffedUI")) then return end
-local U = unpack(select(2,...))
-local name = "BuyEmAllSkin"
-local function SkinBuyEmAll(self)
-	local s = U.s
-	local c = U.c
+local AS = unpack(select(2,...))
 
-	U.SkinFrame(BuyEmAllFrame)
-	U.SkinButton(BuyEmAllStackButton)
-	U.SkinButton(BuyEmAllMaxButton)
-	U.SkinButton(BuyEmAllCancelButton)
-	U.SkinButton(BuyEmAllOkayButton)
+local name = "BuyEmAllSkin"
+function AS:SkinBuyEmAll()
+	AS:SkinFrame(BuyEmAllFrame)
+	AS:SkinButton(BuyEmAllStackButton)
+	AS:SkinButton(BuyEmAllMaxButton)
+	AS:SkinButton(BuyEmAllCancelButton)
+	AS:SkinButton(BuyEmAllOkayButton)
 end
 
-U.RegisterSkin(name,SkinBuyEmAll)
+AS:RegisterSkin(name, AS.SkinBuyEmAll)

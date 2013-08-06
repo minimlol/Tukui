@@ -1,9 +1,10 @@
 if not (IsAddOnLoaded("Tukui") or IsAddOnLoaded("AsphyxiaUI") or IsAddOnLoaded("DuffedUI")) then return end
-local U = unpack(select(2,...))
+local AS = unpack(select(2,...))
 
 local name = "InspectEquipSkin"
-local function SkinInspectEquip()
-	U.SkinFrame(InspectEquip_InfoWindow)
-	U.SkinCloseButton(InspectEquip_InfoWindow_CloseButton)
+function AS:SkinInspectEquip()
+	AS:SkinFrame(InspectEquip_InfoWindow)
+	AS:SkinCloseButton(InspectEquip_InfoWindow_CloseButton)
 end
-U.RegisterSkin(name, SkinInspectEquip)
+
+AS:RegisterSkin(name, AS.SkinInspectEquip)

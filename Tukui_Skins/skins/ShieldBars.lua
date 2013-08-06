@@ -1,8 +1,15 @@
 if not (IsAddOnLoaded("Tukui") or IsAddOnLoaded("AsphyxiaUI") or IsAddOnLoaded("DuffedUI")) then return end
-local U = unpack(select(2,...))
+local AS = unpack(select(2,...))
 
 local name = "ShieldBarsSkin"
-local function SkinShieldBars()
-	hooksecurefunc(ShieldBars, "DisplayShields", function() for i = 1, 20 do if _G["ShieldBarsStatusBar"..i.."Frame"] then U.SkinFrame(_G["ShieldBarsStatusBar"..i.."Frame"], false, true) end end end)
+function AS:SkinShieldBars()
+	hooksecurefunc(ShieldBars, "DisplayShields", function()
+		local i = 1
+		while _G["ShieldBarsStatusBar"..i.."Frame"] do
+			AS:SkinFrame(_G["ShieldBarsStatusBar"..i.."Frame"], false, true)
+			i = i + 1
+		end
+	end)
 end
-U.RegisterSkin(name, SkinShieldBars)	
+
+AS:RegisterSkin(name, AS.SkinShieldBars)	

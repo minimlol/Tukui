@@ -1,97 +1,104 @@
-if not IsAddOnLoaded("Tukui") then return end
-if not IsAddOnLoaded("DXE") then return end
-local skin = CreateFrame("Frame")
-skin:RegisterEvent("ADDON_LOADED")
-skin:SetScript("OnEvent", function(self, event, addon)
-	if addon ~= "DXE" then return end
-	if (UISkinOptions.DXESkin == "Disabled") then return end
-	local s = U.s
-	local c = U.c
-	local DXE = DXE
-	local _G = getfenv(0)
-	local barSpacing = s.Scale(2, 2)
-	local borderWidth = s.Scale(2, 2)
-	local buttonZoom = {.09,.91,.09,.91}
+if not (IsAddOnLoaded("Tukui") or IsAddOnLoaded("AsphyxiaUI") or IsAddOnLoaded("DuffedUI")) then return end
+local AS = unpack(select(2,...))
+
+LoadAddOn("DXE")
+local name = "DXESkin"
+function AS:SkinDXE()
+	DXE.NotifyBarTextureChanged = AS.Noop
+	DXE.NotifyBorderChanged = AS.Noop
+	DXE.NotifyBorderColorChanged = AS.Noop
+	DXE.NotifyBorderEdgeSizeChanged = AS.Noop
+	DXE.NotifyBackgroundTextureChanged = AS.Noop
+	DXE.NotifyBackgroundInsetChanged = AS.Noop
+	DXE.NotifyBackgroundColorChanged = AS.Noop
 
 	local function SkinDXEBar(bar)
-		-- The main bar
 		bar:SetTemplate("Transparent")
 		bar.bg:SetTexture(nil)
-		bar.border:Kill()
-		bar.statusbar:SetStatusBarTexture(c["media"].normTex)
+		bar.border.Show = function() end
+		bar.border:Hide()
+		bar.statusbar:SetStatusBarTexture(AS.NormTex)
 		bar.statusbar:ClearAllPoints()
-		bar.statusbar:SetPoint("TOPLEFT",borderWidth, -borderWidth)
-		bar.statusbar:SetPoint("BOTTOMRIGHT",-borderWidth, borderWidth)
+		bar.statusbar:SetInside()
 		
-		-- Right Icon
 		bar.righticon:SetTemplate("Default")
-		bar.righticon.border:Kill()
+		bar.righticon.border.Show = function() end
+		bar.righticon.border:Hide()
 		bar.righticon:ClearAllPoints()
 		bar.righticon:SetPoint("LEFT", bar, "RIGHT", 2, 0)
-		bar.righticon.t:SetTexCoord(unpack(buttonZoom))
+		bar.righticon.t:SetTexCoord(.09,.91,.09,.91)
 		bar.righticon.t:ClearAllPoints()
-		bar.righticon.t:SetPoint("TOPLEFT", borderWidth, -borderWidth)
-		bar.righticon.t:SetPoint("BOTTOMRIGHT", -borderWidth, borderWidth)
+		bar.righticon.t:SetInside()
 		bar.righticon.t:SetDrawLayer("ARTWORK")
 		
-		-- Left Icon
 		bar.lefticon:SetTemplate("Default")
-		bar.lefticon.border:Kill()
+		bar.lefticon.border.Show = function() end
+		bar.lefticon.border:Hide()
 		bar.lefticon:ClearAllPoints()
 		bar.lefticon:SetPoint("RIGHT", bar, "LEFT", -2, 0)
-		bar.lefticon.t:SetTexCoord(unpack(buttonZoom))
+		bar.lefticon.t:SetTexCoord(.09,.91,.09,.91)
 		bar.lefticon.t:ClearAllPoints()
-		bar.lefticon.t:SetPoint("TOPLEFT",borderWidth, -borderWidth)
-		bar.lefticon.t:SetPoint("BOTTOMRIGHT",-borderWidth, borderWidth)
+		bar.lefticon.t:SetInside()
 		bar.lefticon.t:SetDrawLayer("ARTWORK")
 	end
 
-	-- Hook Health frames (Skin & spacing)
 	DXE.LayoutHealthWatchers_ = DXE.LayoutHealthWatchers
-	DXE.LayoutHealthWatchers = function(self)
-		for i,hw in ipairs(self.HW) do
+	DXE.LayoutHealthWatchers = function(frame)
+		DXE:LayoutHealthWatchers_()
+		for i,hw in ipairs(frame.HW) do
 			if hw:IsShown() then
 				hw:SetTemplate("Transparent")
-				hw.border:Kill()
-				hw.healthbar:SetStatusBarTexture(c["media"].normTex)
+				hw.border.Show = function() end
+				hw.border:Hide()
+				hw.healthbar:SetStatusBarTexture(AS.NormTex)
 			end
 		end
 	end
 
-	DXE.Alerts.RefreshBars_ = DXE.Alerts.RefreshBars
-	DXE.Alerts.RefreshBars = function(self)
-		if self.refreshing then return end
-		self.refreshing = true
-		self:RefreshBars_()
+	local function RefreshDXEBars(frame)
+		if frame.refreshing then return end
+		frame.refreshing = true
 		local i = 1
 		while _G["DXEAlertBar"..i] do
 			local bar = _G["DXEAlertBar"..i]
-			bar:SetScale(1)
-			bar.SetScale = s.dummy
-			SkinDXEBar(bar)
+			if not bar.skinned then
+				bar:SetScale(1)
+				bar.SetScale = function() return end
+				SkinDXEBar(bar)
+				bar.skinned = true
+			end
 			i = i + 1
 		end
-		self.refreshing = false
+		frame.refreshing = false
 	end
 
-	DXE.Alerts.Simple_ = DXE.Alerts.Simple
-	DXE.Alerts.Simple = function(self,...)
-		self:Simple_(...)
-		self:RefreshBars()
-	end
+	local DXEAlerts = DXE:GetModule("Alerts")
 
-	-- Force some updates
+	local frame = CreateFrame("Frame")
+	frame.elapsed = 1
+	frame:SetScript("OnUpdate", function(frame,elapsed)
+		frame.elapsed = frame.elapsed + elapsed
+		if(frame.elapsed >= 1) then
+			RefreshDXEBars(DXEAlerts)
+			frame.elapsed = 0
+		end
+	end)
+
+	hooksecurefunc(DXEAlerts, "Simple", RefreshDXEBars)
+	hooksecurefunc(DXEAlerts, "RefreshBars", RefreshDXEBars)
+
 	DXE:LayoutHealthWatchers()
 	DXE.Alerts:RefreshBars()
 
-	--Force some default profile options
 	if not DXEDB then DXEDB = {} end
 	if not DXEDB["profiles"] then DXEDB["profiles"] = {} end
-	if not DXEDB["profiles"][s.myname.." - "..GetRealmName()] then DXEDB["profiles"][s.myname.." - "..s.myrealm] = {} end
-	if not DXEDB["profiles"][s.myname.." - "..GetRealmName()]["Globals"] then DXEDB["profiles"][s.myname.." - "..s.myrealm]["Globals"] = {} end
-	DXEDB["profiles"][s.myname.." - "..s.myrealm]["Globals"]["BackgroundTexture"] = c.media.blank
-	DXEDB["profiles"][s.myname.." - "..s.myrealm]["Globals"]["BarTexture"] = c.media.normTex
-	DXEDB["profiles"][s.myname.." - "..s.myrealm]["Globals"]["Border"] = "None"
-	DXEDB["profiles"][s.myname.." - "..s.myrealm]["Globals"]["Font"] = c.media.font
-	DXEDB["profiles"][s.myname.." - "..s.myrealm]["Globals"]["TimerFont"] = c.media.font
-end)
+	if not DXEDB["profiles"][AS.MyName.." - "..AS.MyRealm] then DXEDB["profiles"][AS.MyName.." - "..AS.MyRealm] = {} end
+	if not DXEDB["profiles"][AS.MyName.." - "..AS.MyRealm]["Globals"] then DXEDB["profiles"][AS.MyName.." - "..AS.MyRealm]["Globals"] = {} end
+	DXEDB["profiles"][AS.MyName.." - "..AS.MyRealm]["Globals"]["BackgroundTexture"] = AS.Blank
+	DXEDB["profiles"][AS.MyName.." - "..AS.MyRealm]["Globals"]["BarTexture"] = AS.NormTex
+	DXEDB["profiles"][AS.MyName.." - "..AS.MyRealm]["Globals"]["Border"] = "None"
+	DXEDB["profiles"][AS.MyName.." - "..AS.MyRealm]["Globals"]["Font"] = AS.Font
+	DXEDB["profiles"][AS.MyName.." - "..AS.MyRealm]["Globals"]["TimerFont"] = AS.Font
+end
+
+AS:RegisterSkin(name, AS.SkinDXE)

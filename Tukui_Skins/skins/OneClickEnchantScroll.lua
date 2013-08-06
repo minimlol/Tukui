@@ -1,13 +1,11 @@
 if not (IsAddOnLoaded("Tukui") or IsAddOnLoaded("AsphyxiaUI") or IsAddOnLoaded("DuffedUI")) then return end
-local U = unpack(select(2,...))
+local AS = unpack(select(2,...))
 
-local name = 'OneClickEnchantScrollSkin'
-local function SkinOneClickEnchantScroll(self)
-
-	U.SkinButton(TradeSkillCreateScrollButton, true)
+local name = "OneClickEnchantScrollSkin"
+function AS:SkinOneClickEnchantScroll()
+	AS:SkinButton(TradeSkillCreateScrollButton, true)
 	TradeSkillCreateScrollButton:ClearAllPoints()
 	TradeSkillCreateScrollButton:Point("RIGHT", TradeSkillCreateButton, "LEFT", -2, 0)
-
 end
 
-U.RegisterSkin(name, SkinOneClickEnchantScroll)
+AS:RegisterSkin(name, AS.SkinOneClickEnchantScroll)

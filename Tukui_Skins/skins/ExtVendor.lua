@@ -1,13 +1,12 @@
 if not (IsAddOnLoaded("Tukui") or IsAddOnLoaded("AsphyxiaUI") or IsAddOnLoaded("DuffedUI")) then return end
-local U = unpack(select(2,...))
+local AS = unpack(select(2,...))
+
 local name = "ExtVendorSkin"
-local function SkinExtVendor(self)
-	local s = U.s
-	local c = U.c
-	U.SkinFrame(MerchantFrame)
-	U.SkinButton(MerchantFrameFilterButton)
-	U.SkinBackdropFrame(MerchantFrameSellJunkButton)
-	U.SkinEditBox(MerchantFrameSearchBox)
+function AS:SkinExtVendor()
+	AS:SkinFrame(MerchantFrame)
+	AS:SkinButton(MerchantFrameFilterButton)
+	AS:SkinBackdropFrame(MerchantFrameSellJunkButton)
+	AS:SkinEditBox(MerchantFrameSearchBox)
 
 	for i = 1, 20 do
 		local b = _G["MerchantItem"..i.."ItemButton"]
@@ -20,7 +19,7 @@ local function SkinExtVendor(self)
 		t:ClearAllPoints()
 		t:Point("TOPLEFT", 2, -2)
 		t:Point("BOTTOMRIGHT", -2, 2)
-		U.SkinFrame(item_bar)
+		AS:SkinFrame(item_bar)
 		b:SetTemplate("Transparent", true)
 	end
 	MerchantFrame:HookScript("OnUpdate", function()
@@ -32,9 +31,8 @@ local function SkinExtVendor(self)
 	end)
 	MerchantFrame:Width(690)
 	ExtVendor_SellJunkPopup:SetTemplate("Transparent")
-	U.SkinButton(ExtVendor_SellJunkPopupYesButton)
-	U.SkinButton(ExtVendor_SellJunkPopupNoButton)
+	AS:SkinButton(ExtVendor_SellJunkPopupYesButton)
+	AS:SkinButton(ExtVendor_SellJunkPopupNoButton)
 end
 
-U.RegisterSkin(name,SkinExtVendor)
-
+AS:RegisterSkin(name, AS.SkinExtVendor)

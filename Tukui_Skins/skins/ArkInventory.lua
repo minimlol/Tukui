@@ -1,11 +1,9 @@
 if not (IsAddOnLoaded("Tukui") or IsAddOnLoaded("AsphyxiaUI") or IsAddOnLoaded("DuffedUI")) then return end
-local U = unpack(select(2,...))
+local AS = unpack(select(2,...))
+
 local name = "ArkInventorySkin"
-local function SkinArkInventory(self)
-local ArkInventory = LibStub("AceAddon-3.0"):GetAddon("ArkInventory")
-	local _G = _G
-	local s = U.s
-	local c = U.c
+function AS:SkinArkInventory()
+	local ArkInventory = LibStub("AceAddon-3.0"):GetAddon("ArkInventory")
 	ArkInventory.Frame_Main_Paint_ = ArkInventory.Frame_Main_Paint
 	ArkInventory.Frame_Main_Paint = function(frame)
 		if not ArkInventory.ValidFrame(frame, true) then return	end
@@ -16,7 +14,7 @@ local ArkInventory = LibStub("AceAddon-3.0"):GetAddon("ArkInventory")
 				if _G[name.."ArkBorder"] then _G[name.."ArkBorder"]:Hide() end
 				if _G[name.."Background"] then _G[name.."Background"]:Hide() end
 			end
-			U.SkinFrame(subframe)
+			AS:SkinFrame(subframe)
 		end
 	end
 
@@ -53,31 +51,25 @@ local ArkInventory = LibStub("AceAddon-3.0"):GetAddon("ArkInventory")
 		status:SetPoint("TOPRIGHT",changer,"BOTTOMRIGHT",0,-2)
 		ARKINV_Frame4ChangerWindowPurchaseInfo:ClearAllPoints()
 		ARKINV_Frame4ChangerWindowPurchaseInfo:SetPoint("TOP", ARKINV_Frame4ChangerWindowGoldAvailable, "BOTTOM", 0, -12)
-
 		_G[status:GetName().."EmptyText"]:SetPoint("LEFT",2,0)
-		_G[status:GetName().."EmptyText"]:SetFont(c["media"].font, 12)
-
+		_G[status:GetName().."EmptyText"]:SetFont(AS.Font, 12)
 		_G[status:GetName().."GoldCopperButton"]:SetPoint("RIGHT",-1,0)
-		_G[status:GetName().."GoldCopperButtonText"]:SetFont(c["media"].font,12)
-
+		_G[status:GetName().."GoldCopperButtonText"]:SetFont(AS.Font, 12)
 		_G[status:GetName().."GoldSilverButton"]:SetPoint("RIGHT",_G[status:GetName().."GoldCopperButtonText"],"LEFT",-1,0)
-		_G[status:GetName().."GoldSilverButtonText"]:SetFont(c["media"].font,12)
-		
+		_G[status:GetName().."GoldSilverButtonText"]:SetFont(AS.Font, 12)
 		_G[status:GetName().."GoldGoldButton"]:SetPoint("RIGHT",_G[status:GetName().."GoldSilverButtonText"],"LEFT",-1,0)
-		_G[status:GetName().."GoldGoldButtonText"]:SetFont(c["media"].font,12)
+		_G[status:GetName().."GoldGoldButtonText"]:SetFont(AS.Font, 12)
 	end
 
 	ArkInventory.Frame_Bar_Paint_ = ArkInventory.Frame_Bar_Paint
 	ArkInventory.Frame_Bar_Paint = function(bar)
-
 		local loc_id = bar.ARK_Data.loc_id
 		ArkInventory.LocationOptionSet(loc_id, "bar", "name", "height", 18)
 		ArkInventory.Frame_Bar_Paint_(bar)
-		if not bar then return end
 		local name = bar:GetName()
 		if _G[name.."ArkBorder"] then _G[name.."ArkBorder"]:Hide() end
 		if _G[name.."Background"] then _G[name.."Background"]:Hide() end
-		U.SkinFrame(bar)
+		AS:SkinFrame(bar)
 
 		if ArkInventory.Global.Mode.Edit then
 			bar:SetBackdropBorderColor(1,0,0,1)
@@ -87,7 +79,6 @@ local ArkInventory = LibStub("AceAddon-3.0"):GetAddon("ArkInventory")
 
 	ArkInventory.SetItemButtonTexture_ = ArkInventory.SetItemButtonTexture
 	ArkInventory.SetItemButtonTexture = function(frame, texture, r, g, b)
-		if not frame or not _G[frame:GetName().."IconTexture"] then return end
 		local obj = _G[frame:GetName().."IconTexture"]
 		if not texture then
 			obj:Hide()
@@ -96,25 +87,21 @@ local ArkInventory = LibStub("AceAddon-3.0"):GetAddon("ArkInventory")
 			obj:SetTexCoord(.08, .92, .08, .92)
 			obj:SetVertexColor(r or 1, r and g or 1, r and b or 1)
 			obj:ClearAllPoints()
-			obj:SetPoint("TOPLEFT",2,-2)
-			obj:SetPoint("BOTTOMRIGHT",-2,2)
+			obj:SetInside()
 		end
 	end
 
 	ArkInventory.Frame_Item_Update_Border_ = ArkInventory.Frame_Item_Update_Border
 	ArkInventory.Frame_Item_Update_Border = function(frame)
 		ArkInventory.Frame_Item_Update_Border_(frame)
-		if not frame or not _G[frame:GetName().."ArkBorder"] then print("no border")return end
 		local obj = _G[frame:GetName().."ArkBorder"]
 		local r,g,b,a = obj:GetBackdropBorderColor()
 		obj:Hide()
 		if _G[frame:GetName()] == ARKINV_Frame1ChangerWindowBag1 then ARKINV_Frame1ChangerWindowBag1IconTexture:SetTexture("interface\\icons\\inv_misc_bag_07_green") end
-		if _G[frame:GetName().."Background"] then _G[frame:GetName().."Background"]:Hide() print("hide background") end
-		--frame:SetTemplate("Transparent")
-		U.SkinIconButton(frame, true, false, true)
+		if _G[frame:GetName().."Background"] then _G[frame:GetName().."Background"]:Hide() end
+		AS:SkinIconButton(frame, true, false, true)
 		frame.backdrop:SetBackdropBorderColor(r,g,b,a)
 	end
-
 end
 
-U.RegisterSkin(name,SkinArkInventory)
+AS:RegisterSkin(name, AS.SkinArkInventory)

@@ -1,7 +1,8 @@
 if not (IsAddOnLoaded("Tukui") or IsAddOnLoaded("AsphyxiaUI") or IsAddOnLoaded("DuffedUI")) then return end
-local U = unpack(select(2,...))
+local AS = unpack(select(2,...))
+
 local name = "QuestCompletistSkin"
-local function SkinQuestCompletist(self)
+function AS:SkinQuestCompletist()
 	local tooltips = {
 		"qcMapTooltip",
 		"qcQuestInformationTooltip",
@@ -14,19 +15,19 @@ local function SkinQuestCompletist(self)
 	for _, object in pairs(tooltips) do
 		if _G[object] then
 			_G[object]:SetFrameStrata("DIALOG")
-			U.SkinTooltip(_G[object])
+			AS:SkinTooltip(_G[object])
 		end
 	end
 
-	U.SkinFrame(qcQuestCompletistUI)
+	AS:SkinFrame(qcQuestCompletistUI)
 	qcQuestCompletistUI:Size(360,450)
-	U.SkinEditBox(qcSearchBox)
-	U.SkinButton(qcOptionsButton)
-	U.SkinButton(qcCategoryDropdownButton)
-	U.SkinCloseButton(qcXButton)
-	U.SkinSlideBar(qcMenuSlider, 16)
+	AS:SkinEditBox(qcSearchBox)
+	AS:SkinButton(qcOptionsButton)
+	AS:SkinButton(qcCategoryDropdownButton)
+	AS:SkinCloseButton(qcXButton)
+	AS:SkinSlideBar(qcMenuSlider, 16)
 	qcMenuSlider:Point("TOPLEFT", qcQuestCompletistUI, "TOPLEFT", 303, -90)
 	qcMenuSlider:Height(256)
 end
 
-U.RegisterSkin(name,SkinQuestCompletist)
+AS:RegisterSkin(name, AS.SkinQuestCompletist)

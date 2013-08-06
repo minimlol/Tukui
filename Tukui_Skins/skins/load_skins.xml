@@ -1,5 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
 	<Script file="ACP.lua"/>
+	<Script file="AchieveIt.lua"/>
 	<Script file="AdiBags.lua"/>
 	<Script file="AffDots.lua"/>
 	<Script file="ATSW.lua"/>
@@ -30,8 +31,11 @@
 	<Script file="Cork.lua"/>
 	<Script file="CombustionHelper.lua"/>
 	<Script file="Critline.lua"/>
+	<Script file="DailyTamerCheck.lua"/>
 	<Script file="DBM.lua"/>
+	<Script file="DKDots.lua"/>
 	<Script file="Dresser.lua"/>
+	<Script file="DXE.lua"/>
 	<Script file="EasyMail.lua"/>
 	<Script file="EavesDrop.lua"/>
 	<Script file="EnergyWatch.lua"/>
@@ -45,6 +49,7 @@
 	<Script file="GuildMemberInfo_TradeSkills.lua"/>
 	<Script file="Healium.lua"/>
 	<Script file="Ignition.lua"/>
+	<Script file="InboxMailBag.lua"/>
 	<Script file="Incoming.lua"/>
 	<Script file="KarniCrap.lua"/>
 	<Script file="Lightheaded.lua"/>
@@ -73,8 +78,9 @@
 	<Script file="QuestItemBar.lua"/>
 	<Script file="RBS.lua"/>
 	<Script file="RaidInviteOrganizer.lua"/>
-	<Script file="Raven.lua"/>
+	<Script file="RCLootCouncil.lua"/>
 	<Script file="Recount.lua"/>
+	<Script file="ReforgeLite.lua"/>
 	<Script file="Reforgenator.lua"/>
 	<Script file="Reforgerade.lua"/>
 	<Script file="SearingPlasmaTracker.lua"/>
@@ -88,7 +94,6 @@
 	<Script file="Spy.lua"/>
 	<Script file="Symbiosis.lua"/>
 	<Script file="Swatter.lua"/>
-	<Script file="tCombo.lua"/>
 	<Script file="TinyDPS.lua"/>
 	<Script file="TitanPanel.lua"/>
 	<Script file="TradeSkillDW.lua"/>

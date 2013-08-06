@@ -1,7 +1,8 @@
 if not (IsAddOnLoaded("Tukui") or IsAddOnLoaded("AsphyxiaUI") or IsAddOnLoaded("DuffedUI")) then return end
-local U = unpack(select(2,...))
+local AS = unpack(select(2,...))
+
 local name = 'AuctioneerSkin'
-local function AuctioneerSkin(self,event)
+function AS:SkinAuctioneer(event)
 	if event == "PLAYER_ENTERING_WORLD" then return end
 	AuctionsCancelAuctionButton:Point("RIGHT", AuctionFrameMoneyFrame, "RIGHT", 554, 0)
 	AuctionsCloseButton:ClearAllPoints()
@@ -19,11 +20,9 @@ local function AuctioneerSkin(self,event)
 	BrowseResetButton:Point("LEFT", BrowseName, "LEFT", -2, -26)
 	BrowseSearchButton:ClearAllPoints()
 	BrowseSearchButton:Point("RIGHT", BrowseResetButton, "RIGHT", 83, 0)
-
 	BrowseNameText:Point("TOPLEFT", 20, -41)
 	BrowseLevelText:Point("TOPLEFT", 184, -45)
 	BrowseLevelHyphen:Point("LEFT", BrowseMinLevel, "RIGHT", 4, 0)
-
 	AuctionFrameMoneyFrame:ClearAllPoints()
 	AuctionFrameMoneyFrame:Point("TOPLEFT", AuctionFrame, "BOTTOMLEFT", 55, 24)	
 	BrowseBidPrice:ClearAllPoints()
@@ -45,19 +44,15 @@ local function AuctioneerSkin(self,event)
 	BrowseNextPageButton:Size(20, 20)
 	BrowsePrevPageButton:Size(20, 20)
 	if IsAddOnLoaded("Auc-Stat-Purchased") then
-		BrowseNextPageButton:Point("BOTTOMRIGHT", BrowseScrollFrame, "BOTTOMRIGHT", 0, 0)
-	end
-
-	if IsAddOnLoaded("Auc-Stat-Purchased") then
 		BrowsePrevPageButton:Point("BOTTOMRIGHT", BrowseScrollFrame, "BOTTOMRIGHT", -160, 0)
 	end
 	for i = 1, AuctionFrame.numTabs do
-		U.SkinTab(_G["AuctionFrameTab"..i])
+		AS:SkinTab(_G["AuctionFrameTab"..i])
 	end
-	if AucAdvScanButton then U.SkinButton(AucAdvScanButton) end
-	if AucAdvSimpFrameCreate then U.SkinButton(AucAdvSimpFrameCreate) end
-	if AucAdvSimpFrameRemember then U.SkinButton(AucAdvSimpFrameRemember) end
-	U.UnregisterEvent(name, self, event)
+	if AucAdvScanButton then AS:SkinButton(AucAdvScanButton) end
+	if AucAdvSimpFrameCreate then AS:SkinButton(AucAdvSimpFrameCreate) end
+	if AucAdvSimpFrameRemember then AS:SkinButton(AucAdvSimpFrameRemember) end
+	AS:UnregisterEvent(name, event)
 end
 
-U.RegisterSkin(name,AuctioneerSkin,'AUCTION_HOUSE_SHOW')
+AS:RegisterSkin(name, AS.SkinAuctioneer, 'AUCTION_HOASE_SHOW')

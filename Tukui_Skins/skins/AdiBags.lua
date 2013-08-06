@@ -1,31 +1,34 @@
 if not (IsAddOnLoaded("Tukui") or IsAddOnLoaded("AsphyxiaUI") or IsAddOnLoaded("DuffedUI")) then return end
-local U = unpack(select(2,...))
-local s = U.s
-local c = U.c
+local AS = unpack(select(2,...))
 
 local name = "AdiBagsSkin"
-local function SkinFrame(frame)
-	local region = frame.HeaderRightRegion
-	U.SkinFrame(frame)
-	U.SkinFrame(_G[frame:GetName()..'Bags'], "Default", true)
-	U.SkinCloseButton(frame.CloseButton)
-	for i = 1, 3 do
-		U.SkinButton(region.widgets[i].widget, true)
-	end
-end
+function AS:SkinAdiBags(event)
 
-local function AdiSkin(self,event)
+	local function SkinFrame(frame)
+		local region = frame.HeaderRightRegion
+		AS:SkinFrame(frame)
+		AS:SkinFrame(_G[frame:GetName()..'Bags'], "Default", true)
+		AS:SkinCloseButton(frame.CloseButton)
+		for i = 1, 3 do
+			AS:SkinButton(region.widgets[i].widget, true)
+		end
+	end
+
 	if event == "PLAYER_ENTERING_WORLD" then
 		if not AdiBagsContainer1 then ToggleBackpack() ToggleBackpack() end
 		if AdiBagsContainer1 then
 			SkinFrame(AdiBagsContainer1)
-			U.SkinEditBox(AdiBagsContainer1SearchBox)
+			AS:SkinEditBox(AdiBagsContainer1SearchBox)
 			AdiBagsContainer1SearchBox:Point("TOPRIGHT", AdiBagsSimpleLayeredRegion2, "TOPRIGHT", -75, -1)
 		end
 	elseif event == "BANKFRAME_OPENED" then
-		SkinFrame(AdiBagsContainer2)
-		U.UnregisterEvent(name, self, event)
+		AS.Delay(2, function()
+			if AdiBagsContainer2 then
+				SkinFrame(AdiBagsContainer2)
+				AS:UnregisterEvent(name, event)
+			end
+		end)
 	end
 end
 
-U.RegisterSkin(name,AdiSkin,"BANKFRAME_OPENED")
+AS:RegisterSkin(name, AS.SkinAdiBags, "BANKFRAME_OPENED")

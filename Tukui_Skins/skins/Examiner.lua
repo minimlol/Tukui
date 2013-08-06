@@ -1,22 +1,18 @@
 ﻿if not (IsAddOnLoaded("Tukui") or IsAddOnLoaded("AsphyxiaUI") or IsAddOnLoaded("DuffedUI")) then return end
-local U = unpack(select(2,...))
+local AS = unpack(select(2,...))
+
 local name = "ExaminerSkin"
-local function SkinExaminer(self)
-
-	-- Skin Examiner Frame
-	U.SkinFrame(Examiner)
-	U.SkinScrollBar(ExaminerStatsScrollScrollBar)
-	U.SkinScrollBar(ExaminerFeatsScrollScrollBar)
-	U.SkinScrollBar(ExaminerGearScrollScrollBar)
-
-	-- Skin Examiner Buttons
+function AS:SkinExaminer()
+	AS:SkinFrame(Examiner)
+	AS:SkinScrollBar(ExaminerStatsScrollScrollBar)
+	AS:SkinScrollBar(ExaminerFeatsScrollScrollBar)
+	AS:SkinScrollBar(ExaminerGearScrollScrollBar)
 	for i = 1, Examiner:GetNumChildren() do
 		local object = select(i, Examiner:GetChildren())
 		if object:GetObjectType() == 'Button' then
-			
-			U.SkinButton(object, true)
+			AS:SkinButton(object, true)
 		end
 	end
 end
 
-U.RegisterSkin(name,SkinExaminer)
+AS:RegisterSkin(name, AS.SkinExaminer)

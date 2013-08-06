@@ -1,36 +1,33 @@
 ﻿if not (IsAddOnLoaded("Tukui") or IsAddOnLoaded("AsphyxiaUI") or IsAddOnLoaded("DuffedUI")) then return end
-local U = unpack(select(2,...))
-local function OnEnter11(Self)
-  GameTooltip:SetOwner(Self, "ANCHOR_CURSOR")
-  GameTooltip:AddLine("Lock or Make Moveable", 1, 1, 1)
-  GameTooltip:Show()
-end
-
-local function OnEnter10(Self)
-  GameTooltip:SetOwner(Self, "ANCHOR_CURSOR")
-  GameTooltip:AddLine("Options", 1, 1, 1)
-  GameTooltip:Show()
-end
-
-local function OnEnter9(Self)
-  GameTooltip:SetOwner(Self, "ANCHOR_CURSOR")
-  GameTooltip:AddLine("Close", 1, 1, 1)
-  GameTooltip:Show()
-end
-
-local function OnLeave(Self)
-  GameTooltip:Hide()
-end
+local AS = unpack(select(2,...))
 
 local name = 'BGDefenderSkin'
-local function SkinBGDefender(self)
-	U.SkinFrame(BGDefenderFrame)
+function AS:SkinBGDefender()
+	local function OnEnter(f)
+		local text
+		if f:GetName() == "Button9" then
+			text = "Close"
+		elseif f:GetName() == "Button10" then
+			text = "Options"
+		elseif f:GetName() == "Button11" then
+			text = "Lock or Make Moveable"
+		end
+		GameTooltip:SetOwner(f, "ANCHOR_CURSOR")
+		GameTooltip:AddLine(text, 1, 1, 1)
+		GameTooltip:Show()
+	end
+
+	local function OnLeave()
+	  GameTooltip:Hide()
+	end
+
+	AS:SkinFrame(BGDefenderFrame)
 
 	local StripAllTextures = {
 		"Button9",
 		"Button10",
 		"Button11",
-		}
+	}
 
 	local buttons = {
 		"Button1",
@@ -44,16 +41,16 @@ local function SkinBGDefender(self)
 		"Button9",
 		"Button10",
 		"Button11",
-		}
-							
+	}
+
 	for _, object in pairs(StripAllTextures) do
-                _G[object]:StripTextures()
+		_G[object]:StripTextures()
 	end	
 
 	for _, button in pairs(buttons) do
-		U.SkinButton(_G[button])
+		AS:SkinButton(_G[button])
 	end	
-	
+
 	BGDefenderFrame:SetWidth(160)
 	BGDefenderFrame:SetHeight(72)
 	Button9:SetWidth(16)
@@ -62,7 +59,7 @@ local function SkinBGDefender(self)
 	Button10:SetHeight(16)
 	Button11:SetWidth(16)
 	Button11:SetHeight(16)
-		
+
 	Text1:Point("TOPLEFT", BGDefenderFrame, "TOPLEFT", 5, -3)
 	Button1:Point("TOPLEFT", BGDefenderFrame, "TOPLEFT", 5, -25)
 	Button2:Point("TOPLEFT", BGDefenderFrame, "TOPLEFT", 30, -25)
@@ -72,26 +69,22 @@ local function SkinBGDefender(self)
 	Button6:Point("TOPLEFT", BGDefenderFrame, "TOPLEFT", 130, -25)
 	Button7:Point("TOPLEFT", BGDefenderFrame, "TOPLEFT", 5, -48)
 	Button8:Point("TOPLEFT", BGDefenderFrame, "TOPLEFT", 97, -48)
-	
-	U.SkinDropDownBox(DropDown1, 200)
-	U.SkinDropDownBox(DropDown2, 200)
-	U.SkinDropDownBox(DropDown3, 200)
-	
-	U.SkinCheckBox(BGDefenderPrefaceButton)
-	
+
+	AS:SkinDropDownBox(DropDown1, 200)
+	AS:SkinDropDownBox(DropDown2, 200)
+	AS:SkinDropDownBox(DropDown3, 200)
+	AS:SkinCheckBox(BGDefenderPrefaceButton)
 	Text1:SetTextColor(23/255, 132/255, 209/255)
-		
 	Button1:SetNormalFontObject("GameFontHighlight")
 	local font = Button1:GetNormalFontObject()
 	font:SetTextColor(1, 1, 1, 1)
 	Button1:SetNormalFontObject(font)
-	
-	Button9:SetScript("OnEnter", OnEnter9)
+	Button9:SetScript("OnEnter", OnEnter)
 	Button9:SetScript("OnLeave", OnLeave)
-	Button10:SetScript("OnEnter", OnEnter10)
+	Button10:SetScript("OnEnter", OnEnter)
 	Button10:SetScript("OnLeave", OnLeave)
-	Button11:SetScript("OnEnter", OnEnter11)
+	Button11:SetScript("OnEnter", OnEnter)
 	Button11:SetScript("OnLeave", OnLeave)
 end
 
-U.RegisterSkin(name,SkinBGDefender)
+AS:RegisterSkin(name, AS.SkinBGDefender)

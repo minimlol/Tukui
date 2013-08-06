@@ -1,34 +1,37 @@
 if not (IsAddOnLoaded("Tukui") or IsAddOnLoaded("AsphyxiaUI") or IsAddOnLoaded("DuffedUI")) then return end
-local U = unpack(select(2,...))
+local AS = unpack(select(2,...))
 
 local name = "MiscFixes"
-local function MiscFixes(self, event)
+function AS:MiscFixes(event, addon)
 
-	if IsAddOnLoaded("PetJournalEnhanced") and IsAddOnLoaded("Blizzard_PetJournal") then PetJournal:HookScript("OnShow", function() PJEUniquePetCount:StripTextures() end) end
-	
+	if addon == "Blizzard_PetJournal" and IsAddOnLoaded("PetJournalEnhanced") then
+		PetJournal:HookScript("OnShow", function() PJEUniquePetCount:StripTextures() end)
+	end
+
 	if IsAddOnLoaded("acb_CastBar") then
-		U.SkinBackdropFrame(AzCastBarPluginPlayer)
-		U.SkinBackdropFrame(AzCastBarPluginTarget)
-		U.SkinBackdropFrame(AzCastBarPluginFocus)
-		U.SkinBackdropFrame(AzCastBarPluginMirror)
-		U.SkinBackdropFrame(AzCastBarPluginPet)
+		AS:SkinBackdropFrame(AzCastBarPluginPlayer)
+		AS:SkinBackdropFrame(AzCastBarPluginTarget)
+		AS:SkinBackdropFrame(AzCastBarPluginFocus)
+		AS:SkinBackdropFrame(AzCastBarPluginMirror)
+		AS:SkinBackdropFrame(AzCastBarPluginPet)
 	end
 
 	if IsAddOnLoaded("DoubleWideTradeSkills") then
 		TradeSkillListScrollFrame:StripTextures()
-		U.SkinFrame(TradeSkillFrame)
-		U.SkinStatusBar(TradeSkillRankFrame)
+		AS:SkinFrame(TradeSkillFrame)
+		AS:SkinStatusBar(TradeSkillRankFrame)
 	end
-	
-	--TrainAll
-	if IsAddOnLoaded("Blizzard_TrainerUI") then
+
+	if addon == "Blizzard_TradeSkillUI" and IsAddOnLoaded("Auctionator") then 
+		TradeSkillFrame:HookScript("OnShow", function() AS:SkinButton(Auctionator_Search, true) end)
+	end
+
+	if addon == "Blizzard_TrainerUI" and IsAddOnLoaded("TrainAll") then
 		ClassTrainerFrame:HookScript("OnShow", function()
-			if ClassTrainerTrainAllButton then
-				U.SkinFrame(ClassTrainerTrainAllButton,"Default")
-				U.SkinFrame(ClassTrainerTrainButton,"Default")
-			end
+			AS:SkinFrame(ClassTrainerTrainAllButton,"Default")
+			AS:SkinFrame(ClassTrainerTrainButton,"Default")
 		end)
 	end
 end
 
-U.RegisterSkin(name,MiscFixes, "ADDON_LOADED")
+AS:RegisterSkin(name, AS.MiscFixes, "ADDON_LOADED")

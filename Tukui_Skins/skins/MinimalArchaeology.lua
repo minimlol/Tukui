@@ -1,76 +1,69 @@
 if not (IsAddOnLoaded("Tukui") or IsAddOnLoaded("AsphyxiaUI") or IsAddOnLoaded("DuffedUI")) then return end
-local U = unpack(select(2,...))
-local s = U.s
-local c = U.c
+local AS = unpack(select(2,...))
+
 local name = "MinimalArchaeologySkin"
-local function SkinMinimalArchaeology(self)
-	UIFont = c["media"].pixelfont
-	UIFontSize = 12
-	U.SkinFrame(MinArchMain)
-	U.SkinStatusBar(MinArchMainSkillBar)
+function AS:SkinMinimalArchaeology()
+	AS:SkinFrame(MinArchMain)
+	AS:SkinStatusBar(MinArchMainSkillBar)
 	MinArchMainSkillBar:Point("TOP", MinArchMain, "TOP", 2, -24)
 	MinArchMainSkillBar:Width(253)
-
-	U.Desaturate(MinArchMainButtonOpenADI)
-	U.Desaturate(MinArchMainButtonOpenHist)
-	U.Desaturate(MinArchMainButtonOpenArch)
-	U.SkinCloseButton(MinArchMainButtonClose)
+	AS:Desaturate(MinArchMainButtonOpenADI)
+	AS:Desaturate(MinArchMainButtonOpenHist)
+	AS:Desaturate(MinArchMainButtonOpenArch)
+	AS:SkinCloseButton(MinArchMainButtonClose)
 	MinArchMainButtonOpenADI:Point("TOPRIGHT", MinArchMain, "TOPRIGHT", -66, -1)
 	MinArchMainButtonOpenHist:Point("TOPRIGHT", MinArchMain, "TOPRIGHT", -46, -1)
 	MinArchMainButtonOpenArch:Point("TOPRIGHT", MinArchMain, "TOPRIGHT", -26, -1)
 	MinArchMainButtonClose:Point("TOPRIGHT", MinArchMain, "TOPRIGHT", 2, 2)
+	AS:SkinFrame(MinArchDigsites)
+	AS:SkinCloseButton(MinArchDigsitesButtonClose)
+	AS:SkinFrame(MinArchHist)
+	AS:SkinCloseButton(MinArchHistButtonClose)
 
-	U.SkinFrame(MinArchDigsites)
-	U.SkinCloseButton(MinArchDigsitesButtonClose)
-
-	U.SkinFrame(MinArchHist)
-	U.SkinCloseButton(MinArchHistButtonClose)
-
-	for i = 1, 11 do
-		U.SkinStatusBar(_G["MinArchMainArtifactBar"..i])
+	for i = 1, 12 do
+		AS:SkinStatusBar(_G["MinArchMainArtifactBar"..i])
 		_G["MinArchMainArtifactBar"..i]:SetStatusBarColor(1.0, 0.4, 0)
-		U.SkinButton(_G["MinArchMainArtifactBar"..i.."ButtonSolve"])
+		AS:SkinButton(_G["MinArchMainArtifactBar"..i.."ButtonSolve"])
 		_G["MinArchMainArtifactBar"..i.."ButtonSolve"]:SetHeight(17)
 		_G["MinArchMainArtifactBar"..i.."ButtonSolve"]:SetPoint("TOPLEFT", _G["MinArchMainArtifactBar"..i], "TOPRIGHT", 5, 2)
-		--Min Arch Options
-		U.SkinCheckBox(_G["MinArchOptionPanelHideArtifact"..i])
-		U.SkinCheckBox(_G["MinArchOptionPanelFragmentCap"..i])
-		if _G["MinArchOptionPanelUseKeystones"..i] then U.SkinCheckBox(_G["MinArchOptionPanelUseKeystones"..i]) end
+		AS:SkinCheckBox(_G["MinArchOptionPanelHideArtifact"..i])
+		AS:SkinCheckBox(_G["MinArchOptionPanelFragmentCap"..i])
+		if _G["MinArchOptionPanelUseKeystones"..i] then AS:SkinCheckBox(_G["MinArchOptionPanelUseKeystones"..i]) end
 	end
 
 	local checkbox = {
-		MinArchOptionPanelMiscOptionsHideMinimap,
-		MinArchOptionPanelMiscOptionsDisableSound,
-		MinArchOptionPanelMiscOptionsStartHidden,
-		MinArchOptionPanelMiscOptionsHideAfter,
-		MinArchOptionPanelMiscOptionsWaitForSolve,
+		"MinArchOptionPanelMiscOptionsHideMinimap",
+		"MinArchOptionPanelMiscOptionsDisableSound",
+		"MinArchOptionPanelMiscOptionsStartHidden",
+		"MinArchOptionPanelMiscOptionsHideAfter",
+		"MinArchOptionPanelMiscOptionsWaitForSolve",
 	}
 
 	for _,boxes in pairs(checkbox) do
-		U.SkinCheckBox(boxes)
+		AS:SkinCheckBox(boxes)
 	end
 
-	U.SkinSlideBar(MinArchOptionPanelFrameScaleSlider)
+	AS:SkinSlideBar(MinArchOptionPanelFrameScaleSlider)
 	MinArchOptionPanelFrameScaleSliderLow:ClearAllPoints()
 	MinArchOptionPanelFrameScaleSliderLow:SetPoint("BOTTOMLEFT", MinArchOptionPanelFrameScale, "BOTTOMLEFT", 3, 3)
 	MinArchOptionPanelFrameScaleSliderHigh:ClearAllPoints()
 	MinArchOptionPanelFrameScaleSliderHigh:SetPoint("BOTTOMRIGHT", MinArchOptionPanelFrameScale, "BOTTOMRIGHT", -3, 3)
 
-	U.SkinFrame(MinArchMainButtonOpenADI,"Default")
+	AS:SkinFrame(MinArchMainButtonOpenADI,"Default")
 	MinArchMainButtonOpenADI:SetNormalTexture("")
 	MinArchMainButtonOpenADI:SetPushedTexture("")
 	MinArchMainButtonOpenADI:SetHighlightTexture("")
 	MinArchMainButtonOpenADI:SetSize(14, 14)
 	MinArchMainButtonOpenADI:ClearAllPoints()
 
-	U.SkinFrame(MinArchMainButtonOpenHist,"Default")
+	AS:SkinFrame(MinArchMainButtonOpenHist,"Default")
 	MinArchMainButtonOpenHist:SetNormalTexture("")
 	MinArchMainButtonOpenHist:SetPushedTexture("")
 	MinArchMainButtonOpenHist:SetHighlightTexture("")
 	MinArchMainButtonOpenHist:SetSize(14, 14)
 	MinArchMainButtonOpenHist:ClearAllPoints()
 
-	U.SkinFrame(MinArchMainButtonOpenArch,"Default")
+	AS:SkinFrame(MinArchMainButtonOpenArch,"Default")
 	MinArchMainButtonOpenArch:SetNormalTexture("")
 	MinArchMainButtonOpenArch:SetPushedTexture("")
 	MinArchMainButtonOpenArch:SetHighlightTexture("")
@@ -78,22 +71,26 @@ local function SkinMinimalArchaeology(self)
 	MinArchMainButtonOpenArch:ClearAllPoints()
 
 	MinArchMainButtonOpenArch.text = MinArchMainButtonOpenArch:CreateFontString(nil, "OVERLAY")
-	MinArchMainButtonOpenArch.text:SetFont(UIFont, UIFontSize, "OUTLINE")
+	MinArchMainButtonOpenArch.text:SetFont(AS.Font, AS.DataTextFontSize, "OUTLINE")
 	MinArchMainButtonOpenArch.text:SetPoint("CENTER", 2, 1)
 	MinArchMainButtonOpenArch.text:SetText("A")
 	MinArchMainButtonOpenHist.text = MinArchMainButtonOpenHist:CreateFontString(nil, "OVERLAY")
-	MinArchMainButtonOpenHist.text:SetFont(UIFont, UIFontSize, "OUTLINE")
+	MinArchMainButtonOpenHist.text:SetFont(AS.Font, AS.DataTextFontSize, "OUTLINE")
 	MinArchMainButtonOpenHist.text:SetPoint("CENTER", 2, 1)
 	MinArchMainButtonOpenHist.text:SetText("H")
 	MinArchMainButtonOpenADI.text = MinArchMainButtonOpenADI:CreateFontString(nil, "OVERLAY")
-	MinArchMainButtonOpenADI.text:SetFont(UIFont, UIFontSize, "OUTLINE")
+	MinArchMainButtonOpenADI.text:SetFont(AS.Font, AS.DataTextFontSize, "OUTLINE")
 	MinArchMainButtonOpenADI.text:SetPoint("CENTER", 2, 1)
 	MinArchMainButtonOpenADI.text:SetText("D")
 
 	MinArchMainButtonOpenADI:Point("RIGHT", MinArchMainButtonOpenHist, "LEFT", -3, 0)
 	MinArchMainButtonOpenHist:Point("RIGHT", MinArchMainButtonOpenArch, "LEFT", -3, 0)
 	MinArchMainButtonOpenArch:Point("BOTTOMRIGHT", MinArchMain, "BOTTOMRIGHT", -6, 3)
-
+	AS:SkinFrame(MinArchOptionPanelHideArtifact)
+	AS:SkinFrame(MinArchOptionPanelFragmentCap)
+	AS:SkinFrame(MinArchOptionPanelUseKeystones)
+	AS:SkinFrame(MinArchOptionPanelMiscOptions)
+	AS:SkinFrame(MinArchOptionPanelFrameScale)
 end
 
-U.RegisterSkin(name,SkinMinimalArchaeology)
+AS:RegisterSkin(name, AS.SkinMinimalArchaeology)

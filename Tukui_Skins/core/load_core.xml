@@ -1,6 +1,10 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
-	<Script file="core.lua"/>
-	<Script file="backend_skins.lua"/>
-	<Script file="backend_tukui.lua"/>
-	<Script file="embed.lua"/>
+	<Script file="API.lua"/>
+	<Script file="Core.lua"/>
+	<Script file="Skins.lua"/>
+	<Script file="Options_Ace3.lua"/>
+	<Script file="Options_Legacy.lua"/>
+	<Script file="Backend.lua"/>
+	<Script file="Snaps.lua"/>
+	<Script file="Embed.lua"/>
 </Ui>

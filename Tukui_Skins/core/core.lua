@@ -1,143 +1,145 @@
 if not (IsAddOnLoaded("Tukui") or IsAddOnLoaded("AsphyxiaUI") or IsAddOnLoaded("DuffedUI")) then return end
+local AS = unpack(select(2,...))
 
-local U = unpack(select(2,...))
-local s = U.s
-local c = U.c
+local pairs, sort, tinsert, tremove, unpack, floor = pairs, sort, tinsert, tremove, unpack, floor
 
-function U.Round(num, idp)
+local function orderednext(t, n)
+	local key = t[t.__next]
+	if not key then return end
+	t.__next = t.__next + 1
+	return key, t.__source[key]
+end
+
+function AS:OrderedPairs(t, f)
+	local keys, kn = {__source = t, __next = 1}, 1
+	for k in pairs(t) do
+		keys[kn], kn = k, kn + 1
+	end
+	sort(keys, f)
+	return orderednext, keys
+end
+
+function AS:Round(num, idp)
 	local mult = 10^(idp or 0)
-	return math.floor(num * mult + 0.5) / mult
+	return floor(num * mult + 0.5) / mult
 end
 
-function U.SkinButton(self, strip)
-	if self == nil then return end
-	self:SkinButton(strip)
+function AS:SkinButton(frame, strip)
+	frame:SkinButton(strip)
 end
 
-function U.SkinScrollBar(self)
-	if self == nil then return end
-	self:SkinScrollBar()
+function AS:SkinScrollBar(frame)
+	frame:SkinScrollBar()
 end
 
-function U.SkinTab(self, strip)
-	if self == nil then return end
-	if strip then self:StripTextures(True) end
-	self:SkinTab()
+function AS:SkinTab(frame, strip)
+	if strip then frame:StripTextures(true) end
+	frame:SkinTab()
 end
 
-function U.SkinNextPrevButton(self, horizonal)
-	if self == nil then return end
-	self:SkinNextPrevButton(horizonal)
+function AS:SkinNextPrevButton(frame, horizonal)
+	frame:SkinNextPrevButton(horizonal)
 end
 
-function U.SkinRotateButton(self)
-	if self == nil then return end
-	self:SkinRotateButton()
+function AS:SkinRotateButton(frame)
+	frame:SkinRotateButton()
 end
 
-function U.SkinEditBox(self, width, height)
-	if self == nil then return end
-	self:SkinEditBox()
-	if width then self:SetWidth(width) end
-	if height then self:SetHeight(height) end
+function AS:SkinEditBox(frame, width, height)
+	frame:SkinEditBox()
+	if width then frame:SetWidth(width) end
+	if height then frame:SetHeight(height) end
 end
 
-function U.SkinDropDownBox(self, width)
-	if self == nil then return end
-	self:SkinDropDownBox(width)
+function AS:SkinDropDownBox(frame, width)
+	frame:SkinDropDownBox(width)
 end
 
-function U.SkinCheckBox(self)
-	if self == nil then return end
-	self:SkinCheckBox()
+function AS:SkinCheckBox(frame)
+	frame:SkinCheckBox()
 end
 
-function U.SkinCloseButton(self)
-	if self == nil then return end
-	self:SkinCloseButton()
+function AS:SkinCloseButton(frame, point)
+	frame:SkinCloseButton(point)
 end
 
-function U.SkinSlideBar(self, height, movetext)
-	if self == nil then return end
-	self:SkinSlideBar(height, movetext)
+function AS:SkinSlideBar(frame, height, movetext)
+	frame:SkinSlideBar(height, movetext)
 end
 
-function U.RegisterForPetBattleHide(frame)
+function AS:RegisterForPetBattleHide(frame)
 	if frame.IsVisible and frame:GetName() then
-		U.FrameLocks[frame:GetName()] = { shown = false }
+		AS.FrameLocks[frame:GetName()] = { shown = false }
 	end
 end
 
-function U.SkinFrame(self, template, overridestrip)
-	if self == nil then return end
+function AS:SkinFrame(frame, template, overridestrip)
 	if not template then template = "Transparent" end
-	if not overridestrip then self:StripTextures(True) end
-	self:SetTemplate(template)
+	if not overridestrip then frame:StripTextures(true) end
+	frame:SetTemplate(template)
 end
 
-function U.SkinBackdropFrame(self, strip, icon)
-	if self == nil then return end
-	if strip then self:StripTextures(True) end
+function AS:SkinBackdropFrame(frame, strip, icon)
+	if strip then frame:StripTextures(true) end
 	if not icon then
-		self:CreateBackdrop()
+		frame:CreateBackdrop()
 	else
-		if self.icon then self.icon:SetTexCoord(0.12, 0.88, 0.12, 0.88) end
-		if _G[self:GetName().."_Background"] then _G[self:GetName().."_Background"]:SetTexCoord(0.12, 0.88, 0.12, 0.88) end
+		if frame.icon then frame.icon:SetTexCoord(0.12, 0.88, 0.12, 0.88) end
+		if _G[frame:GetName().."_Background"] then _G[frame:GetName().."_Background"]:SetTexCoord(0.12, 0.88, 0.12, 0.88) end
 	end
 end
 
-function U.SkinStatusBar(self, ClassColor)
-	if self == nil then return end
-	local c = U.c
-	U.SkinBackdropFrame(self, true)
-	self:SetStatusBarTexture(c["media"].normTex)
+function AS:SkinStatusBar(frame, ClassColor)
+	AS:SkinBackdropFrame(frame, true)
+	frame:SetStatusBarTexture(AS.NormTex)
 	if ClassColor then
-		local color = RAID_CLASS_COLORS[U.ccolor]
-		self:SetStatusBarColor(color.r, color.g, color.b)
+		local color = RAID_CLASS_COLORS[AS.MyClass]
+		frame:SetStatusBarColor(color.r, color.g, color.b)
 	end
 end
 
-function U.SkinTooltip(tooltip, scale)
-	if tooltip == nil then return end
-	tooltip:HookScript("OnShow", function(self)
-		self:SetTemplate("Transparent")
-		if scale then self:SetScale(c["general"].uiscale) end
+function AS:SkinTooltip(tooltip, scale)
+	tooltip:HookScript("OnShow", function(frame)
+		frame:SetTemplate("Transparent")
+		if scale then frame:SetScale(AS.UIScale) end
 	end)
 end
 
-function U.SkinIconButton(self, strip, style, shrinkIcon)
-	if self == nil then return end
-	if self.isSkinned then return end
+function AS:SkinTexture(frame)
+	frame:SetTexCoord(0.12, 0.88, 0.12, 0.88)
+end
 
-	if strip then self:StripTextures() end
-	self:CreateBackdrop("Default", true)
-	if style then self:StyleButton() end
+function AS:SkinIconButton(frame, strip, style, shrinkIcon)
+	if frame.isSkinned then return end
 
-	local icon = self.icon
-	if self:GetName() and _G[self:GetName().."IconTexture"] then
-		icon = _G[self:GetName().."IconTexture"]
-	elseif self:GetName() and _G[self:GetName().."Icon"] then
-		icon = _G[self:GetName().."Icon"]
+	if strip then frame:StripTextures() end
+	frame:CreateBackdrop("Default", true)
+	if style then frame:StyleButton() end
+
+	local icon = frame.icon
+	if frame:GetName() and _G[frame:GetName().."IconTexture"] then
+		icon = _G[frame:GetName().."IconTexture"]
+	elseif frame:GetName() and _G[frame:GetName().."Icon"] then
+		icon = _G[frame:GetName().."Icon"]
 	end
 
 	if icon then
 		icon:SetTexCoord(.08,.88,.08,.88)
 
 		if shrinkIcon then
-			self.backdrop:SetAllPoints()
-			icon:SetInside(self)
+			frame.backdrop:SetAllPoints()
+			icon:SetInside(frame)
 		else
-			self.backdrop:SetOutside(icon)
+			frame.backdrop:SetOutside(icon)
 		end
-		icon:SetParent(self.backdrop)
+		icon:SetParent(frame.backdrop)
 	end
-	self.isSkinned = true
+	frame.isSkinned = true
 end
 
-function U.Desaturate(self, point)
-	if self == nil then return end
-	for i = 1, self:GetNumRegions() do
-		local region = select(i, self:GetRegions())
+function AS:Desaturate(frame, point)
+	for i = 1, frame:GetNumRegions() do
+		local region = select(i, frame:GetRegions())
 		if region:GetObjectType() == "Texture" then
 			region:SetDesaturated(1)
 			if region:GetTexture() == "Interface\\DialogFrame\\UI-DialogBox-Corner" then
@@ -147,64 +149,63 @@ function U.Desaturate(self, point)
 	end	
 
 	if point then
-		self:Point("TOPRIGHT", point, "TOPRIGHT", 2, 2)
+		frame:Point("TOPRIGHT", point, "TOPRIGHT", 2, 2)
 	end
 end
 
-function U.CheckOption(optionName,...)
+function AS:CheckOption(optionName,...)
 	for i = 1,select('#',...) do
 		local addon = select(i,...)
 		if not addon then break end
 		if not IsAddOnLoaded(addon) then return false end
 	end
-	return UISkinOptions[optionName] == "Enabled"
+	return UISkinOptions[optionName]
 end
 
-function U.DisableOption(optionName)
-	UISkinOptions[optionName] = "Disabled"
+function AS:DisableOption(optionName)
+	UISkinOptions[optionName] = false
 end
 
-function U.EnableOption(optionName)
-	UISkinOptions[optionName] = "Enabled"
+function AS:EnableOption(optionName)
+	UISkinOptions[optionName] = true
 end
 
-function U.ToggleOption(optionName)
-	if U.CheckOption(optionName) then
-		U.DisableOption(optionName)
+function AS:ToggleOption(optionName)
+	if AS:CheckOption(optionName) then
+		AS:DisableOption(optionName)
 	else
-		U.EnableOption(optionName)
+		AS:EnableOption(optionName)
 	end
 end
 
-function U.RegisterSkin(skinName,skinFunc,...)
-	local XS = U.x
+function AS:RegisterSkin(skinName,skinFunc,...)
 	local events = {}
+	local priority = 1
 	for i = 1,select('#',...) do
 		local event = select(i,...)
 		if not event then break end
-		events[event] = true
+		if type(event) == 'number' then
+			priority = event
+		else
+			events[event] = true
+		end
 	end
-	local registerMe = { func = skinFunc, events = events }
-	if not XS.register[skinName] then XS.register[skinName] = {} end
-	XS.register[skinName][skinFunc] = registerMe
+	local registerMe = { func = skinFunc, events = events, priority = priority }
+	if not AS.register[skinName] then AS.register[skinName] = {} end
+	AS.register[skinName][skinFunc] = registerMe
 end
 
-function U.UnregisterEvent(skinName,frame,event)
-	local XS = U.x
-	XS:UnregisterEvent(skinName,event)
-end
-
-function U.AddNonPetBattleFrames()
-	for frame,data in pairs(U.FrameLocks) do
+function AS:AddNonPetBattleFrames()
+	for frame,data in pairs(AS.FrameLocks) do
 		if data.shown then
 			_G[frame]:Show()
 		end
 	end
 end
 
-function U.RemoveNonPetBattleFrames()
-	for frame,data in pairs(U.FrameLocks) do
-		if(_G[frame]:IsVisible()) then
+function AS:RemoveNonPetBattleFrames()
+	for frame,data in pairs(AS.FrameLocks) do
+		if _G[frame]:IsVisible() then
 			data.shown = true
 			_G[frame]:Hide()
 		else
@@ -215,13 +216,13 @@ end
 
 local waitTable = {}
 local waitFrame
-function U.Delay(delay, func, ...)
+function AS:Delay(delay, func, ...)
 	if(type(delay)~="number" or type(func)~="function") then
 		return false
 	end
 	if(waitFrame == nil) then
 		waitFrame = CreateFrame("Frame")
-		waitFrame:SetScript("OnUpdate",function (self,elapse)
+		waitFrame:SetScript("OnUpdate",function (frame, elapse)
 			local count = #waitTable
 			local i = 1
 			while(i<=count) do
@@ -242,12 +243,3 @@ function U.Delay(delay, func, ...)
 	tinsert(waitTable,{delay,func,{...}})
 	return true
 end
-local G = U.G
-U.ChatBackgroundRight = AsphyxiaUI and AsphyxiaUIChatBackgroundRight or G.Panels.RightChatBackground
-U.ChatBackgroundLeft = AsphyxiaUI and AsphyxiaUIChatBackgroundLeft or G.Panels.LeftChatBackground
-U.InfoLeft = AsphyxiaUI and AsphyxiaUIDataPanelLeft or G.Panels.DataTextLeft
-U.InfoRight = AsphyxiaUI and AsphyxiaUIDataPanelRight or G.Panels.DataTextRight
-U.TabsRightBackground = AsphyxiaUI and AsphyxiaUIChatTabBackgroundRight or G.Panels.RightChatTabsBackground
-U.TabsLeftBackground = AsphyxiaUI and AsphyxiaUIChatTabBackgroundLeft or G.Panels.LeftChatTabsBackground
-U.Minimap = AsphyxiaUI and AsphyxiaUIMinimap or G.Maps.Minimap
-U.Tooltip = AsphyxiaUI and AsphyxiaUITooltipAnchor or G.Tooltips.GameTooltip.Anchor

@@ -1,30 +1,26 @@
 if not (IsAddOnLoaded("Tukui") or IsAddOnLoaded("AsphyxiaUI") or IsAddOnLoaded("DuffedUI")) then return end
-local U = unpack(select(2,...))
+local AS = unpack(select(2,...))
+
 local name = 'BagnonSkin'
-local function SkinBagnon(self,event)
-	local s = U.s
-	local c = U.c
+function AS:SkinBagnon(event, addon)
 	if event == "PLAYER_ENTERING_WORLD" then
 		ToggleBackpack()
-		U.SkinFrame(BagnonFrameinventory)
-		U.SkinCloseButton(BagnonFrameinventoryCloseButton)
+		AS:SkinFrame(BagnonFrameinventory)
+		AS:SkinCloseButton(BagnonFrameinventoryCloseButton)
 		ToggleBackpack()
 	elseif event == "BANKFRAME_OPENED" then
-		U.SkinFrame(BagnonFramebank)
-		U.SkinCloseButton(BagnonFramebankCloseButton)
-		U.UnregisterEvent(name, self, event)
-	elseif event == "GUILDBANKFRAME_OPENED" then
-		if IsAddOnLoaded("Bagnon_GuildBank") then
-			U.SkinFrame(BagnonFrameguildbank)
-			U.SkinCloseButton(BagnonFrameguildbankCloseButton)
-			U.UnregisterEvent(name, self, event)
-		end
-	elseif event == "VOID_STORAGE_OPEN" then
-		if IsAddOnLoaded("Bagnon_VoidStorage") then
-			U.SkinFrame(BagnonFramevoidstorage)
-			U.SkinCloseButton(BagnonFramevoidstorageCloseButton)
-			U.UnregisterEvent(name, self, event)
-		end
+		AS:SkinFrame(BagnonFramebank)
+		AS:SkinCloseButton(BagnonFramebankCloseButton)
+		AS:UnregisterEvent(name, event)
+	elseif event == "GUILDBANKFRAME_OPENED" and addon == "Bagnon_GuildBank" then
+		AS:SkinFrame(BagnonFrameguildbank)
+		AS:SkinCloseButton(BagnonFrameguildbankCloseButton)
+		AS:UnregisterEvent(name, event)
+	elseif event == "VOID_STORAGE_OPEN" and addon == "Bagnon_VoidStorage" then
+		AS:SkinFrame(BagnonFramevoidstorage)
+		AS:SkinCloseButton(BagnonFramevoidstorageCloseButton)
+		AS:UnregisterEvent(name, event)
 	end
 end
-U.RegisterSkin(name,SkinBagnon,"BANKFRAME_OPENED","GUILDBANKFRAME_OPENED","VOID_STORAGE_OPEN")
+
+AS:RegisterSkin(name, AS.SkinBagnon, "ADDON_LOADED", "BANKFRAME_OPENED", "GUILDBANKFRAME_OPENED", "VOID_STORAGE_OPEN")

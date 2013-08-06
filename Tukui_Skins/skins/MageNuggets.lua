@@ -1,10 +1,8 @@
 if not (IsAddOnLoaded("Tukui") or IsAddOnLoaded("AsphyxiaUI") or IsAddOnLoaded("DuffedUI")) then return end
-local U = unpack(select(2,...))
-local name = "MageNuggetsSkin"
-local function SkinMageNuggets(self)
-	local s = U.s
-	local c = U.c
+local AS = unpack(select(2,...))
 
+local name = "MageNuggetsSkin"
+function AS:SkinMageNuggets()
 	local Frames = {
 		"MNSpellSteal_Frame",
 		"MNSpellStealFocus_Frame",
@@ -34,7 +32,7 @@ local function SkinMageNuggets(self)
 	for _, object in pairs(Frames) do
 		if _G[object] then
 			_G[object]:SetBackdrop(nil)
-			U.SkinBackdropFrame(_G[object])
+			AS:SkinBackdropFrame(_G[object])
 		end
 	end
 
@@ -69,7 +67,7 @@ local function SkinMageNuggets(self)
 			_G[object]:SetBackdrop(nil)
 			_G[object.."_Text"]:SetDrawLayer("OVERLAY", 8)
 			_G[object.."_Text2"]:SetDrawLayer("OVERLAY", 8)
-			_G[object.."_Bar"]:SetStatusBarTexture(c["media"].normTex)
+			_G[object.."_Bar"]:SetStatusBarTexture(AS.NormTex)
 			_G[object.."_Bar"]:CreateBackdrop()
 			_G[object.."_Bar"].backdrop:SetPoint("TOPLEFT", -2, 2)
 			_G[object.."_Bar"].backdrop:SetPoint("BOTTOMRIGHT", 2, -2)
@@ -80,91 +78,73 @@ local function SkinMageNuggets(self)
 	MageNugLB2_Frame:SetPoint("BOTTOM", MageNugLB1_Frame, "TOP", 0, 4)
 	MageNugLB3_Frame:SetPoint("BOTTOM", MageNugLB2_Frame, "TOP", 0, 4)
 	MageNugLB4_Frame:SetPoint("BOTTOM", MageNugLB3_Frame, "TOP", 0, 4)
-
-	U.SkinStatusBar(MageNugCauterize_Frame_Bar)
-	U.SkinStatusBar(MageNugMI_Frame_MiBar)
-	U.SkinStatusBar(MageNugInvokers_Frame_Bar)
-	U.SkinStatusBar(MageNugManaGem_Frame_Bar)
-	U.SkinStatusBar(MageNugIgnite_Frame_Bar)
-	U.SkinStatusBar(MageNugAB_Frame_ABBar)
-	U.SkinStatusBar(MageNugClearcast_Frame_Bar)
-
-	MageNugMBProcFrame_ProcBar:SetStatusBarTexture(c["media"].normTex)
-	MageNugProcFrame_ProcBar:SetStatusBarTexture(c["media"].normTex)
-	MageNugProcHUFrame_ProcBar:SetStatusBarTexture(c["media"].normTex)
-	MageNugPolyFrame_Bar:SetStatusBarTexture(c["media"].normTex)
-	MageNugImpactProcFrame_ProcBar:SetStatusBarTexture(c["media"].normTex)
-	MageNugBFProcFrame_ProcBar:SetStatusBarTexture(c["media"].normTex)
-	MageNugFoFProcFrame_ProcBar:SetStatusBarTexture(c["media"].normTex)
-	
+	AS:SkinStatusBar(MageNugCauterize_Frame_Bar)
+	AS:SkinStatusBar(MageNugMI_Frame_MiBar)
+	AS:SkinStatusBar(MageNugInvokers_Frame_Bar)
+	AS:SkinStatusBar(MageNugManaGem_Frame_Bar)
+	AS:SkinStatusBar(MageNugIgnite_Frame_Bar)
+	AS:SkinStatusBar(MageNugAB_Frame_ABBar)
+	AS:SkinStatusBar(MageNugClearcast_Frame_Bar)
+	MageNugMBProcFrame_ProcBar:SetStatusBarTexture(C["Media"].NormTex)
+	MageNugProcFrame_ProcBar:SetStatusBarTexture(C["Media"].NormTex)
+	MageNugProcHUFrame_ProcBar:SetStatusBarTexture(C["Media"].NormTex)
+	MageNugPolyFrame_Bar:SetStatusBarTexture(C["Media"].NormTex)
+	MageNugImpactProcFrame_ProcBar:SetStatusBarTexture(C["Media"].NormTex)
+	MageNugBFProcFrame_ProcBar:SetStatusBarTexture(C["Media"].NormTex)
+	MageNugFoFProcFrame_ProcBar:SetStatusBarTexture(C["Media"].NormTex)
 	MageNugMI_FrameTexture1BG = CreateFrame("Frame", nil, MageNugMI_Frame)
 	MageNugMI_FrameTexture1BG:CreateBackdrop()
 	MageNugMI_FrameTexture1BG.backdrop:SetOutside(MageNugMI_FrameTexture1)
 	MageNugMI_FrameTexture1:SetDrawLayer("OVERLAY")
 	MageNugMI_FrameTexture1:SetTexCoord(0.12, 0.88, 0.12, 0.88)
 	MageNugMI_Frame_MiBar:SetPoint("LEFT", MageNugMI_FrameTexture1, "LEFT", 20, 0)
-
 	MageNugCauterize_FrameTexture1BG = CreateFrame("Frame", nil, MageNugCauterize_Frame)
 	MageNugCauterize_FrameTexture1BG:CreateBackdrop()
 	MageNugCauterize_FrameTexture1BG.backdrop:SetOutside(MageNugCauterize_FrameTexture1)
 	MageNugCauterize_FrameTexture1:SetDrawLayer("OVERLAY")
 	MageNugCauterize_FrameTexture1:SetTexCoord(0.12, 0.88, 0.12, 0.88)
 	MageNugCauterize_Frame_Bar:SetPoint("LEFT", MageNugCauterize_FrameTexture1, "LEFT", 20, 0)
-
 	MageNugInvokers_FrameTexture1BG = CreateFrame("Frame", nil, MageNugInvokers_Frame)
 	MageNugInvokers_FrameTexture1BG:CreateBackdrop()
 	MageNugInvokers_FrameTexture1BG.backdrop:SetOutside(MageNugInvokers_FrameTexture1)
 	MageNugInvokers_FrameTexture1:SetDrawLayer("OVERLAY")
 	MageNugInvokers_FrameTexture1:SetTexCoord(0.12, 0.88, 0.12, 0.88)
 	MageNugInvokers_Frame_Bar:SetPoint("LEFT", MageNugInvokers_FrameTexture1, "LEFT", 20, 0)
-
 	MageNugAB_FrameTexture:SetTexCoord(0.12, 0.88, 0.12, 0.88)
 	MageNugLB_FrameTexture:SetTexCoord(0.12, 0.88, 0.12, 0.88)
 	MageNugIgnite_FrameTexture:SetTexCoord(0.12, 0.88, 0.12, 0.88)
 	MageNugManaGem_FrameTexture:SetTexCoord(0.12, 0.88, 0.12, 0.88)
 	MageNugClearcast_FrameTexture:SetTexCoord(0.12, 0.88, 0.12, 0.88)
---	MageNugFrostBomb_FrameTexture:SetTexCoord(0.12, 0.88, 0.12, 0.88)
-
 	MageNugManaGem_Frame_Text2:ClearAllPoints()
 	MageNugManaGem_Frame_Text2:SetPoint("CENTER", MageNugManaGem_Frame_Bar, "CENTER", 0, 0)
-
 	MageNugIgnite_FrameText2:ClearAllPoints()
 	MageNugIgnite_FrameText2:SetPoint("CENTER", MageNugIgnite_Frame_Bar, "CENTER", 0, 0)
 	MageNugIgnite_FrameText2:SetFont("Fonts\\FRIZQT__.TTF", 8)
-
 	MageNugClearcast_FrameText2:ClearAllPoints()
 	MageNugClearcast_FrameText2:SetPoint("CENTER", MageNugClearcast_Frame_Bar, "CENTER", 0, 0)
 	MageNugClearcast_FrameText2:SetFont("Fonts\\FRIZQT__.TTF", 8)
-
 	MageNugAB_FrameText2:ClearAllPoints()
 	MageNugAB_FrameText2:SetPoint("CENTER", MageNugAB_Frame_ABBar, "CENTER", 0, 0)
 	MageNugAB_FrameText2:SetFont("Fonts\\FRIZQT__.TTF", 8)
-
-	U.SkinButton(MageNugHordeFrameClose)
-	U.SkinButton(MageNugHordeFrameShowOptions)
-	U.SkinButton(MageNugAlliFrameClose)
-	U.SkinButton(MageNugAlliFrameShowOptions)
-
+	AS:SkinButton(MageNugHordeFrameClose)
+	AS:SkinButton(MageNugHordeFrameShowOptions)
+	AS:SkinButton(MageNugAlliFrameClose)
+	AS:SkinButton(MageNugAlliFrameShowOptions)
 	MageNugAB_Frame_ABBar:ClearAllPoints()
 	MageNugAB_Frame_ABBar:SetWidth(MageNugAB_Frame:GetWidth())
 	MageNugAB_Frame_ABBar:Point("TOP", MageNugAB_Frame, "BOTTOM", 0, -6)
-
 	MageNugIgnite_Frame_Bar:ClearAllPoints()
 	MageNugIgnite_Frame_Bar:SetWidth(MageNugIgnite_Frame:GetWidth())
 	MageNugIgnite_Frame_Bar:Point("TOP", MageNugIgnite_Frame, "BOTTOM", 0, -6)
-
 	MageNugManaGem_Frame_Bar:ClearAllPoints()
 	MageNugManaGem_Frame_Bar:SetWidth(MageNugManaGem_Frame:GetWidth())
 	MageNugManaGem_Frame_Bar:Point("TOP", MageNugManaGem_Frame, "BOTTOM", 0, -6)
-
 	MageNugClearcast_Frame_Bar:ClearAllPoints()
 	MageNugClearcast_Frame_Bar:SetWidth(MageNugClearcast_Frame:GetWidth())
 	MageNugClearcast_Frame_Bar:Point("TOP", MageNugClearcast_Frame, "BOTTOM", 0, -6)
-
 	MNabCast_Frame:ClearAllPoints()
 	MNabCast_Frame:Point("BOTTOM", MageNugAB_Frame, "TOP", 0, 6)
-	
-	--stupid ass amount of check boxes
+
 	local checkbuttons = {
 		MageNugOptionsFrame_CheckButtonCC,
 		MageNugOptionsFrame_CheckButton6,
@@ -236,12 +216,11 @@ local function SkinMageNuggets(self)
 		MageNugCooldownFrame_treantButton,
 		MageNugCooldownFrame_miButton,
 	}
-		
+
 	for _,b in pairs(checkbuttons) do
-		U.SkinCheckBox(b)
+		AS:SkinCheckBox(b)
 	end
-	
-	-- Slider frames
+
 	local sliders = {
 		MageNugOptionsFrame_Slider5,
 		MageNugOptionsFrame_InvokersSlider,
@@ -256,12 +235,11 @@ local function SkinMageNuggets(self)
 		MageNugMoonkinOptionFrame_Slider1,
 		MageNugCooldownFrame_Slider1,
 	}
-	
+
 	for _,s in pairs(sliders) do
-		U.SkinSlideBar(s, 8, true)
+		AS:SkinSlideBar(s, 8, true)
 	end
-	
-	-- Edit Boxes
+
 	local editbox = {
 		SlowFallMsgEditBox,
 		SlowFallMsgEditBox2,
@@ -290,18 +268,16 @@ local function SkinMageNuggets(self)
 		MageNugMoonkinOptionFrame_SoundEditBox,
 		MageNugMoonkinOptionFrame_InnervateEditBox,
 	}
-	
+
 	for _,f in pairs(editbox) do
-		U.SkinEditBox(f, false, 15)
+		AS:SkinEditBox(f, false, 15)
 	end
 	
-	-- Buttons
-	U.SkinButton(MageNugStatMonOptionFrameBlackBackdropButton)
-	U.SkinButton(MageNugMoonkinOptionFrame_Button)
-	U.SkinButton(MageNugOption2FrameButton1)
-	U.SkinButton(MageNugOption2FrameButton2)
-	U.SkinButton(MageNugOption2FrameButton3)
-	
+	AS:SkinButton(MageNugStatMonOptionFrameBlackBackdropButton)
+	AS:SkinButton(MageNugMoonkinOptionFrame_Button)
+	AS:SkinButton(MageNugOption2FrameButton1)
+	AS:SkinButton(MageNugOption2FrameButton2)
+	AS:SkinButton(MageNugOption2FrameButton3)
 end
 
-U.RegisterSkin(name,SkinMageNuggets)
+AS:RegisterSkin(name, AS.SkinMageNuggets)

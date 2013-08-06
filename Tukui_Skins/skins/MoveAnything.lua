@@ -1,47 +1,41 @@
 if not (IsAddOnLoaded("Tukui") or IsAddOnLoaded("AsphyxiaUI") or IsAddOnLoaded("DuffedUI")) then return end
-local U = unpack(select(2,...))
+local AS = unpack(select(2,...))
+
 local name = "MoveAnythingSkin"
-local function SkinMoveAnything(self)
-	local s = U.s
-	local c = U.c
-
-	U.SkinFrame(MAOptions)
-	MAScrollBorder:StripTextures(True)
-
-	U.SkinScrollBar(MAScrollFrameScrollBar)
-	U.SkinButton(MAOptionsSync)
-	U.SkinButton(MAOptionsOpenBlizzardOptions)
-	U.SkinButton(MAOptionsClose)
-	U.SkinButton(GameMenuButtonMoveAnything)
-	U.SkinBackdropFrame(GameMenuButtonMoveAnything)
+function AS:SkinMoveAnything()
+	AS:SkinFrame(MAOptions)
+	MAScrollBorder:StripTextures(true)
+	AS:SkinScrollBar(MAScrollFrameScrollBar)
+	AS:SkinButton(MAOptionsSync)
+	AS:SkinButton(MAOptionsOpenBlizzardOptions)
+	AS:SkinButton(MAOptionsClose)
+	AS:SkinButton(GameMenuButtonMoveAnything)
+	AS:SkinBackdropFrame(GameMenuButtonMoveAnything)
 	GameMenuButtonMoveAnything:ClearAllPoints()
 	GameMenuButtonMoveAnything:Point("TOP", GameMenuFrame, "BOTTOM", 0, -3)
-
-	U.SkinEditBox(MA_Search)
-	U.SkinCheckBox(MAOptionsToggleModifiedFramesOnly)
-	U.SkinCheckBox(MAOptionsToggleCategories)
-	U.SkinCheckBox(MAOptionsToggleFrameStack)
-	U.SkinCheckBox(MAOptionsToggleMovers)
-	U.SkinCheckBox(MAOptionsToggleFrameEditors)
-
+	AS:SkinEditBox(MA_Search)
+	AS:SkinCheckBox(MAOptionsToggleModifiedFramesOnly)
+	AS:SkinCheckBox(MAOptionsToggleCategories)
+	AS:SkinCheckBox(MAOptionsToggleFrameStack)
+	AS:SkinCheckBox(MAOptionsToggleMovers)
+	AS:SkinCheckBox(MAOptionsToggleFrameEditors)
 	for i = 1, 100 do
-		if _G["MAMove"..i.."Reset"] then U.SkinButton(_G["MAMove"..i.."Reset"]) end
-		if _G["MAMove"..i.."Reset"] then U.SkinButton(_G["MAMove"..i.."Reset"]) end
-		if _G["MAMove"..i.."Backdrop"] then U.SkinFrame(_G["MAMove"..i.."Backdrop"]) end
-		if _G["MAMove"..i.."Move"] then U.SkinCheckBox(_G["MAMove"..i.."Move"]) end
-		if _G["MAMove"..i.."Hide"] then U.SkinCheckBox(_G["MAMove"..i.."Hide"]) end
+		if _G["MAMove"..i.."Reset"] then AS:SkinButton(_G["MAMove"..i.."Reset"]) end
+		if _G["MAMove"..i.."Reset"] then AS:SkinButton(_G["MAMove"..i.."Reset"]) end
+		if _G["MAMove"..i.."Backdrop"] then AS:SkinFrame(_G["MAMove"..i.."Backdrop"]) end
+		if _G["MAMove"..i.."Move"] then AS:SkinCheckBox(_G["MAMove"..i.."Move"]) end
+		if _G["MAMove"..i.."Hide"] then AS:SkinCheckBox(_G["MAMove"..i.."Hide"]) end
 	end
-
-	U.SkinFrame(MANudger)
-	U.SkinButton(MANudger_CenterMe)
-	U.SkinButton(MANudger_CenterH)
-	U.SkinButton(MANudger_CenterV)
-	U.SkinButton(MANudger_NudgeUp)
-	U.SkinButton(MANudger_NudgeDown)
-	U.SkinButton(MANudger_NudgeLeft)
-	U.SkinButton(MANudger_NudgeRight)
-	U.SkinButton(MANudger_Detach)
-	U.SkinButton(MANudger_Hide)
+	AS:SkinFrame(MANudger)
+	AS:SkinButton(MANudger_CenterMe)
+	AS:SkinButton(MANudger_CenterH)
+	AS:SkinButton(MANudger_CenterV)
+	AS:SkinButton(MANudger_NudgeUp)
+	AS:SkinButton(MANudger_NudgeDown)
+	AS:SkinButton(MANudger_NudgeLeft)
+	AS:SkinButton(MANudger_NudgeRight)
+	AS:SkinButton(MANudger_Detach)
+	AS:SkinButton(MANudger_Hide)
 end
 
-U.RegisterSkin(name,SkinMoveAnything)
+AS:RegisterSkin(name, AS.SkinMoveAnything)
