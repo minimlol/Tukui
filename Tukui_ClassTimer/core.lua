@@ -24,14 +24,6 @@ local BAR_HEIGHT = 20;
 -- Distance between bars
 local BAR_SPACING = 1;
 
---[[ Layouts
-	1 - both player and target auras in one frame right above player frame
-	2 - player and target auras separated into two frames above player frame
-	3 - player, target and trinket auras separated into three frames above player frame
-	4 - player and trinket auras are shown above player frame and target auras are shown above target frame
-]]--
-local LAYOUT = 3;
-
 -- Background alpha (range from 0 to 1)
 local BACKGROUND_ALPHA = 0.75;
 
@@ -116,7 +108,7 @@ local TRINKET_BAR_COLOR = CreateColor( 150, 150, 70, 1 );
 local SORT_DIRECTION = true;
 
 -- Timer tenths threshold - range from 1 to 60
-local TENTHS_TRESHOLD = 1
+local TENTHS_TRESHOLD = 2
 
 -- Trinket filter - mostly for trinket procs, delete or wrap into comment block --[[  ]] if you dont want to track those
 local TRINKET_FILTER = {
@@ -129,8 +121,6 @@ local TRINKET_FILTER = {
         CreateSpellEntry( 121279 ), -- Lifeblood 
 		CreateSpellEntry( 104993, true ), -- Jade Spirit (Enchanting)
 		CreateSpellEntry( 96230 ), -- Synapse Springs (Engineering)
-
-
 
 		-- Racials
 		CreateSpellEntry( 20954 ), -- Stoneform (Dwarf)
@@ -563,9 +553,8 @@ local CLASS_FILTERS = {
 				CreateSpellEntry( 6789 ), -- Mortal Coil
 				CreateSpellEntry( 47960 ), -- Shadowflame (Hand of Guldan)
 				CreateSpellEntry( 108686 ), -- Immolate (Fire and Brimstone)
-				CreateSpellEntry( 104232 ), -- Rain of Fire
 			},
-				player = {
+			player = {
 				CreateSpellEntry( 117828 ), -- Backdraft
 				CreateSpellEntry( 108503 ), -- Grimoire of Sacrifice
 				CreateSpellEntry( 132413 ), -- Shadow Bulwark
@@ -576,11 +565,13 @@ local CLASS_FILTERS = {
 				CreateSpellEntry( 116202 ), -- Aura of Elements
 				CreateSpellEntry( 116198 ), -- Aura of Enfeeblement
 				CreateSpellEntry( 104025 ), -- Immolation Aura
-			},
-			procs = {
-				CreateSpellEntry( 34936 ), -- Backlash
+				CreateSpellEntry( 5740 ), -- Rain of Fire
+				CreateSpellEntry( 104232 ), -- Rain of Fire (green)
 				CreateSpellEntry( 122355 ), -- Molten Core
 				CreateSpellEntry( 140074 ), -- Molten Core (green)
+			},
+			procs = {
+				CreateSpellEntry( 34936 ), -- Backlash				
 			},
 		},
 		WARRIOR = { 
@@ -890,7 +881,7 @@ do
 				if ( remaining >= 3600 ) then
 					timeText = tostring( math.floor( remaining / 3600 ) ) .. "h";
 				elseif ( remaining >= 60 ) then
-					timeText = tostring( math.floor( remaining / 60 ) ) .. "m";
+					timeText = tostring( math.floor( remaining / 60 ) ) .. ":" .. string.format("%02d", tostring( math.floor( remaining ) - math.floor( remaining / 60) * 60 ));
 				elseif ( remaining > TENTHS_TRESHOLD ) then
 					timeText = tostring( math.floor( remaining ) );
 				elseif ( remaining > 0 ) then
@@ -1246,142 +1237,44 @@ end
 local _, playerClass = UnitClass( "player" );
 local classFilter = CLASS_FILTERS[ playerClass ];
 
-if ( LAYOUT == 1 ) then
-	local dataSource = CreateUnitAuraDataSource( "target" );
-
-	dataSource:SetSortDirection( SORT_DIRECTION );
+local yOffset = 6;
+local targetDataSource = CreateUnitAuraDataSource( "target" );
+local playerDataSource = CreateUnitAuraDataSource( "player" );
+local trinketDataSource = CreateUnitAuraDataSource( "player" );
 	
-	dataSource:AddPlayerFilter( TRINKET_FILTER, TRINKET_BAR_COLOR );
+targetDataSource:SetSortDirection( SORT_DIRECTION );
+playerDataSource:SetSortDirection( SORT_DIRECTION );
+trinketDataSource:SetSortDirection( SORT_DIRECTION );
 	
-	if ( classFilter ) then
-		dataSource:AddFilter( classFilter.target, TARGET_BAR_COLOR, TARGET_DEBUFF_COLOR );
-		dataSource:AddPlayerFilter( classFilter.player, PLAYER_BAR_COLOR, PLAYER_DEBUFF_COLOR );
-		dataSource:AddPlayerFilter( classFilter.procs, TRINKET_BAR_COLOR );
-		dataSource:SetIncludePlayer( classFilter.player ~= nil );
-	end
-
-	local frame = CreateAuraBarFrame( dataSource, TukuiPlayer );
-	local yOffset = 1;
-	if ( playerClass == "DEATHKNIGHT" or playerClass == "SHAMAN" or playerClass == "PALADIN" or playerClass == "DRUID" or playerClass == "WARLOCK" or playerClass == "MONK") then
-		yOffset = yOffset + 8;
-	end
-	frame:SetPoint( "BOTTOMLEFT", TukuiPlayer, "TOPLEFT", 0, yOffset );
-	frame:SetPoint( "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, yOffset );
-	frame:Show(); 
-elseif ( LAYOUT == 2 ) then
-	local targetDataSource = CreateUnitAuraDataSource( "target" );
-	local playerDataSource = CreateUnitAuraDataSource( "player" );
-
-	targetDataSource:SetSortDirection( SORT_DIRECTION );
-	playerDataSource:SetSortDirection( SORT_DIRECTION );
-	
-	playerDataSource:AddFilter( TRINKET_FILTER, TRINKET_BAR_COLOR );
-
-	if ( classFilter ) then
-		targetDataSource:AddFilter( classFilter.target, TARGET_BAR_COLOR, TARGET_DEBUFF_COLOR );
-		playerDataSource:AddFilter( classFilter.player, PLAYER_BAR_COLOR, PLAYER_DEBUFF_COLOR );
-		playerDataSource:AddFilter( classFilter.procs, TRINKET_BAR_COLOR );
-	end
-
-	local yOffset = 6;
-	
-	local playerFrame = CreateAuraBarFrame( playerDataSource, TukuiPlayer );	
-	playerFrame:SetHiddenHeight( -yOffset );
-	if ( playerClass == "DEATHKNIGHT" or playerClass == "SHAMAN" or playerClass == "PALADIN" or playerClass == "DRUID" or playerClass == "WARLOCK"  or playerClass == "MONK") then
-		playerFrame:SetPoint( "BOTTOMLEFT", TukuiPlayer, "TOPLEFT", 0, yOffset + 8 );
-		playerFrame:SetPoint( "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, yOffset + 8 );
-	else
-		playerFrame:SetPoint( "BOTTOMLEFT", TukuiPlayer, "TOPLEFT", 0, yOffset );
-		playerFrame:SetPoint( "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, yOffset );
-	end
-	playerFrame:Show();
-
-	local targetFrame = CreateAuraBarFrame( targetDataSource, TukuiPlayer );
-	targetFrame:SetPoint( "BOTTOMLEFT", playerFrame, "TOPLEFT", 0, yOffset );
-	targetFrame:SetPoint( "BOTTOMRIGHT", playerFrame, "TOPRIGHT", 0, yOffset );
-	targetFrame:Show();
-elseif ( LAYOUT == 3 ) then
-	local yOffset = 6;
-
-	local targetDataSource = CreateUnitAuraDataSource( "target" );
-	local playerDataSource = CreateUnitAuraDataSource( "player" );
-	local trinketDataSource = CreateUnitAuraDataSource( "player" );
-	
-	targetDataSource:SetSortDirection( SORT_DIRECTION );
-	playerDataSource:SetSortDirection( SORT_DIRECTION );
-	trinketDataSource:SetSortDirection( SORT_DIRECTION );
-	
-	if ( classFilter ) then
-		targetDataSource:AddFilter( classFilter.target, TARGET_BAR_COLOR, TARGET_DEBUFF_COLOR );		
-		playerDataSource:AddFilter( classFilter.player, PLAYER_BAR_COLOR, PLAYER_DEBUFF_COLOR );
-		trinketDataSource:AddFilter( classFilter.procs, TRINKET_BAR_COLOR );
-	end
-	trinketDataSource:AddFilter( TRINKET_FILTER, TRINKET_BAR_COLOR );
-
-	local playerFrame = CreateAuraBarFrame( playerDataSource, TukuiPlayer );
-	playerFrame:SetHiddenHeight( -yOffset );
-	if ( playerClass == "MONK" ) then
-		playerFrame:SetPoint( "BOTTOMLEFT", TukuiPlayer, "TOPLEFT", 0, yOffset + 16 );
-		playerFrame:SetPoint( "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, yOffset + 16 );
-	elseif ( playerClass == "DEATHKNIGHT" or playerClass == "SHAMAN" or playerClass == "PALADIN" or playerClass == "DRUID" or playerClass == "WARLOCK" ) then
-		playerFrame:SetPoint( "BOTTOMLEFT", TukuiPlayer, "TOPLEFT", 0, yOffset + 8 );
-		playerFrame:SetPoint( "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, yOffset + 8 );
-	else
-		playerFrame:SetPoint( "BOTTOMLEFT", TukuiPlayer, "TOPLEFT", 0, yOffset );
-		playerFrame:SetPoint( "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, yOffset );
-	end
-	playerFrame:Show();
-
-	local trinketFrame = CreateAuraBarFrame( targetDataSource, TukuiPlayer );
-	trinketFrame:SetHiddenHeight( -yOffset );
-	trinketFrame:SetPoint( "BOTTOMLEFT", playerFrame, "TOPLEFT", 0, yOffset );
-	trinketFrame:SetPoint( "BOTTOMRIGHT", playerFrame, "TOPRIGHT", 0, yOffset );
-	trinketFrame:Show();
-	
-	local targetFrame = CreateAuraBarFrame( trinketDataSource, TukuiPlayer );
-	targetFrame:SetHiddenHeight( -yOffset );
-	targetFrame:SetPoint( "BOTTOMLEFT", trinketFrame, "TOPLEFT", 0, yOffset );
-	targetFrame:SetPoint( "BOTTOMRIGHT", trinketFrame, "TOPRIGHT", 0, yOffset );
-	targetFrame:Show();
-elseif ( LAYOUT == 4 ) then
-	local yOffset = 6;
-
-	local targetDataSource = CreateUnitAuraDataSource( "target" );
-	local playerDataSource = CreateUnitAuraDataSource( "player" );
-	local trinketDataSource = CreateUnitAuraDataSource( "player" );
-	
-	targetDataSource:SetSortDirection( SORT_DIRECTION );
-	playerDataSource:SetSortDirection( SORT_DIRECTION );
-	trinketDataSource:SetSortDirection( SORT_DIRECTION );
-	
-	if ( classFilter ) then
-		targetDataSource:AddFilter( classFilter.target, TARGET_BAR_COLOR, TARGET_DEBUFF_COLOR );		
-		playerDataSource:AddFilter( classFilter.player, PLAYER_BAR_COLOR, PLAYER_DEBUFF_COLOR );
-		trinketDataSource:AddFilter( classFilter.procs, TRINKET_BAR_COLOR );
-	end
-	trinketDataSource:AddFilter( TRINKET_FILTER, TRINKET_BAR_COLOR );
-
-	local playerFrame = CreateAuraBarFrame( playerDataSource, TukuiPlayer );
-	playerFrame:SetHiddenHeight( -yOffset );
-	if ( playerClass == "DEATHKNIGHT" or playerClass == "SHAMAN" or playerClass == "PALADIN" or playerClass == "DRUID" or playerClass == "WARLOCK"  or playerClass == "MONK") then
-		playerFrame:SetPoint( "BOTTOMLEFT", TukuiPlayer, "TOPLEFT", 0, yOffset + 8 );
-		playerFrame:SetPoint( "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, yOffset + 8 );
-	else
-		playerFrame:SetPoint( "BOTTOMLEFT", TukuiPlayer, "TOPLEFT", 0, yOffset );
-		playerFrame:SetPoint( "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, yOffset );
-	end
-	playerFrame:Show();
-
-	local trinketFrame = CreateAuraBarFrame( trinketDataSource, TukuiPlayer );
-	trinketFrame:SetHiddenHeight( -yOffset );
-	trinketFrame:SetPoint( "BOTTOMLEFT", playerFrame, "TOPLEFT", 0, yOffset );
-	trinketFrame:SetPoint( "BOTTOMRIGHT", playerFrame, "TOPRIGHT", 0, yOffset );
-	trinketFrame:Show();
-	
-	local targetFrame = CreateAuraBarFrame( targetDataSource, TukuiTarget );
-	targetFrame:SetPoint( "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 8 + ( 32 * 3 ) );
-	targetFrame:SetPoint( "BOTTOMRIGHT", TukuiTarget, "TOPRIGHT", 0, 8 + ( 32 * 3 ) );
-	targetFrame:Show();
-else
-	error( "Undefined layout " .. tostring( LAYOUT ) );
+if ( classFilter ) then
+	targetDataSource:AddFilter( classFilter.target, TARGET_BAR_COLOR, TARGET_DEBUFF_COLOR );		
+	playerDataSource:AddFilter( classFilter.player, PLAYER_BAR_COLOR, PLAYER_DEBUFF_COLOR );
+	trinketDataSource:AddFilter( classFilter.procs, TRINKET_BAR_COLOR );
 end
+trinketDataSource:AddFilter( TRINKET_FILTER, TRINKET_BAR_COLOR );
+
+local playerFrame = CreateAuraBarFrame( playerDataSource, TukuiPlayer );
+playerFrame:SetHiddenHeight( -yOffset );
+if ( playerClass == "MONK" ) then
+	playerFrame:SetPoint( "BOTTOMLEFT", TukuiPlayer, "TOPLEFT", 0, yOffset + 16 );
+	playerFrame:SetPoint( "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, yOffset + 16 );
+elseif ( playerClass == "DEATHKNIGHT" or playerClass == "SHAMAN" or playerClass == "PALADIN" or playerClass == "DRUID" or playerClass == "WARLOCK" or playerClass == "ROGUE") then
+	playerFrame:SetPoint( "BOTTOMLEFT", TukuiPlayer, "TOPLEFT", 0, yOffset + 8 );
+	playerFrame:SetPoint( "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, yOffset + 8 );
+else
+	playerFrame:SetPoint( "BOTTOMLEFT", TukuiPlayer, "TOPLEFT", 0, yOffset );
+	playerFrame:SetPoint( "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, yOffset );
+end
+playerFrame:Show();
+
+local trinketFrame = CreateAuraBarFrame( targetDataSource, TukuiPlayer );
+trinketFrame:SetHiddenHeight( -yOffset );
+trinketFrame:SetPoint( "BOTTOMLEFT", playerFrame, "TOPLEFT", 0, yOffset );
+trinketFrame:SetPoint( "BOTTOMRIGHT", playerFrame, "TOPRIGHT", 0, yOffset );
+trinketFrame:Show();
+
+local targetFrame = CreateAuraBarFrame( trinketDataSource, TukuiPlayer );
+targetFrame:SetHiddenHeight( -yOffset );
+targetFrame:SetPoint( "BOTTOMLEFT", trinketFrame, "TOPLEFT", 0, yOffset );
+targetFrame:SetPoint( "BOTTOMRIGHT", trinketFrame, "TOPRIGHT", 0, yOffset );
+targetFrame:Show();
