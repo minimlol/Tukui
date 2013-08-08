@@ -1,0 +1,63 @@
+Version 1.34	- UPDATED: Options
+Version 1.33	- UPDATED: API
+Version 1.32	- ADDED: AchieveIt, DailyTamerCheck, DXE, InboxMailBag, DKDots
+				- UPDATED: API, Embed, MinimalArchaeology, Auctioneer
+Version 1.31	- UPDATED: SexyCooldown2, Auctionator
+Version 1.30	- UPDATED: Embed
+Version 1.29	- UPDATED: API
+Version 1.28	- UPDATED: Table of Contents (5.2)
+Version 1.27	- UPDATED: Auctioneer, Factionizer, MageBuggets
+Version 1.26B	- UPDATED: Embed
+Version 1.26A	- UPDATED: Embed
+Version 1.26	- ADDED: AraBrokerTradeSkills, alDamageMeter
+Version 1.25	- UPDATED: MiscFixes, Skillet
+Version 1.24	- UPDATED: Embed
+Version 1.21A	- UPDATED: Archy
+Version 1.21	- UPDATED: API
+Version 1.20	- UPDATED: Omen
+Version 1.19D	- UPDATED: Archy
+Version 1.19C	- UPDATED: Archy
+Version 1.19B	- UPDATED: Embed
+Version 1.19A	- UPDATED: Various Skin
+Version 1.18A	- UPDATED: API
+Version 1.18	- UPDATED: API
+Version 1.17B	- UPDATED: AtlasLoot
+Version 1.17A	- UPDATED: API, Embed Tooltip by Tombers
+Version 1.17	- UPDATED: Options, Embed
+Version 1.16A	- UPDATED: Embed
+Version 1.16	- REMOVED: Raven
+				- UPDATED: Swatter
+Version 1.15D	- UPDATED: CoolLine
+Version 1.15C	- UPDATED: Recount, Omen
+Version 1.15B	- UPDATED: Skillet
+Version 1.15A	- SUPPORT: AsphyxiaUI
+Version 1.14A	- UPDATED: DuffedUI
+Version 1.14	- SUPPORT: DuffedUI
+Version 1.13B	- UPDATED: API
+Version 1.13A	- UPDATED: ArkInventory
+Version 1.13	- UPDATED: MageNuggets / PetBattleTeams
+				- REMOVED: PowerAuras
+Version 1.12B	- UPDATED: Table of Contents
+Version 1.12A	- ADDED: QuestCompletist, CritLine, Soundtrack, WoWPro
+				- UPDATED: CoolLine
+Version 1.12	- ADDED: QuestItemBar, AuctionLite, Raven, Healium, BigBrother, InspectEquip, Combustion Helper
+				- UPDATED: MageNuggets, PowerAuras
+Version 1.11	- ADDED: CoolLine, LinkWrangler Skins
+				- UPDATED: EasyMail, ArchaeologyHelper
+Version 1.10B	- UPDATED: ChatFrame4
+Version 1.10A	- ADDED: MogIt, Examiner, Dresser, OneClickEnchantScroll, GupPet, xMerchant - by Dec
+Version 1.10	- ADDED: WeakAuras
+Version 1.09B	- REMOVED: WeakAuras
+Version 1.09A	- UPDATED: TellMeWhen
+Version 1.09	- UPDATED: Various Skins
+Version 1.08A	- UPDATED: Table of Contents
+Version 1.08	- UPDATED: API, Various Skins
+Version 1.07	- UPDATED: WeakAuras
+Version 1.06	- FIXED: Corrupted Files
+Version 1.05	- UPDATED: Skada Embed
+Version 1.04	- UPDATED: Game Menu
+Version 1.03	- UPDATED: Skada, SexyCooldown
+Version 1.02	- UPDATED: Game Menu
+Version 1.01	- REMOVED: Ace3
+Version 1.01	- UPDATED: ChocolateBar, TitanPanel
+Version 1.00	- Separated Release's.
