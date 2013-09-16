@@ -278,10 +278,13 @@ local function OnTooltipSetUnit(self)
 	local title = UnitPVPName(unit)
 	local r, g, b = GetQuestDifficultyColor(level).r, GetQuestDifficultyColor(level).g, GetQuestDifficultyColor(level).b
 
-	local color = GetColor(unit)	
-	if not color then color = "|CFFFFFFFF" end -- just safe mode for when GetColor(unit) return nil for unit too far away
-
-	_G["GameTooltipTextLeft1"]:SetFormattedText("%s%s%s", color, title or name, realm and realm ~= "" and " - "..realm.."|r" or "|r")
+	local color = GetColor(unit)
+	if not color then color = "|CFFFFFFFF" end
+	if not realm then realm = "" end
+	
+	if title or name then
+		_G["GameTooltipTextLeft1"]:SetFormattedText("%s%s%s", color, title or name, realm and realm ~= "" and " - "..realm.."|r" or "|r")
+	end
 
 	if(UnitIsPlayer(unit)) then
 		if UnitIsAFK(unit) then
@@ -298,7 +301,7 @@ local function OnTooltipSetUnit(self)
 
 		for i= offset, lines do
 			if(_G["GameTooltipTextLeft"..i]:GetText():find("^"..LEVEL)) then
-				_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r %s %s%s", r*255, g*255, b*255, level > 0 and level or "??", race, color, class.."|r")
+				_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r %s %s%s", r*255, g*255, b*255, level > 0 and level or "??", race or "", color, class or "".."|r")
 				break
 			end
 		end
